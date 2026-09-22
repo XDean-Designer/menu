@@ -1,6 +1,6 @@
 # 本地校验 / 测量的临时脚本与产物 —— 不进仓库
 _tmp_*
-_shots/
+_shots*/
 shots-tab/
 
 # Run to Figma 抓取时落下的位图色块占位（全项目无引用）
