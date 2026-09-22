@@ -59,7 +59,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.23</td>
+<td>v1.24</td>
 </tr>
 <tr>
 <td>日期</td>
@@ -94,6 +94,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.24</td>
+<td>2026-09-22</td>
+<td><strong>包含项目 / 包含产品页顶部对齐修正（假状态栏高度不再写死）</strong>：①原 <code>.phone-inner.is-group-pushing &gt; #screen-p-groups, #screen-p-group-members { top: 53px /* .status-bar */ }</code> 把假状态栏高度写死在推栈层上；手机模式（真机）隐藏假状态栏后，这 53px 就成了<strong>顶部空带</strong>，把该页标题栏整体压低一条状态栏高度（430 视口实测多 <strong>58.5px</strong>），且<strong>退出动画</strong>时背景层也会闪同一条空带。现引入单一来源 <strong><code>--statusbar-h: 53px</code></strong>：<code>.status-bar</code> 高度与推栈层 <code>top</code> 共用它，<code>shell.css</code> 在 <code>html.view-mobile</code> 下覆写为 <strong><code>0px</code></strong>。②修正后实测（每行都是 list / groups / members 三页对照）：距画布顶 <strong>桌面 55 / 55 / 55</strong>（保留状态栏偏移）、<strong>手机 0 / 0 / 0</strong>、<strong>Figma 抓取 53</strong>（状态栏可见，行为不变）；推入动画中 / 退出动画中 / 退出后<strong>均为 0</strong>；标题栏高 <strong>44 / 44 / 44</strong>（手机 48.5，按 scale 1.103 折算）、标题中轴距栏顶 <strong>桌面 22 / 22 / 22</strong>、<strong>手机 24.3 / 24.3 / 24.3</strong> —— 三者完全一致。③顺带修正该页选择条（已选 N · 反选 · 全选）<strong>底色失效</strong>：<code>.catalog-members-bar { background: var(--card) }</code> 被其后同特异性的 <code>.pick-select-bar { background: transparent }</code> 覆盖，实际露成页面灰 <code>#F7F7F7</code>；现以 <code>.pick-select-bar.catalog-members-bar</code> 提高特异性，恢复<strong>白底</strong>，与列表页 Tab 条 <code>.page-tabs</code> 同规格（白标题栏 + 白选择条 + 灰正文）。改动同步 §6.5 / §10.2（验收 +73～75）。</td>
+</tr>
 <tr>
 <td>v1.23</td>
 <td>2026-09-22</td>
@@ -1583,6 +1588,7 @@ flowchart LR
 <h2>6.5 包含项目 / 包含产品</h2>
 <ul>
 <li>标题：<code>包含项目 · {组名}</code>（产品 Tab：<code>包含产品 · {组名}</code>）；系统「隐藏」组直接叫 <strong><code>隐藏项目</code> / <code>隐藏产品</code></strong>（不再拼组名）  </li>
+<li><strong>页头版式（v1.24：与原型其它页同规格）</strong>：白标题栏（44px，手机模式随缩放 48.5px）+ <strong>白选择条</strong>（<code>.pick-select-bar.catalog-members-bar</code>，与列表页 Tab 条 <code>.page-tabs</code> 同规格）+ 灰正文（<code>#F7F7F7</code>）。该页为推栈页，顶部偏移取自 <strong><code>--statusbar-h</code></strong>（假状态栏可见时 53px、手机模式隐藏时 0）—— <strong>不得</strong>再写死 53px，否则手机模式会多出一条空带把标题栏压低  </li>
 <li>列出当前 Tab 桶内 <strong>全部</strong> 价目（<strong>名称 + 价格</strong>；含 hidden 条目）；已选 N · 反选 · 全选  </li>
 <li><strong>选中态区分（v1.22：字感，不靠底色）</strong>：未选名称 <code>15px/400/#8A8A8A</code>、价格 <code>13px/400/#B9B9B9</code>；选中名称 <code>15px/600/#1A1A1A</code>、价格 <code>13px/500/#1A1A1A</code>；色值过渡 120ms。勾选框 <strong>18×18</strong>（未选 1.5px <code>#C8C9CC</code> 描边 / 选中 <code>#F32F41</code> 实心 + 白勾）<strong>保持原样</strong>，仅作控件确认符  </li>
 <li>系统「隐藏」组：勾选即移入隐藏 / 取消即取消隐藏  </li>
@@ -2144,6 +2150,9 @@ flowchart LR
 <li><strong>Given</strong> 手机模式聚焦输入框（如分组名称 Dialog），<strong>When</strong> 系统键盘弹出，<strong>Then</strong> <code>--kb-h</code> = （<code>innerHeight</code> − <code>visualViewport.height</code>）/ <code>--mobile-scale</code>（差值 &lt; 80px 视为地址栏抖动、记 0）；底部 Sheet 用 <code>padding-bottom: var(--kb-h)</code> 抬起、居中 Dialog 用 <code>translateY(calc(-1 * var(--kb-h)))</code> 上移，<strong>均不得</strong>被键盘遮住；台面高用 <code>innerHeight</code> 而非 <code>visualViewport.height</code>，<strong>不得</strong>与 <code>--kb-h</code> 重复扣一次。</li>
 <li><strong>Given</strong> 手机模式，<strong>When</strong> 查看顶栏与底栏，<strong>Then</strong> 假状态栏（9:41）隐藏，顶部按 <code>env(safe-area-inset-top) / --mobile-scale</code> 避让刘海（<code>--safe-bottom</code> 同理按缩放折算）；<strong>When</strong> 从屏幕左缘向右滑，<strong>Then</strong> 唤出左侧导航抽屉（跟手拖拽），抽屉 <code>z-index 400</code> &gt; 蒙层 <code>350</code>，点蒙层或点导航项后收起。</li>
 <li><strong>Given</strong> 线上站点 <a href="https://xdean-designer.github.io/menu/">https://xdean-designer.github.io/menu/</a>，<strong>When</strong> 打开控制台，<strong>Then</strong> <strong>无 404 / 无脚本报错</strong>（站内已有内联 SVG favicon）；<code>index.html</code> / <code>base.css</code> / <code>shell.css</code> / <code>mobile-preview.js</code> / <code>catalog.js</code> / <code>app.js</code> / <code>amount-keypad.js</code> / <code>assets/**</code> 全部 200。</li>
+<li><strong>Given</strong> 手机模式（假状态栏已隐藏），<strong>When</strong> 从分组管理点「包含项目 / 包含产品」推入，<strong>Then</strong> 该页<strong>距画布顶为 0</strong>、标题栏 top 与列表页 / 分组管理<strong>完全一致</strong>（430 视口实测三者均为 0）；<strong>不得</strong>多出一条状态栏高度的空带（旧版为 53 × scale = 58.5px）。</li>
+<li><strong>Given</strong> 桌面壳或 Figma 抓取模式（<code>?capture=1</code>，假状态栏可见），<strong>When</strong> 推入同一页，<strong>Then</strong> 顶部偏移仍为 <strong>53px</strong>（三种模式实测：桌面 55 / 手机 0 / 抓取 53 距画布顶）；<strong>推入动画中、退出动画中、退出后</strong>三个时点的偏移均为 0（手机）/ 53（桌面），<strong>不得</strong>闪出空带。实现须走单一来源 <strong><code>--statusbar-h</code></strong>，<strong>不得</strong>在推栈层再写死 53px。</li>
+<li><strong>Given</strong> 包含项目 / 包含产品页，<strong>When</strong> 量测选择条（已选 N · 反选 · 全选），<strong>Then</strong> 底色为<strong>白 <code>#FFFFFF</code></strong>（与列表页 Tab 条 <code>.page-tabs</code> 同规格），<strong>不得</strong>露成页面灰 <code>#F7F7F7</code>；内边距 <code>14px 16px 10px</code>、标题 <code>13px/600</code>、按钮 <code>14px/500</code> 品牌红 <code>#F32F41</code>；底栏沿用通用 <code>.bottom-bar</code>（56px、按钮 48px）。</li>
 </ol>
 <hr />
 <h1>模块 11　非功能（极简）</h1>

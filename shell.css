@@ -204,7 +204,12 @@ html.view-mobile {
   --safe-bottom: calc(env(safe-area-inset-bottom, 0px) / var(--mobile-scale, 1));
 }
 
-/* 真机已有系统/浏览器顶栏，隐藏假状态栏（9:41） */
+/* 真机已有系统/浏览器顶栏，隐藏假状态栏（9:41）。
+   --statusbar-h 一起归零：推栈层（分组管理 ⇄ 包含项目）靠它对齐顶部，
+   否则手机模式下会凭空多出一条状态栏高度的空带、把标题栏压低。 */
+html.view-mobile {
+  --statusbar-h: 0px;
+}
 html.view-mobile .status-bar {
   display: none !important;
 }

@@ -49,6 +49,10 @@
   --phone-w: 390px; --phone-h: 844px; --phone-scale: 1.5;
   --phone-display-w: calc(var(--phone-w) * var(--phone-scale));
   --phone-display-h: calc(var(--phone-h) * var(--phone-scale));
+  /* 假状态栏高度：单一来源 —— .status-bar 高度与「分组管理 ⇄ 包含项目」推栈层
+     的顶部偏移共用它。手机模式（真机）隐藏假状态栏时由 shell.css 覆写为 0，
+     否则推栈层会凭空多出一条状态栏高度的空带。 */
+  --statusbar-h: 53px;
   --safe-bottom: 34px;
   --bottom-surface-shadow: 0 -0.5px 4px 0 rgba(0, 0, 0, 0.08);
 }
@@ -87,7 +91,7 @@
   font-variant-numeric: tabular-nums;
 }
 .phone-shell { display: flex; flex-direction: column; height: 100%; overflow: hidden; position: relative; }
-.status-bar { height: 53px; background: var(--card); flex-shrink: 0; display: flex; align-items: flex-end; justify-content: space-between; box-sizing: border-box; padding: 0 24px 10px; color: #000; }
+.status-bar { height: var(--statusbar-h, 53px); background: var(--card); flex-shrink: 0; display: flex; align-items: flex-end; justify-content: space-between; box-sizing: border-box; padding: 0 24px 10px; color: #000; }
 .status-bar__time { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; line-height: 1; min-width: 54px; }
 .status-bar__icons { display: flex; align-items: center; gap: 6px; height: 12px; }
 .status-bar__icons svg { display: block; flex-shrink: 0; }
@@ -966,6 +970,10 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 .catalog-group-name-field:focus { border-color: #C2C4CC; }
 .catalog-group-name-field::placeholder { color: var(--text-sec); }
 .catalog-members-bar { background: var(--card); flex-shrink: 0; }
+/* 提高特异性，压过更后面定义的 `.pick-select-bar { background: transparent }`
+   （同特异性时后定义者胜出，会让上面这条失效、选择条露成页面灰 #F7F7F7）。
+   规格与列表页 Tab 条 `.page-tabs`（白底）一致：白标题栏 + 白选择条 + 灰正文。 */
+.pick-select-bar.catalog-members-bar { background: var(--card); }
 .catalog-member-card {
   margin: 0 16px 16px; background: var(--card); border-radius: 12px; overflow: hidden;
 }
@@ -2157,12 +2165,14 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   }
 }
 
-/* 分组管理 ⇄ 编辑成员：右侧推入 / 推出（iOS 栈） */
+/* 分组管理 ⇄ 包含项目/包含产品：右侧推入 / 推出（iOS 栈）
+   顶部偏移必须跟随假状态栏 —— 手机模式（真机）隐藏假状态栏时
+   --statusbar-h 被 shell.css 覆写为 0，这里才不会多出一条空带。 */
 .phone-inner.is-group-pushing > #screen-p-groups,
 .phone-inner.is-group-pushing > #screen-p-group-members {
   position: absolute;
   left: 0; right: 0; bottom: 0;
-  top: 53px; /* .status-bar */
+  top: var(--statusbar-h, 53px); /* .status-bar */
   flex: none;
   width: auto;
   height: auto;
