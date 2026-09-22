@@ -59,7 +59,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.22</td>
+<td>v1.23</td>
 </tr>
 <tr>
 <td>日期</td>
@@ -67,7 +67,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 <tr>
 <td>交互原型（唯一可视依据）</td>
-<td>同目录 <code>index.html</code>（价目表独立原型，390 × 844；深链清单见 <code>README.md</code>）；大原型镜像 <code>../card/demo.html</code>（中文镜像：<code>剑琅联盟-RTB重构.html</code>；功能链路「项目创建与管理」）</td>
+<td>同目录 <code>index.html</code>（价目表独立原型，390 × 844；深链清单见 <code>README.md</code>）；<strong>线上预览 <a href="https://xdean-designer.github.io/menu/">https://xdean-designer.github.io/menu/</a></strong>（GitHub Pages，<code>main</code> 分支根目录）；大原型镜像 <code>../card/demo.html</code>（中文镜像：<code>剑琅联盟-RTB重构.html</code>；功能链路「项目创建与管理」）</td>
 </tr>
 <tr>
 <td>画布</td>
@@ -94,6 +94,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.23</td>
+<td>2026-09-22</td>
+<td><strong>手机预览（真机可用）+ 原型上线</strong>：①原型发布到 GitHub Pages —— <a href="https://xdean-designer.github.io/menu/">https://xdean-designer.github.io/menu/</a>（仓库 <code>XDean-Designer/menu</code>，<code>main</code> 分支根目录即本模块；<code>index.html</code> 为首页，<code>_tmp_*</code> 校验脚本 / <code>_shots/</code> 截图不入库）。②新增 <code>mobile-preview.js</code>（替代原先从「提成设置」壳复制来的内联脚本，改由 <code>_build-index.js</code> 注入）：<strong>逻辑画布固定 390</strong>（<code>--phone-w</code>），整体 <code>transform: scale(视口宽 / 390)</code> 铺满视口 —— 不再用 <code>width:100%</code> 拉伸布局，故分组行删除钮、0.5px 发丝线、按文字宽算出的 Tab 指示条都不会被撑歪；<code>transform-origin: top center</code> + 台面居中，横屏等极矮视口走兜底等比并自动居中。③<strong>不再以视口宽度判定真机</strong>（<code>max-width</code> 窄窗、DevTools 设备模式一律保持桌面壳），只认 UA / iPadOS 触屏 Mac；参数改为 <strong><code>?mobile=1｜0</code></strong>（<code>?view=mobile｜desktop</code> 保留兼容）。④<strong>系统键盘避让</strong>：<code>visualViewport</code> 与 <code>innerHeight</code> 差值（&lt; 80px 视为地址栏抖动）按缩放折算成逻辑 px 写入 <code>--kb-h</code>，底部 Sheet 用 <code>padding-bottom</code> 抬起、居中 Dialog 用 <code>translateY</code> 上移；台面高度改用 <code>innerHeight</code>（真机上已排除 iOS 工具栏、但不随键盘变化），与 <code>--kb-h</code> 分工不重复扣。⑤手机模式隐藏假状态栏（9:41），顶栏按 <code>env(safe-area-inset-top)</code> 避让刘海、并按缩放折算；<code>--safe-bottom</code> 同理。⑥<strong>左缘滑动唤出左侧导航抽屉</strong>（跟手拖拽，抽屉 <code>z-index 400</code> &gt; 蒙层 <code>350</code>）。⑦补站内 favicon（内联 SVG），消除线上 <code>favicon.ico</code> 404。改动同步 §10.2（验收 +67～72）。</td>
+</tr>
 <tr>
 <td>v1.22</td>
 <td>2026-09-22</td>
@@ -2133,6 +2138,12 @@ flowchart LR
 <li><strong>Given</strong> 点该入口进入，<strong>Then</strong> 页面标题为 <strong><code>包含项目 · {组名}</code></strong>（产品 Tab 为 <code>包含产品 · {组名}</code>；系统「隐藏」组为 <strong><code>隐藏项目</code> / <code>隐藏产品</code></strong>）；左侧导航同样为「分组 · 包含项目」。</li>
 <li><strong>Given</strong> 包含项目 / 包含产品页同时存在已选与未选条目，<strong>When</strong> 对比二者，<strong>Then</strong> 未选名称 <strong><code>15px/400/#8A8A8A</code></strong>、价格 <strong><code>13px/400/#B9B9B9</code></strong>；选中名称 <strong><code>15px/600/#1A1A1A</code></strong>、价格 <strong><code>13px/500/#1A1A1A</code></strong>；<strong>不得</strong>再依赖整行底色/描边区分，勾选框仍为 18×18 原样。</li>
 <li><strong>Given</strong> 分组管理页与价目表列表页标题栏右侧入口，<strong>When</strong> 量测加号与文字，<strong>Then</strong> 二者<strong>同为 14px 盒</strong>、flex 垂直居中，墨迹中轴差 <strong>≤ 0.5px</strong>；加号为 <strong>14 单位 / stroke 1.5</strong>（<strong>不得</strong>再用 12 单位 / stroke 1.8，那会让描边比 15px 文字重约 40%）。「隐藏」Tab 图标为 <strong>16×16 / stroke 1.5 的眼 + 斜线</strong>（Tab 内 14×14），线宽与重命名/删除图标成族。</li>
+<li><strong>Given</strong> 手机（iOS / Android），<strong>When</strong> 打开原型地址，<strong>Then</strong> 按 UA <strong>自动</strong>进入全屏手机模式（无需参数）；<strong>Given</strong> 电脑浏览器，<strong>When</strong> 不加参数打开，<strong>Then</strong> 保持「左侧导航 + 390×844 手机框」桌面壳；<strong>Given</strong> 真机 UA 加 <code>?mobile=0</code>（或桌面加 <code>?mobile=1</code>），<strong>Then</strong> 按参数强制切换。</li>
+<li><strong>Given</strong> 手机模式，<strong>When</strong> 量测画布，<strong>Then</strong> <code>#frame</code> <strong>布局宽仍为 390</strong>（<code>--phone-w</code>），视觉宽 = 视口宽（<code>transform: scale(视口宽 / 390)</code>，如 430 视口 → <code>--mobile-scale</code> 1.103、视觉 430.2），<strong>不得</strong>把布局改成 <code>width:100%</code> 拉伸；绝对定位元素（分组行删除钮、0.5px 发丝线、Tab 指示条）位置与桌面一致。</li>
+<li><strong>Given</strong> 桌面窄窗（如 390×700）或 DevTools 设备模式（不伪造真机 UA），<strong>When</strong> 打开原型，<strong>Then</strong> <strong>不得</strong>自动进入手机模式（只认 UA / iPadOS 触屏 Mac）；横屏等极矮视口（如 844×390）走兜底等比（<code>--mobile-scale</code> 0.462、<code>--mobile-h</code> 844）<strong>居中留边</strong>且<strong>不得</strong>出现 NaN。</li>
+<li><strong>Given</strong> 手机模式聚焦输入框（如分组名称 Dialog），<strong>When</strong> 系统键盘弹出，<strong>Then</strong> <code>--kb-h</code> = （<code>innerHeight</code> − <code>visualViewport.height</code>）/ <code>--mobile-scale</code>（差值 &lt; 80px 视为地址栏抖动、记 0）；底部 Sheet 用 <code>padding-bottom: var(--kb-h)</code> 抬起、居中 Dialog 用 <code>translateY(calc(-1 * var(--kb-h)))</code> 上移，<strong>均不得</strong>被键盘遮住；台面高用 <code>innerHeight</code> 而非 <code>visualViewport.height</code>，<strong>不得</strong>与 <code>--kb-h</code> 重复扣一次。</li>
+<li><strong>Given</strong> 手机模式，<strong>When</strong> 查看顶栏与底栏，<strong>Then</strong> 假状态栏（9:41）隐藏，顶部按 <code>env(safe-area-inset-top) / --mobile-scale</code> 避让刘海（<code>--safe-bottom</code> 同理按缩放折算）；<strong>When</strong> 从屏幕左缘向右滑，<strong>Then</strong> 唤出左侧导航抽屉（跟手拖拽），抽屉 <code>z-index 400</code> &gt; 蒙层 <code>350</code>，点蒙层或点导航项后收起。</li>
+<li><strong>Given</strong> 线上站点 <a href="https://xdean-designer.github.io/menu/">https://xdean-designer.github.io/menu/</a>，<strong>When</strong> 打开控制台，<strong>Then</strong> <strong>无 404 / 无脚本报错</strong>（站内已有内联 SVG favicon）；<code>index.html</code> / <code>base.css</code> / <code>shell.css</code> / <code>mobile-preview.js</code> / <code>catalog.js</code> / <code>app.js</code> / <code>amount-keypad.js</code> / <code>assets/**</code> 全部 200。</li>
 </ol>
 <hr />
 <h1>模块 11　非功能（极简）</h1>

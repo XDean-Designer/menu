@@ -20,6 +20,14 @@ const head = shellHead.slice(0, headEnd)
      剥掉后由本文件在 </head> 前注入价目表自己的控制器。 */
   .replace(/<script>[\s\S]*?preferMobile[\s\S]*?<\/script>\s*/, '')
 
+/* 站内 favicon（内联 SVG，红底价目三横）：GitHub Pages 上不加这一行，
+   浏览器会去请求站点根 favicon.ico → 404。 */
+const FAVICON =
+  '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'%3E' +
+  '%3Crect width=\'32\' height=\'32\' rx=\'8\' fill=\'%23F32F41\'/%3E%3Cg fill=\'%23ffffff\'%3E' +
+  '%3Crect x=\'9\' y=\'10\' width=\'14\' height=\'2.4\' rx=\'1.2\'/%3E%3Crect x=\'9\' y=\'15\' width=\'14\' height=\'2.4\' rx=\'1.2\'/%3E' +
+  '%3Crect x=\'9\' y=\'20\' width=\'8\' height=\'2.4\' rx=\'1.2\'/%3E%3C/g%3E%3C/svg%3E">'
+
 const fragment = fs.readFileSync(path.join(OUT, 'price-fragment.html'), 'utf8');
 
 const statusBar = `    <div class="status-bar">
@@ -67,6 +75,7 @@ function navBtns(items, startIdx) {
 }
 
 const html = `${head}
+${FAVICON}
 <script src="mobile-preview.js"></script>
 </head>
 <body>

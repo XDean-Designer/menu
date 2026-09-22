@@ -2,6 +2,13 @@
 
 从大原型 `card/demo.html` 剥离的 **项目创建与管理 / 价目表** 模块，可本地独立运行。
 
+## 线上地址（GitHub Pages）
+
+<https://xdean-designer.github.io/menu/> — 仓库 <https://github.com/XDean-Designer/menu>
+
+> 仓库根目录 = 本目录内容（`index.html` 即原型首页），Pages 走 `main` 分支根目录。
+> `_tmp_*` 临时校验脚本、`_shots/` 截图、Run to Figma 落下的位图占位都不入库。
+
 ## 启动
 
 ```powershell
@@ -10,6 +17,27 @@ python -m http.server 8770
 ```
 
 浏览器打开：<http://localhost:8770/index.html>
+
+## 手机预览
+
+真机打开线上地址即自动切全屏手机模式；电脑上要复现，在 URL 后加参数。
+
+| 场景 | 做法 |
+|------|------|
+| 真机（iOS / Android） | 直接打开页面，按 UA 自动开启，无需参数 |
+| 电脑上预览 | `?mobile=1`（可与 `?flow=…` 叠加） |
+| 电脑上强制回桌面壳 | `?mobile=0`（真机上也可用） |
+| 旧写法（保留兼容） | `?view=mobile` / `?view=desktop` |
+
+实现（`mobile-preview.js`）：
+
+- **逻辑画布固定 390 宽**（`--phone-w`），整体 `transform: scale(视口宽 / 390)` 铺满 —— 不拉伸布局，
+  绝对定位元素（分组行删除钮、0.5px 发丝线、按文字宽算出的 Tab 指示条）不会被撑歪
+- **不靠视口宽度判定**：`max-width` 窄窗、DevTools 设备模式都不会误开手机模式（只认 UA / iPadOS 触屏 Mac）
+- **键盘避让**：`visualViewport` 与 `innerHeight` 差值折算成逻辑 px 写进 `--kb-h`，
+  底部 Sheet（`padding-bottom`）与居中 Dialog（`translateY`）让开系统键盘
+- **左缘滑动唤出左侧导航抽屉**（跟手拖拽，抽屉 `z-index 400` > 蒙层 `350`）
+- 假状态栏（9:41）在手机模式隐藏；顶部按 `env(safe-area-inset-top)` 避让刘海，并已按缩放折算
 
 ## 深链
 
@@ -34,7 +62,8 @@ python -m http.server 8770
 | `catalog.js` / `base.css` | 价目核心（**手改，源在本目录**） |
 | `price-fragment.html` | 内联进 `index.html` 的页面片段（**手改**） |
 | `amount-keypad.js` | 金额数字键盘 |
-| `app.js` / `shell.css` | 壳与深链 |
+| `app.js` / `shell.css` | 壳与深链（`shell.css` 含 `html.view-mobile` 手机模式） |
+| `mobile-preview.js` | 手机预览控制器（390 缩放 / 键盘避让 / 导航抽屉），由 `_build-index.js` 注入 |
 | `PRD-项目创建与管理.html` | PRD（完整稿；精简版已删除） |
 
 ## 重建
