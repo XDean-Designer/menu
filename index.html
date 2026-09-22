@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>剑琅联盟 · 价目表重构</title>
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="shell.css">
+
+<script src="mobile-preview.js"></script>
+</head>
+<body>
+<aside class="site-nav">
+  <div class="nav-brand">
+    <div class="t">价目表重构</div>
+    <div class="s">独立原型 · 项目创建与管理</div>
+  </div>
+  <div class="nav-group">
+    <div class="g-t">入口</div>
+    <button type="button" class="nav-item on" data-flow="hub"><span class="idx">⌂</span>功能入口</button>
+  </div>
+  <div class="nav-group">
+    <div class="g-t">价目表</div>
+    <button type="button" class="nav-item" data-flow="price-list-empty"><span class="idx">1</span>价目表 · 空态</button>
+    <button type="button" class="nav-item" data-flow="price-list-filled"><span class="idx">2</span>价目表 · 项目</button>
+    <button type="button" class="nav-item" data-flow="price-list-product"><span class="idx">3</span>价目表 · 产品</button>
+    <button type="button" class="nav-item" data-flow="price-groups"><span class="idx">4</span>分组管理</button>
+    <button type="button" class="nav-item" data-flow="price-group-members"><span class="idx">5</span>分组 · 包含项目</button>
+    <button type="button" class="nav-item" data-flow="price-add"><span class="idx">6</span>新增项目</button>
+    <button type="button" class="nav-item" data-flow="price-add-product"><span class="idx">7</span>新增产品</button>
+    <button type="button" class="nav-item" data-flow="price-edit-normal"><span class="idx">8</span>项目详情 · 普通</button>
+    <button type="button" class="nav-item" data-flow="price-edit-bound"><span class="idx">9</span>项目详情 · 绑卡</button>
+    <button type="button" class="nav-item" data-flow="price-edit-off-sale"><span class="idx">10</span>项目详情 · 下架</button>
+    <button type="button" class="nav-item" data-flow="price-edit-product"><span class="idx">11</span>产品详情</button>
+    <button type="button" class="nav-item" data-flow="price-edit-product-off-sale"><span class="idx">12</span>产品详情 · 下架</button>
+  </div>
+  <div class="nav-group">
+    <div class="g-t">浮层 / 叠加态</div>
+    <button type="button" class="nav-item" data-flow="price-list-action"><span class="idx">·</span>行操作 Sheet</button>
+    <button type="button" class="nav-item" data-flow="price-list-swipe"><span class="idx">·</span>左滑可删除</button>
+    <button type="button" class="nav-item" data-flow="price-list-swipe-locked"><span class="idx">·</span>左滑不可删除</button>
+    <button type="button" class="nav-item" data-flow="price-list-hidden-open"><span class="idx">·</span>已隐藏展开</button>
+    <button type="button" class="nav-item" data-flow="price-item-group"><span class="idx">·</span>设置分组 Sheet</button>
+    <button type="button" class="nav-item" data-flow="price-item-group-empty"><span class="idx">·</span>设置分组 · 无组</button>
+    <button type="button" class="nav-item" data-flow="price-group-menu"><span class="idx">·</span>分组行展开</button>
+    <button type="button" class="nav-item" data-flow="price-group-create"><span class="idx">·</span>新建分组 Dialog</button>
+    <button type="button" class="nav-item" data-flow="price-group-rename"><span class="idx">·</span>重命名 Dialog</button>
+    <button type="button" class="nav-item" data-flow="price-group-delete"><span class="idx">·</span>删除分组 Dialog</button>
+    <button type="button" class="nav-item" data-flow="price-item-delete"><span class="idx">·</span>删除价目 Dialog</button>
+  </div>
+  <div class="nav-group grow">
+    <div class="g-t">文档</div>
+    <a class="nav-link" href="PRD-%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA%E4%B8%8E%E7%AE%A1%E7%90%86.html"><span class="idx">P</span> PRD</a>
+  </div>
+</aside>
+<div class="nav-drawer-mask" id="navDrawerMask" aria-hidden="true"></div>
+<div class="nav-edge-hit" id="navEdgeHit" aria-hidden="true"></div>
+<div class="stage">
+  <div id="frame" class="phone-shell">
+    <div class="phone-inner phone">
+    <div class="status-bar">
+      <div class="status-bar__time">9:41</div>
+      <div class="status-bar__icons">
+        <svg width="19.2" height="12" viewBox="0 0 19.2002 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.13379 7.40039C2.72262 7.40066 3.2001 7.91493 3.2002 8.5498V10.8496C3.2002 11.4846 2.72268 11.9997 2.13379 12H1.06641C0.477422 11.9998 0 11.4846 0 10.8496V8.5498C9.79152e-05 7.91486 0.477483 7.40054 1.06641 7.40039H2.13379ZM7.43359 5C8.02258 5.00015 8.5 5.52275 8.5 6.16699V10.833C8.5 11.4772 8.02258 11.9998 7.43359 12H6.36621C5.77732 11.9997 5.2998 11.4772 5.2998 10.833V6.16699C5.2998 5.52283 5.77732 5.00027 6.36621 5H7.43359ZM12.833 2.40039C13.422 2.40039 13.9003 2.91564 13.9004 3.55176V10.8477C13.9004 11.4839 13.4221 12 12.833 12H11.7666C11.1775 12 10.7002 11.4839 10.7002 10.8477V3.55176C10.7003 2.91566 11.1776 2.40043 11.7666 2.40039H12.833ZM18.1338 0C18.7227 0.00025962 19.2002 0.50384 19.2002 1.125V10.875C19.2002 11.4962 18.7227 11.9997 18.1338 12H17.0664C16.4774 11.9999 16 11.4962 16 10.875V1.125C16 0.503771 16.4774 0.000148442 17.0664 0H18.1338Z" fill="#1A1A1A"/></svg>
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.11231 8.95898C7.49091 7.68034 9.51016 7.68016 10.8887 8.95898C10.9579 9.02774 10.9981 9.12508 11 9.22753C11.0019 9.33007 10.9652 9.42913 10.8984 9.50097L8.73926 11.8906C8.67602 11.9606 8.58985 12 8.50001 12C8.41016 12 8.32398 11.9606 8.26075 11.8906L6.10157 9.50097C6.03487 9.42907 5.99803 9.33008 6.00001 9.22753C6.00199 9.12499 6.04291 9.02771 6.11231 8.95898ZM3.1084 6.11034C6.14692 3.29648 10.8531 3.29648 13.8916 6.11034C13.9601 6.17631 13.999 6.26741 14 6.3623C14.0009 6.45701 13.9635 6.54798 13.8965 6.61523L12.6201 7.89941C12.4886 8.03051 12.2756 8.03383 12.1406 7.90624C11.1429 7.00679 9.84502 6.50878 8.49903 6.50878C7.15382 6.50934 5.85652 7.00732 4.85938 7.90624C4.72442 8.03384 4.51142 8.03051 4.37989 7.89941L3.10352 6.61523C3.03647 6.54807 2.99919 6.45699 3.00001 6.3623C3.00091 6.26738 3.03986 6.17631 3.1084 6.11034ZM0.107428 3.19335C4.79922 -1.06448 12.2007 -1.06442 16.8926 3.19335C16.9605 3.25661 16.9994 3.34337 17 3.43358C17.0005 3.52372 16.9636 3.61083 16.8965 3.6748L15.6094 4.90429C15.4768 5.03049 15.2616 5.03147 15.127 4.90722C13.3394 3.29788 10.9665 2.40048 8.50001 2.40038C6.03341 2.40049 3.66077 3.29781 1.87305 4.90722C1.73852 5.03166 1.52312 5.03068 1.39063 4.90429L0.103522 3.6748C0.0365013 3.6108 -0.00055106 3.52371 6.19569e-06 3.43358C0.000632915 3.34337 0.0394625 3.25656 0.107428 3.19335Z" fill="#1A1A1A"/></svg>
+        <svg width="27.3" height="12" viewBox="0 0 27.328 13" fill="none" xmlns="http://www.w3.org/2000/svg"><g><rect x="0.5" y="0.5" width="24" height="12" rx="3" stroke="#1A1A1A" opacity="0.35"/><path d="M26 4.66667V8.66667C26.8047 8.32789 27.328 7.5398 27.328 6.66667C27.328 5.79353 26.8047 5.00544 26 4.66667" fill="#1A1A1A" opacity="0.4"/><rect x="2" y="2" width="21" height="9" rx="1.33333" fill="#1A1A1A"/></g></svg>
+      </div>
+    </div>
+<div class="screen" id="screen-hub">
+  <div class="page-title-bar"><span class="title">功能入口</span></div>
+  <div class="page-body hub-body">
+    <button type="button" class="hub-card" id="hubGoPrice" data-hub-go="price">
+      <img class="hub-card__icon" src="assets/workbench/price.png" width="44" height="44" alt="">
+      <span>
+        <span class="hub-card__title">价目表</span>
+        <span class="hub-card__desc">项目/产品、分组、新增与详情</span>
+      </span>
+    </button>
+  </div>
+</div>
+<!-- ==== PRICE CATALOG (from card/demo.html) ==== -->
+        <div class="screen hidden" id="screen-p-list">
+          <header class="page-title-bar">
+            <button type="button" class="back" id="projBackFromList" aria-label="返回"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <span class="title">价目表</span>
+            <button type="button" class="title-add-btn" id="btnProjTitleAdd" aria-label="添加"><svg class="title-add-btn__plus" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="title-add-btn__text">添加</span></button>
+          </header>
+          <div class="proj-list-hint" id="projListDragHint">
+            <svg class="proj-list-hint__icon" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M7.5 14.5C9.433 14.5 11.183 13.7165 12.45 12.4497C13.7165 11.183 14.5 9.433 14.5 7.5C14.5 5.567 13.7165 3.817 12.45 2.5503C11.183 1.2835 9.433 0.5 7.5 0.5C5.567 0.5 3.817 1.2835 2.5503 2.5503C1.2835 3.817 0.5 5.567 0.5 7.5C0.5 9.433 1.2835 11.183 2.5503 12.4497C3.817 13.7165 5.567 14.5 7.5 14.5Z" stroke="currentColor" stroke-linejoin="round"/><path d="M7.5 10.55a0.625 0.625 0 1 1 0 1.25 0.625 0.625 0 0 1 0-1.25Z" fill="currentColor" stroke="currentColor" stroke-width="0.5"/><path d="M7.5 3.3v5.6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <p class="proj-list-hint__text">长按项目可拖动排序，左滑快捷操作；分组可左右滑动</p>
+            <button type="button" class="proj-list-hint__close" id="btnProjListHintClose" aria-label="关闭提示">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#fff"/><path d="M14 6L6 14M14 14L6 6" stroke="#666" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <div class="page-tabs price-catalog-tabs" id="priceCatalogTabs" role="tablist" data-active="project">
+            <button type="button" class="page-tabs__item on" data-price-catalog-tab="project" role="tab" aria-selected="true">项目</button>
+            <button type="button" class="page-tabs__item" data-price-catalog-tab="product" role="tab" aria-selected="false">产品</button>
+            <span class="price-catalog-tabs__ink" aria-hidden="true"></span>
+          </div>
+          <div class="page-body">
+            <div class="catalog-list-shell">
+              <div class="catalog-group-bar" id="catalogGroupBar">
+                <div class="catalog-group-segment">
+                  <div class="catalog-group-scroll" id="catalogGroupTabs" role="tablist" aria-label="价目分组"></div>
+                  <div class="catalog-group-fade" aria-hidden="true"></div>
+                </div>
+                <button type="button" class="catalog-group-gear" id="btnCatalogGroupManage" aria-label="分组管理">
+                  <svg width="18" height="18" viewBox="0 0 21 20" fill="none" aria-hidden="true">
+                    <path d="M13.6338 0.882812C14.786 1.26977 15.8411 1.86545 16.7549 2.62305C16.6385 2.9904 16.5752 3.3808 16.5752 3.78516C16.5752 5.74918 18.0453 7.36153 19.9424 7.61914C20.1419 8.38846 20.25 9.19492 20.25 10.0273C20.25 10.4841 20.2151 10.9328 20.1533 11.3721C18.1554 11.5343 16.5752 13.1932 16.5752 15.2295C16.5752 15.9263 16.7624 16.5798 17.0869 17.1445C16.1709 17.9762 15.094 18.6361 13.9082 19.0742C13.2417 17.8842 11.9652 17.0801 10.5 17.0801C9.03459 17.0801 7.75726 17.884 7.09082 19.0742C5.90512 18.636 4.82807 17.9762 3.91211 17.1445C4.23683 16.5797 4.42477 15.9264 4.4248 15.2295C4.4248 13.1929 2.84413 11.5338 0.845703 11.3721C0.783923 10.9329 0.75 10.4841 0.75 10.0273C0.750014 9.195 0.857153 8.38838 1.05664 7.61914C2.95418 7.36195 4.4248 5.74951 4.4248 3.78516C4.42479 3.3807 4.3606 2.99048 4.24414 2.62305C5.1578 1.86541 6.21308 1.26986 7.36523 0.882812C8.07596 1.83601 9.21522 2.45508 10.5 2.45508C11.7846 2.45508 12.923 1.83574 13.6338 0.882812Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M10.5 13.5C12.433 13.5 14 11.933 14 10C14 8.067 12.433 6.5 10.5 6.5C8.567 6.5 7 8.067 7 10C7 11.933 8.567 13.5 10.5 13.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="table-card" id="projTableCard">
+                <div class="table-head" id="projTableHead">
+                  <button type="button" class="table-head__cell" data-col-sort="name"><span class="table-head__inner">项目名称</span></button>
+                  <button type="button" class="table-head__cell is-center" data-col-sort="duration" data-col-duration><span class="table-head__inner">时长/次数</span></button>
+                  <button type="button" class="table-head__cell is-center" data-col-sort="price"><span class="table-head__inner">价格（¥）</span></button>
+                </div>
+                <div id="projProjectTable"></div>
+              </div>
+            </div>
+            <div class="proj-list-empty hidden" id="projListEmpty">
+              <img class="proj-list-empty__illust" src="assets/catalog/empty-box.svg" width="144" height="144" alt="" aria-hidden="true">
+              <p class="proj-list-empty__title" id="projListEmptyTitle">暂无项目</p>
+              <p class="proj-list-empty__hint" id="projListEmptyHint">添加后可在选择项目与办卡中使用</p>
+              <button type="button" class="btn-proj-empty-add btn-proj-empty-add--dash" id="btnProjEmptyAdd">添加项目</button>
+              <button type="button" class="btn-proj-empty-add btn-proj-empty-add--dash hidden" id="btnProjEmptyAddToGroup">添加项目到本组</button>
+            </div>
+          </div>
+        </div>
+        <div class="screen hidden" id="screen-p-groups">
+          <header class="page-title-bar">
+            <button type="button" class="back" id="projBackFromGroups" aria-label="返回"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <span class="title">分组管理</span>
+            <button type="button" class="btn-catalog-group-create" id="btnCatalogGroupCreate" aria-label="新建"><svg class="btn-catalog-group-create__plus" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="btn-catalog-group-create__text">新建</span></button>
+          </header>
+          <div class="page-body">
+            <div class="catalog-group-manage-list" id="catalogGroupManageList"></div>
+            <div class="catalog-group-manage-empty hidden" id="catalogGroupManageEmpty">
+              <div class="catalog-group-manage-empty__icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h10M4 17h6"/></svg>
+              </div>
+              <p class="catalog-group-manage-empty__title">暂无分组</p>
+              <p class="catalog-group-manage-empty__hint">创建分组后可快速筛选价目表</p>
+            </div>
+          </div>
+        </div>
+        <div class="screen hidden" id="screen-p-group-members">
+          <header class="page-title-bar">
+            <button type="button" class="back" id="projBackFromGroupMembers" aria-label="返回"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <span class="title" id="catalogGroupMembersTitle">包含项目</span>
+          </header>
+          <div class="pick-select-bar catalog-members-bar">
+            <span class="pick-select-bar__title" id="catalogGroupMembersCount">已选 0</span>
+            <div class="pick-select-bar__btns">
+              <button type="button" class="pick-select-bar__btn" id="btnCatalogMembersInvert">反选</button>
+              <button type="button" class="pick-select-bar__btn" id="btnCatalogMembersSelectAll">全选</button>
+            </div>
+          </div>
+          <div class="page-body">
+            <div class="catalog-member-card">
+              <div class="catalog-member-list" id="catalogGroupMembersList"></div>
+            </div>
+          </div>
+          <div class="bottom-bar"><div class="bottom-bar__action"><button type="button" class="btn-main" id="btnCatalogGroupMembersSave">确定</button></div><div class="bottom-bar__safe"></div></div>
+        </div>
+
+        <div class="picker-mask picker-mask--bottom" id="durPickerMask">
+          <div class="picker-sheet">
+            <div class="picker-head picker-head--validity"><span class="picker-head__title-main">项目时长</span></div>
+            <div class="validity-sheet-body">
+              <div class="validity-chip-row validity-chip-row--presets" id="durChipRow"></div>
+              <div class="ios-picker" id="durHmPicker">
+                <div class="ios-picker-highlight"></div>
+                <div class="ios-picker-cols">
+                  <div class="ios-picker-col" id="durHourCol"></div>
+                  <div class="ios-picker-col" id="durMinCol"></div>
+                </div>
+              </div>
+            </div>
+            <div class="picker-foot picker-foot--row">
+              <button type="button" class="btn-main secondary" id="btnDurCancel">取消</button>
+              <button type="button" class="btn-main" id="btnDurOk">确定</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-mask" id="projDialogMask">
+          <div class="dialog">
+            <div class="dialog__title">确认删除？</div>
+            <div class="dialog__body">删除后不可恢复，是否继续？</div>
+            <div class="dialog__actions">
+              <button type="button" class="btn-main secondary" id="projDialogCancel">取消</button>
+              <button type="button" class="btn-main" id="projDialogConfirm">删除</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-mask" id="catalogInlineDiscardMask">
+          <div class="dialog">
+            <div class="dialog__title">放弃修改？</div>
+            <div class="dialog__body">这一项还有没保存的改动，收起后将不会保留。</div>
+            <div class="dialog__actions">
+              <button type="button" class="btn-main secondary" id="catalogInlineDiscardAbort">继续编辑</button>
+              <button type="button" class="btn-main" id="catalogInlineDiscardOk">放弃</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-mask" id="catalogGroupNameMask">
+          <div class="dialog">
+            <div class="dialog__title" id="catalogGroupNameTitle">新建分组</div>
+            <input type="text" class="catalog-group-name-field" id="catalogGroupNameInput" placeholder="请输入分组名称" maxlength="20" autocomplete="off">
+            <p class="catalog-group-name-hint">最多 20 字，不可与已有分组重名</p>
+            <div class="dialog__actions">
+              <button type="button" class="btn-main secondary" id="catalogGroupNameCancel">取消</button>
+              <button type="button" class="btn-main" id="catalogGroupNameConfirm">确定</button>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="dialog-mask" id="catalogGroupDeleteMask">
+          <div class="dialog">
+            <div class="dialog__title">删除分组？</div>
+            <div class="dialog__body">仅删除分组，不会删除项目/产品。</div>
+            <div class="dialog__actions">
+              <button type="button" class="btn-main secondary" id="catalogGroupDeleteCancel">取消</button>
+              <button type="button" class="btn-main" id="catalogGroupDeleteConfirm">删除</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-mask" id="unlimitedValidityDialogMask">
+          <div class="dialog">
+            <div class="dialog__title">设置有效期</div>
+            <div class="dialog__body">不限次项目不可使用永久有效，请在此设置卡有效期。</div>
+            <div class="unlimited-validity-dialog__dur">
+              <div class="duration-input" id="unlimitedValidityDuration" data-duration-id="unlimitedValidity" style="width:166px">
+                <div class="duration-input__field" data-duration-field>
+                  <input type="text" class="duration-input__num" data-duration-num inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="请输入" />
+                </div>
+                <div class="duration-input__units" data-duration-units style="grid-template-columns:repeat(3,1fr);flex:0 0 90px;width:90px">
+                  <span class="duration-seg-indicator" style="width:calc((100% - 4px) / 3);transform:translateX(200%)" aria-hidden="true"></span>
+                  <button type="button" class="duration-input__unit" data-duration-unit="day">日</button>
+                  <button type="button" class="duration-input__unit" data-duration-unit="month">月</button>
+                  <button type="button" class="duration-input__unit is-active" data-duration-unit="year">年</button>
+                </div>
+              </div>
+            </div>
+            <div class="dialog__actions">
+              <button type="button" class="btn-main secondary" id="unlimitedValidityCancel">取消</button>
+              <button type="button" class="btn-main" id="unlimitedValidityConfirm">确定</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="picker-mask picker-mask--bottom" id="catalogRowActionMask">
+          <div class="picker-sheet picker-sheet--menu">
+            <div class="catalog-action-card">
+              <div class="picker-sheet__grabber" aria-hidden="true"></div>
+              <div class="picker-head picker-head--stack">
+                <div class="picker-head__title" id="catalogRowActionTitle">项目</div>
+              </div>
+              <div class="catalog-action-list">
+                <button type="button" class="catalog-action-item" data-catalog-act="group">设置分组</button>
+                <button type="button" class="catalog-action-item" data-catalog-act="sale">下架</button>
+                <button type="button" class="catalog-action-item" data-catalog-act="hide">隐藏</button>
+                <button type="button" class="catalog-action-item hidden" data-catalog-act="unhide">取消隐藏</button>
+                <button type="button" class="catalog-action-item catalog-action-item--danger" data-catalog-act="delete">删除<span class="catalog-action-item__del-lock is-hidden" id="catalogActDeleteLock" aria-hidden="true"></span></button>
+              </div>
+            </div>
+            <div class="catalog-action-foot">
+              <button type="button" class="catalog-action-item catalog-action-item--cancel" data-catalog-act="cancel">取消</button>
+            </div>
+            <div class="catalog-action-safe" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="picker-mask picker-mask--bottom" id="catalogItemGroupMask">
+          <div class="picker-sheet tall">
+            <div class="picker-head picker-head--stack">
+              <div class="picker-head__title" id="catalogItemGroupTitle">设置分组</div>
+              <div class="picker-head__sub">可同时加入多个分组</div>
+            </div>
+            <div class="catalog-group-sheet-list" id="catalogItemGroupList"></div>
+            <div class="picker-foot picker-foot--row">
+              <button type="button" class="btn-main secondary" id="catalogItemGroupCancel">取消</button>
+              <button type="button" class="btn-main" id="catalogItemGroupConfirm">确定</button>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="picker-mask picker-mask--bottom" id="amountKeypadMask">
+          <div class="picker-sheet">
+            <div class="picker-head" id="amountKeypadTitle">输入金额</div>
+            <div class="amount-keypad-display is-empty" id="amountKeypadDisplay">请输入</div>
+            <div class="amount-keypad-grid" id="amountKeypadGrid"></div>
+            <div class="picker-foot picker-foot--row">
+              <button type="button" class="btn-main secondary" id="btnAmountKeypadCancel">取消</button>
+              <button type="button" class="btn-main" id="btnAmountKeypadOk">确定</button>
+            </div>
+          </div>
+        </div>
+
+<!-- ==== /PRICE CATALOG ==== -->
+
+      <div class="toast-msg" id="toastMsg" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+<script src="amount-keypad.js"></script>
+<script src="catalog.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "fileKey": "Qb2Jcn0E9NllrGE7vdbH8q",
+  "nodeId": "861:186",
+  "port": 8766,
+  "basePath": "/index.html",
+  "selector": "#frame",
+  "frameWidth": 390,
+  "gap": 80,
+  "fontFamily": "Noto Sans SC",
+  "bitmapPlaceholder": "#E8E8E8",
+  "iconsMustBeSvg": true,
+  "sliceBitmapsOnlyWhenUserAsks": true,
+  "screens": [
+    {
+      "capture": "price-edit-normal",
+      "name": "价目表-项目详情·普通",
+      "captureId": "672b624d-b04d-489f-83c8-0eb5b97701b6",
+      "delay": 2800
+    }
+  ]
+}

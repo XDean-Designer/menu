@@ -1,0 +1,14 @@
+{
+  "finishedAt": "2026-09-22T03:43:58.004Z",
+  "results": [
+    {
+      "capture": "price-group-menu",
+      "name": "分组管理",
+      "captureId": "ba5d1121-4744-4395-8e51-5b12e3941dd7",
+      "pageUrl": "http://127.0.0.1:8770/index.html?capture=price-group-menu",
+      "ok": false,
+      "status": "pending",
+      "error": "captureForDesign timeout"
+    }
+  ]
+}

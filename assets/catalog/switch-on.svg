@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="40" height="22" viewBox="0 0 40 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 2185">
+<path id="Rectangle 547" d="M0 11C0 4.92487 4.92487 0 11 0H29C35.0751 0 40 4.92487 40 11C40 17.0751 35.0751 22 29 22H11C4.92487 22 0 17.0751 0 11Z" fill="url(#paint0_linear_0_5)"/>
+<ellipse id="Ellipse 57" cx="29.0692" cy="10.9318" rx="9.06923" ry="8.93182" fill="white"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_5" x1="4.16667" y1="5.04167" x2="22.3808" y2="29.8791" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF974B"/>
+<stop offset="1" stop-color="#FE7A4C"/>
+</linearGradient>
+</defs>
+</svg>

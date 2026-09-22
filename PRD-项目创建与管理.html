@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD-项目创建与管理（预览）</title>
+<style>
+:root{--brand:#F32F41;--text:#1f2329;--text-sec:#646a73;--border:#e5e6eb;--bg:#f5f6f7;--card:#fff;--code-bg:#f2f3f5;--th-bg:#f8f9fa;--link:#3370ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--text);background:var(--bg);line-height:1.7;font-size:15px}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 20px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.topbar__title{font-size:14px;font-weight:600}.topbar__hint{font-size:12px;color:var(--text-sec);font-weight:400;margin-left:8px}
+.topbar__actions{display:flex;gap:8px;flex-wrap:wrap}
+.topbar a{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:6px;font-size:13px;text-decoration:none;font-weight:500}
+.topbar a.primary{background:var(--brand);color:#fff}.topbar a.ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.wrap{max-width:920px;margin:0 auto;padding:24px 20px 64px}
+.article{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px 40px 48px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow-x:clip}
+@media(max-width:640px){.article{padding:20px 16px 32px;border-radius:0;border-left:none;border-right:none;overflow-x:auto}}
+.article>h1:first-child{margin-top:0}
+h1{font-size:28px;font-weight:700;line-height:1.35;margin:0 0 16px}
+h2{font-size:22px;font-weight:650;margin:40px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:17px;font-weight:650;margin:28px 0 10px}h4{font-size:15px;font-weight:650;margin:20px 0 8px}
+p{margin:0 0 12px}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+ul,ol{margin:0 0 14px;padding-left:1.4em}li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+blockquote{margin:12px 0 16px;padding:10px 14px;border-left:3px solid var(--brand);background:#fff5f6;color:var(--text-sec);border-radius:0 8px 8px 0}
+blockquote p{margin:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;background:var(--code-bg);padding:1px 6px;border-radius:4px}
+pre{background:#1f2329;color:#f5f6f7;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.55;margin:0 0 16px}
+pre code{background:none;padding:0;color:inherit}
+table{width:100%;max-width:100%;border-collapse:collapse;margin:0 0 18px;font-size:14px;display:block;overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;min-width:72px}
+th{font-weight:600;white-space:nowrap;background:var(--th-bg)}td{background:#fff}
+tr:nth-child(even) td{background:#fafbfc}
+.article img{max-width:100%;height:auto;display:block}
+table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;border:1px solid var(--border);background:#f5f6f7}
+.foot-note{margin-top:28px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-sec)}
+.mermaid{margin:12px 0 20px;padding:16px;background:#fafbfc;border:1px solid var(--border);border-radius:10px;overflow-x:auto;text-align:center}
+.mermaid svg{max-width:100%;height:auto}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar__title">PRD-项目创建与管理<span class="topbar__hint">阅读预览 · 表格与标题已排版</span></div>
+    <div class="topbar__actions">
+      <a class="ghost" href="index.html">打开交互原型</a>
+      <a class="ghost" href="PRD-项目创建与管理.md" download>下载 Markdown</a>
+      <a class="primary" href="PRD-项目创建与管理.md" target="_blank" rel="noopener">打开源文件 .md</a>
+    </div>
+  </div>
+  <div class="wrap"><article class="article"><h1>PRD：项目创建与管理（价目表 · 商户端）</h1>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文档版本</td>
+<td>v1.22</td>
+</tr>
+<tr>
+<td>日期</td>
+<td>2026-09-22</td>
+</tr>
+<tr>
+<td>交互原型（唯一可视依据）</td>
+<td>同目录 <code>index.html</code>（价目表独立原型，390 × 844；深链清单见 <code>README.md</code>）；大原型镜像 <code>../card/demo.html</code>（中文镜像：<code>剑琅联盟-RTB重构.html</code>；功能链路「项目创建与管理」）</td>
+</tr>
+<tr>
+<td>画布</td>
+<td>390 × 844</td>
+</tr>
+<tr>
+<td>目的</td>
+<td>供前端 / 后端 / 测试及 AI 工具落地「价目表（项目·产品）」；<strong>只需本文 + 交互原型</strong></td>
+</tr>
+<tr>
+<td>关联（非必读）</td>
+<td>同目录 <code>PRD-会员卡管理.md</code>（办卡权益选品依赖本文价目数据；会员卡流程以该文档为准）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>修订记录</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1.22</td>
+<td>2026-09-22</td>
+<td><strong>分组入口改名「包含项目 / 包含产品」+ 该页选中态改字感 + 标题栏右侧入口同轴 + 「隐藏」图标重绘</strong>：①展开条入口与页面标题由「编辑成员」改为<strong>按当前 Tab 动态命名</strong>：<strong><code>包含项目</code></strong>（项目 Tab）/ <strong><code>包含产品</code></strong>（产品 Tab），标题形如 <code>包含项目 · {组名}</code>（系统「隐藏」组直接叫 <strong><code>隐藏项目</code> / <code>隐藏产品</code></strong>）；左侧导航与术语表同步。②入口图标由双人换为<strong>文件夹内条目</strong>线描（22×22 / stroke 1.56，与重命名、删除同族）。③该页<strong>选中态不再靠底色</strong>，改为<strong>字重 + 明暗</strong>：未选名称 <code>15px/400/#8A8A8A</code>、价格 <code>13px/400/#B9B9B9</code>；选中名称 <code>15px/600/#1A1A1A</code>、价格 <code>13px/500/#1A1A1A</code>（勾选框保持 18×18 原样，仅作控件确认符）。④标题栏右侧入口（分组管理 <code>+新建</code> / 列表 <code>+添加</code>）<strong>图标与文字统一 14px 盒</strong>，加号重绘为 <strong>14 单位 / stroke 1.5</strong>（原 12 单位 / 1.8 在 14px 下描边达 2.1px，比 15px 文字重约 40%，视觉不成对），两枚均 flex 居中即同轴；实测墨迹中轴差 ≤ 0.5px。⑤「隐藏」图标重绘为 <strong>16×16 / stroke 1.5 的眼 + 斜线</strong>（原 19.5×16.5 内嵌实心 + 细斜线，线宽不成族），Tab 内 14×14。改动同步 §3.0 / §6.1 / §6.4 / §6.5 / §10.2（验收 +63～66）。</td>
+</tr>
+<tr>
+<td>v1.21</td>
+<td>2026-09-22</td>
+<td><strong>分组管理展开条版式对齐人工稿 + 编辑成员改右侧推栈</strong>（设计源：Figma <code>1381:110</code> 展开块 <code>1397:632</code>）：①展开整块底色 <code>#F7F7F7</code> → <strong><code>#E7E7E7</code></strong>；去掉顶沿内凹阴影，改为行下 <strong>0.5px <code>rgba(0,0,0,.08)</code></strong> 发丝线分隔。②操作条改为<strong>「编辑成员 + 重命名」整组水平居中、间距 16</strong>（单格 68.33×66），<strong>删除</strong>收成 <strong>32×32、圆角 8、<code>#BEBEBE</code> 灰底 + 白垃圾桶、无文案</strong>，钉在<strong>右内边距 16</strong>（图标 x 310–342）；操作条高 <strong>82</strong>（上 4 / 下 12，行高 69）。③图标换为稿件线描（22×22）；文案与图标色 <code>#7D7D7D</code>（删除钮内为白）。④<strong>编辑成员页改为右侧推入 / 推出</strong>（300ms <code>cubic-bezier(.32,.72,0,1)</code>）：进入时成员页自右滑入覆盖，分组管理<strong>左移 22% + <code>rgba(0,0,0,.1)</code> 蒙层</strong>；返回 / 确定后成员页自右滑出、蒙层淡出；<code>prefers-reduced-motion</code> 与抓取模式降级为即时切换。改动同步 §6.4 / §6.5 / §10.2（验收 +60～62）。</td>
+</tr>
+<tr>
+<td>v1.20</td>
+<td>2026-09-22</td>
+<td><strong>新增展开区挂在售区末 + 标题；分组管理行内展开三钮</strong>：①新增表单插在<strong>在售最后一行之下 /「已下架」之上</strong>（无下架则在「已隐藏」之上），并显示标题「添加项目/添加产品」。②分组管理：点行或 ⋯ → 行内展开「编辑成员 / 重命名 / 删除」（上图标下文案；删除仅垃圾桶）；废止分组菜单 Sheet；编辑成员/重命名/删除仍走原页面与 Dialog。③「+新建」在<strong>标题栏右侧</strong>（无底栏）。④进页一律收起；展开项行+操作条同底 <code>#F7F7F7</code>、操作条左缩进对齐组名（视觉一体）。改动同步 §6.1.1 / §6.4 / §10.2。</td>
+</tr>
+<tr>
+<td>v1.19</td>
+<td>2026-09-22</td>
+<td><strong>标题栏添加改文字链 + 展开隐藏价格 + 保存绿减淡 + 已隐藏灰区分 + 价格键盘不退出编辑</strong>：①标题栏「+添加」去掉红底白字胶囊，改为<strong>品牌红加号图标 + 红色「添加」文字</strong>（无按钮壳）。②展开后标题行隐藏价格/时长（强化选择器，避免与展开区字段重复）。③保存成功高亮减淡：底 <code>#F3FAF5</code>、描边 <code>rgba(52,199,89,.28)</code>。④「已隐藏」块底改 <code>#EEEEEE</code>，与展开区 <code>#F7F7F7</code> 区分。⑤点价格打开金额键盘时 <code>stopPropagation</code>、缓冲去 <code>¥</code>、键盘打开期间不因外部点击收起展开区。⑥<strong>删除 PRD 精简版</strong>（仅保留完整稿）。改动同步 §6.1 / §6.1.1 / §10.2。</td>
+</tr>
+<tr>
+<td>v1.18</td>
+<td>2026-09-22</td>
+<td><strong>产品行对齐修复 + 展开标题收敛 + 保存改通栏实心</strong>：①产品 Tab 隐藏空的 <code>.dur</code> 占位，名称/价格落回 2 列网格并垂直居中。②展开后标题行只保留拖拽图标 + 名称（隐藏时长/价格）。③保存区上方加 0.5px <code>#EBEBEB</code> 分隔线；「保存」改为<strong>通栏实心主按钮</strong>（左右 16、高 48、圆角 12、品牌红 <code>#F32F41</code> 底白字 + 白存盘图标）。改动同步 §6.1.1 / §10.2。</td>
+</tr>
+<tr>
+<td>v1.17</td>
+<td>2026-09-22</td>
+<td><strong>展开区去掉白卡 + 阴影；列表行垂直居中</strong>（对齐 Figma <code>1258:605</code> 最新人工修改）：①字段区 <code>.proj-form-section</code> <strong>删除白底与圆角</strong>，容器左右 16px 边距一并去掉（<code>padding: 0 0 12px</code>）——字段直接铺在 <code>#F7F7F7</code> 灰底上，标签仍由行内 <code>padding: 0 16px</code> 距屏边 16；顶沿 0.5px <code>#EBEBEB</code> 发丝线保留。②<strong>删除</strong> <code>.catalog-inline-panel--joined::before</code> 顶部 8px 凹陷渐变 —— 展开区彻底无阴影。③列表行显式锁定 <code>align-items: center</code>，名称/时长/价格 <code>line-height: 19px</code> + <code>align-self: center</code>，消除字下留白多于字上的视觉偏上。改动同步 §6.1.1 / §10.2。</td>
+</tr>
+<tr>
+<td>v1.16</td>
+<td>2026-09-21</td>
+<td><strong>展开区字段区对齐 Figma 人工修改稿</strong>（设计源：<code>RTB老版本优化</code> → 「价目表-项目详情·普通」<code>1258:605</code>；已把该稿的改动<strong>回灌原型</strong>）：①<strong>白卡与展开区顶沿齐平</strong> —— 容器 <code>padding</code> 由 <code>12 16 12</code> 改 <strong><code>0 16 12</code></strong>，展开区高度 <strong>324 → 312</strong>（产品 / 下架 / 新增各形态同为 312、绑卡态 410 = 原 40%～53%）；白卡顶沿补一条 <strong>0.5px <code>#EBEBEB</code></strong> 发丝线（左右内缩 16，与行间分隔线同色同内缩）。②<strong>标签改短文案</strong>：<code>项目名称/项目价格/项目时长/项目封面图（可选）</code> → <strong><code>名称/价格/时长/封面图（可选）</code></strong>（68px 固定标签列不变；无障碍名仍走 <code>aria-label</code>）。③<strong>值色改版</strong>：名称值 <code>#929292</code> <strong>Medium(500)</strong>、价格值 <code>#FE8D4B</code> <strong>Medium(500)</strong>（原统一 <code>#1A1A1A</code> Regular）。④<strong>名称 / 价格行右端新增 16×16 铅笔图标</strong>（描边 <code>#C7C7CC</code>、线宽 1.05；图形＝10×10 铅笔 + 右下 5.25 横线；与值间距由 8px 收到 <strong>4px</strong>；<code>pointer-events:none</code>，只作「可点编辑」线索）。⑤<strong>时长分段选中态由蓝改橙</strong>：指示器 <code>rgba(74,123,244,.1)</code> → <strong><code>#FE8B4B@10%</code></strong>（渲染为 <code>#FEF3ED</code>）、选中字 <code>#4A7BF4</code> → <strong><code>#FF8A4C</code></strong>（未选中字仍 <code>#929292</code>）。⑥<strong>封面行去掉副标题</strong>「未上传，不影响保存」，只剩单行「封面图（可选）」+ chevron。⑦<strong>「保存」由通栏实心改药丸文字钮</strong>：358×48 实心红底白字 → <strong>172×48、圆角 39、无底色无描边、居中</strong>，红字 <code>#F42F41</code> <strong>16px Medium</strong> + 红存盘图标（13.5×13.5 置于 16×16 框内）。改动同步 §6.1.1（新增「字段区视觉规范」）/ §6.2 / §6.3 / §10.2（验收 +53～56）。<strong>核对方式</strong>：把原型与设计稿按展开区顶对齐后逐像素比对，差异由 22491px 降到 <strong>3841px</strong>（余量全部是字体栅格化边——浏览器次像素抗锯齿 vs Figma 灰度抗锯齿）。</td>
+</tr>
+<tr>
+<td>v1.15</td>
+<td>2026-09-21</td>
+<td><strong>行内展开区＝选中行的「向下延伸」＋ 保存反馈提速 ＋ 表头固定</strong>（原型 <code>价目表/index.html</code>）：①<strong>形态</strong>——展开区<strong>两侧贴边</strong>（<code>margin:0</code>）、<strong>底色与选中行同为 <code>#F7F7F7</code></strong>、<strong>去掉圆角/描边/外阴影</strong>；<code>.catalog-inline-panel--joined</code> 顶部加 8px 向下渐隐内阴影做<strong>凹陷感</strong>，承载行同步 <code>#F7F7F7</code> + 隐藏行分隔线，与展开区<strong>连成一块</strong>（读作「整块被按进列表」）；内容改为灰底上的<strong>一张白卡</strong>（左右各内缩 16，灰底从两侧露出）。②<strong>删除题头与提示条</strong>（<code>#catalogInlineHead</code>/<code>#catalogInlineTitle</code>/<code>#catalogInlineNotice</code> 一律不再生成）：标题退化为容器 <code>aria-label</code>，限制信息改由 <strong>「点锁定字段 → 弹原因 toast」</strong> 承担（文案表见 §6.2，<code>data-lock-toast</code> 统一承载）。③<strong>紧凑到 ≤ 原高度的 2/3</strong>（实测：项目详情 686→<strong>324</strong>、绑卡态 784→<strong>422</strong>，即 <strong>47%～54%</strong>；上限 457/523）：删题头(46)与提示条(34)、<strong>不再渲染三段小标题</strong>、「在售 + 可预约」<strong>并为一行</strong>（<code>switch-pair</code>）、<strong>撤掉「可预约」副标题</strong>（其信息改由点击开关的短 toast 承担，见 §6.2 开关文案）。④<strong>保存反馈提速</strong>：收起 240→<strong>120ms</strong>、FLIP 归位 420→<strong>260ms</strong>、保存高亮 1200→<strong>320ms</strong>（<code>--cip-close/--cip-flip/--cip-glow</code> 单一来源；高亮只有 320ms，测试必须<strong>在动效中采样</strong>）。⑤<strong>表头固定</strong>：滚动容器从 <code>.page-body</code> <strong>下移到 <code>#projProjectTable</code></strong>（<code>flex:1; overflow-y:auto</code>、隐藏滚动条），Tab 条 / 分组轨 / 表头为固定层 —— 滚动时位移 <strong>Δ=0</strong>，表头下沿即列表可视区顶边。⑥<strong>最佳操作位补口径</strong>：落点 <code>clamp(0, maxTop)</code>，被夹住时（首行 / 空态无可滚内容 / 新增区在内容末尾）<strong>只保证整块可见</strong>。⑦原型修复：独立原型无会员卡模板，<code>syncProjectCatalogBindings()</code> 会把演示绑卡项 <code>p4</code> 冲成未绑卡 → 每次重算后重新落回演示绑定，<code>price-edit-bound</code> 才真的能看到「名称/预约锁定 + 原因 toast」。改动同步 §6.1 / §6.1.1 / §6.2 / §6.3 / §10.2（验收 +41b/48/48b/51/52）。</td>
+</tr>
+<tr>
+<td>v1.14</td>
+<td>2026-09-21</td>
+<td><strong>新增 / 详情改为「行内展开区」</strong>（原型 <code>价目表/index.html</code>）：①<strong>废止全屏页</strong> <code>screen-p-add</code> / <code>screen-p-edit</code>（HTML、CSS 作用域、按钮与返回逻辑全部移除）——点行 → <strong>该行正下方就地展开详情</strong>；标题栏「+添加」/ 空态 CTA / 底部添加行 → <strong>内容区就地展开新增</strong>（空态时替代空态块）；②新增 <strong>§6.1.1「行内展开区」</strong>（形态、<strong>内部版式左基准</strong>、<strong>最佳操作位</strong>滚动算法、动效时长与缓动、保存反馈、FLIP 归位、脏值确认、手风琴、DOM 钩子）；③<strong>最佳操作位</strong>：≤可视区则垂直居中，超出则顶边贴 Tab 下沿 +12；动画期间<strong>逐帧锁死面板顶边</strong>，抵消 <code>scrollTop</code> 被夹回（不修则「已下架」区块内条目偏差达 378px）；④<strong>保存反馈</strong>：收起 → 重绘 → 高亮闪一次（1200ms 淡出）；新增另加 <strong>FLIP 归位</strong>（ghost 高变矮 + 宽变宽 + 淡出，420ms）；⑤<strong>脏值确认</strong>「放弃修改？」；⑥<strong>展开区工整化</strong>：标签改<strong>固定 68px 列宽</strong>（原内容宽导致控件左沿参差 593.5/565.5/537.5）、分区标题与通知条与标签<strong>同列</strong>；⑦标题栏「+」改 <strong>12×12 SVG</strong> 修对齐；⑧<strong>产品 Tab 表头删除「时长（分钟）」</strong>（3 格塞 2 列导致错行）；⑨7 个新增/详情深链改为「进列表 + 自动展开」。改动同步 §3 / §5.6 / §6.1 / §6.1.1 / §6.2 / §6.3 / §10.2。</td>
+</tr>
+<tr>
+<td>v1.13</td>
+<td>2026-09-21</td>
+<td><strong>修复主 Tab 选中态不可辨</strong>（原型 <code>价目表/index.html</code>）：<code>base.css</code> 里 <code>.page-tabs__item.on::after</code> <strong>只写了 <code>width/height/border-radius/bottom</code>，漏了 <code>content</code> / <code>position</code> / <code>background</code></strong> → 伪元素从未生成，实测 <code>content: "none"</code>、<code>position: "static"</code>、<code>background: rgba(0,0,0,0)</code>；导致选中态只剩「文字色 <code>#1A1A1A</code> + 字重 600」一处差别。改为<strong>单一滑动指示条</strong>（品牌红 <code>#F32F41</code>，宽 = 文字宽 + 20、高 3、圆角 2，贴容器下沿）＋ 选中文字改<strong>品牌红 600</strong>；切换时指示条在两项间<strong>滑动 160ms 缓入缓出</strong>；<code>prefers-reduced-motion</code> 降级为直接切换。新增 <strong>§6.1「主 Tab 规格」</strong>（含实现口径与实测数据）。</td>
+</tr>
+<tr>
+<td>v1.12</td>
+<td>2026-09-21</td>
+<td><strong>空态与拖拽排序修复</strong>（原型 <code>价目表/index.html</code>）：①<strong>空态进入即重绘</strong> —— 整表无数据时不再残留上一节点的表头 / 分组轨 / 列表行，正确呈现空态块（插画 + 标题 + 说明 + CTA）；②<strong>空态 CTA 统一</strong> —— 项目与产品同用「虚线品牌红」样式，取代原「项目灰描边方块 vs 产品虚线」两套；③<strong>空态隐藏拖拽提示条</strong>（无内容可拖）；④<strong>价格回填修复</strong> —— 金额键盘确定后回填表单价格值，否则保存被「请填写有效价格」拦截（新增 / 编辑、项目 / 产品均受影响）；⑤<strong>列表底部虚线添加行补样式</strong>（此前缺 CSS，渲染为浏览器默认按钮）；⑥<strong>行拖拽排序修复</strong> —— 复位拖拽所需的挂载点与缩放计算，长按行或按把手可正常换序并写回 <code>sortOrder</code>；⑦<strong>导航 / 深链切换先关闭遗留 Sheet / Dialog</strong>。改动同步 §5.6 / §6.1 / §6.2 / §6.3 / §6.7 / §10.2。</td>
+</tr>
+<tr>
+<td>v1.11</td>
+<td>2026-08-06</td>
+<td>口径基线：拖拽拦截矩阵、空态矩阵、列表底部虚线添加行、无搜索、无右下悬浮球。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>怎么读这份 PRD</h2>
+<p>正文按模块编排。<strong>不用通读全文</strong>，按角色跳章即可。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>模块</th>
+<th style="text-align: center;">前端</th>
+<th style="text-align: center;">后端</th>
+<th style="text-align: center;">测试</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>背景 / 目标 / 范围 / 能力映射</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td>重构叙事、防范围蔓延</td>
+</tr>
+<tr>
+<td>2</td>
+<td>用户场景与成功标准</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">了解</td>
+<td style="text-align: center;">✓</td>
+<td>测「业务对不对」</td>
+</tr>
+<tr>
+<td>3</td>
+<td>信息架构与页面清单</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">了解</td>
+<td style="text-align: center;">✓</td>
+<td>做哪些页</td>
+</tr>
+<tr>
+<td>4</td>
+<td>状态机</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;"><strong>必看</strong></td>
+<td style="text-align: center;"><strong>必看</strong></td>
+<td>在售/下架/隐藏、绑卡锁、分组</td>
+</tr>
+<tr>
+<td>5</td>
+<td>交互细则 / 异常流</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">了解</td>
+<td style="text-align: center;">✓</td>
+<td>校验、toast、拖拽拦截</td>
+</tr>
+<tr>
+<td>6</td>
+<td>功能规格</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">了解</td>
+<td style="text-align: center;">✓</td>
+<td>逐屏字段与跳转</td>
+</tr>
+<tr>
+<td>7</td>
+<td>数据模型与接口约定</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;"><strong>必看</strong></td>
+<td style="text-align: center;">✓</td>
+<td>字段、能力清单、时序</td>
+</tr>
+<tr>
+<td>8</td>
+<td>业务规则</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;"><strong>必看</strong></td>
+<td style="text-align: center;">✓</td>
+<td>排序桶、多分组、可见性、<strong>8.1 产品库存</strong>、改价支付拦截</td>
+</tr>
+<tr>
+<td>9</td>
+<td>文案清单与权限</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">部分</td>
+<td style="text-align: center;">✓</td>
+<td>文案；店主/店员权限</td>
+</tr>
+<tr>
+<td>10</td>
+<td>验收 P0 + 造数场景</td>
+<td style="text-align: center;">了解</td>
+<td style="text-align: center;">了解</td>
+<td style="text-align: center;"><strong>必看</strong></td>
+<td>Given→When→Then</td>
+</tr>
+<tr>
+<td>11</td>
+<td>非功能（极简）</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>交付物</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓</td>
+<td>仅 PRD + 原型</td>
+</tr>
+</tbody>
+</table>
+<p><strong>先读这几条（贯穿全文）</strong></p>
+<ol>
+<li>本期是对 <strong>旧价目表 / 旧项目管理</strong> 的 <strong>整体重构并覆盖</strong>，不是长期并行两套。新版强调 B 端 <strong>工具属性</strong>：列表 <strong>纯信息、无列表配图装饰</strong>，一屏信息密度更高，操作更紧凑。  </li>
+<li>价目分 <strong>项目</strong> 与 <strong>产品</strong> 两个 Tab；均可 <strong>分组筛选</strong>、<strong>多分组归属</strong>、行内 <strong>拖拽排序</strong>（在约束内）、左滑/长按快捷操作。  </li>
+<li>项目可被会员卡权益 <strong>按名称绑定</strong>（项目桶、产品桶内 <strong>名称唯一</strong>）；绑卡后 <strong>锁定名称、可预约、删除</strong>（优惠券/商城关联亦会锁定删除）；<strong>在售/下架仍可改</strong>。列表绑卡行以名称样式区分；删除锁定在左滑按钮与行操作 Sheet 以锁标呈现。<code>boundToCard</code> 随模板引用 <strong>自动派生并刷新</strong>。  </li>
+<li>B 端改价、上下架、时长、隐藏、封面等变更需 <strong>同步客户端展示</strong>（开单侧为 <strong>实时目录/价格</strong>；推送细节【待联调确认】）；顾客端具体 UI <strong>不在本文展开</strong>。价目产品 <strong>本期不维护库存字段</strong>（见 8.1）。  </li>
+<li>会员卡建卡时「选项目 / 选产品 / 选折扣适用项目」及标题栏「管理价目表」依赖本价目数据；从权益页进入价目再返回时 <strong>刷新权益选品分组 Tab</strong>（重置为「全部」并重绘）；会员卡三步流程见 <code>PRD-会员卡管理.md</code>，本文只写联结面。  </li>
+<li><strong>开单选品</strong>：仅排除已下架（须 <code>onSale</code>）；<strong>隐藏项可选</strong>；建卡权益选品仍为 <code>onSale &amp;&amp; !hidden</code>。价目产品 <strong>不限购</strong>（见 <strong>8.1</strong>）。开单过程中若价目改价导致应付变化，支付链路拦截提示（见 6.8）。  </li>
+<li>原型工具栏「无数据 / 有数据」造数 <strong>仅演示</strong>，不进正式产品。接口路径标 <code>【待联调确认】</code>，正式接口文档 <strong>暂无交付时间</strong>；不臆造现网 URL。  </li>
+<li><strong>本期仅单店</strong>；价目管理权限：<strong>店主可编辑</strong>，<strong>店员不可编辑</strong>。</li>
+</ol>
+<p>交互行为与文案以 <strong>同目录 <code>index.html</code>（价目表独立原型）当前表现</strong> 为准。</p>
+<hr />
+<h1>模块 1　背景 / 目标 / 范围 / 能力映射</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 ✓ · 测试 ✓</p>
+</blockquote>
+<h2>1.1 背景</h2>
+<p>旧价目表 / 旧项目管理在列表中带有图片与较多装饰元素，<strong>内容不够紧凑</strong>，一屏信息量少，操作分散，不符合 B 端管理软件「找得到、改得快」的诉求。</p>
+<p>本期在整体产品（含会员卡权益组合）对齐前提下重构价目能力：</p>
+<ul>
+<li><strong>工具属性更强</strong>：列表纯信息行（名称、时长/规格、价格），无列表配图堆叠、无行内状态列；  </li>
+<li><strong>操作紧凑</strong>：Tab、分组轨、标题栏品牌红「+添加」文字链、左滑/长按菜单、拖拽排序集中在一屏；下架与隐藏以分区/折叠呈现；  </li>
+<li><strong>市场反馈补强</strong>：拖拽排列顺序、更完整的分组管理（新建/重命名/删组不删货、多选成员、条目可多组）、<strong>隐藏</strong> 与系统「隐藏」分组；  </li>
+<li><strong>与会员卡 / 开单联结</strong>：价目为选权益、折扣适用范围及 <strong>开单选品</strong> 的数据源；支持从权益页「管理价目表」往返。</li>
+</ul>
+<h2>1.2 目标</h2>
+<table>
+<thead>
+<tr>
+<th>目标</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>覆盖旧能力</td>
+<td>新价目成为项目管理的唯一体系</td>
+</tr>
+<tr>
+<td>高密度列表</td>
+<td>项目/产品双清单，信息行可扫可读</td>
+</tr>
+<tr>
+<td>分组与排序</td>
+<td>自定义分组 + 系统「隐藏」组 + 在售/下架桶内拖拽 <code>sortOrder</code></td>
+</tr>
+<tr>
+<td>售卖可控</td>
+<td>在售/下架/隐藏；项目可配可预约；价目产品本期不维护库存</td>
+</tr>
+<tr>
+<td>可见性清晰</td>
+<td>顾客端 / 开单 / 建卡选品范围分明（见模块 4.6；<strong>隐藏项开单可选</strong>，权益选品仍须未隐藏）</td>
+</tr>
+<tr>
+<td>与卡对齐</td>
+<td>绑卡锁定规则清晰；权益选品只取在售且未隐藏</td>
+</tr>
+</tbody>
+</table>
+<h2>1.3 本期做（In）</h2>
+<ul>
+<li>价目表列表：项目 Tab / 产品 Tab、标题栏品牌红「+添加」文字链（跟 Tab 直接新建、不弹窗；<strong>无右下悬浮球</strong>）、列表底部虚线添加行、列头排序、空态（<strong>无搜索</strong>）  </li>
+<li>列表分区：<strong>在售区</strong> → <strong>「已下架」分区</strong> →（「全部」Tab）底部 <strong>「已隐藏」折叠</strong>  </li>
+<li>新增 / 编辑 / 删除项目与产品（表单三段：基本信息 / 售卖设置 / 高级设置；产品含 <strong>规格选填</strong>；<strong>无库存字段</strong>；新增与编辑均为<strong>列表内就地展开</strong>，见 §6.1.1）  </li>
+<li><strong>产品库存</strong>：价目侧本期不维护（见 <strong>8.1</strong>）；库存管理另模块  </li>
+<li>封面图选填（演示最多 1 张；标签「项目封面图（可选）」/「产品封面图（可选）」）  </li>
+<li>在售切换、<strong>隐藏 / 取消隐藏</strong>  </li>
+<li>分组：筛选 Tab（全部 / 自定义 / <strong>隐藏</strong>）、分组管理、包含项目 / 包含产品、条目设置多分组、分组拖拽排序  </li>
+<li>列表拖拽排序（<strong>在售桶 / 下架桶</strong> 内；自定义分组 Tab 内可拖）  </li>
+<li>左滑快捷操作与长按操作 Sheet（删除锁定锁标）  </li>
+<li>项目绑卡锁定（部分字段）及提示文案  </li>
+<li>从会员卡权益页「管理价目表」进入并返回  </li>
+<li><strong>开单选品</strong> 联结（在售即可，<strong>含隐藏</strong>；价目产品不限购；价目改价支付拦截见 6.8）  </li>
+<li>B→C 同步生效的产品语义说明（无 C 端页面规格）</li>
+</ul>
+<h2>1.4 本期不做（Out）</h2>
+<ul>
+<li>顾客端 / 小程序预约页、开单页的完整 UI 规格（仅约定消费价目结果）  </li>
+<li><strong>「库存管理」完整功能</strong>（入库/出库/盘点/流水等）：<strong>不在本期价目表</strong>；见 <strong>8.1</strong>（工作台可有入口，与价目表单字段解耦）  </li>
+<li>会员卡创建三步、办卡支付、退卡（见 <code>PRD-会员卡管理.md</code>）  </li>
+<li>真实图片上传 / 正式 OSS / 封面 B→C 专项验收（<strong>本期不做</strong>；原型仅为演示图）  </li>
+<li>原型「无数据/有数据」造数开关  </li>
+<li>审核流、<strong>多门店</strong>价目同步与店间隔离（<strong>本期仅单店</strong>）  </li>
+<li>旧价目数据迁移方案（<strong>暂无</strong>；后续或通过 AI 助手能力补齐）  </li>
+<li>正式接口文档交付排期（<strong>暂无具体时间</strong>）</li>
+</ul>
+<h2>1.5 旧 → 新能力映射（不写废弃产品名）</h2>
+<table>
+<thead>
+<tr>
+<th>旧体系常见能力（语义）</th>
+<th>新体系如何配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>维护服务项目价格/时长</td>
+<td><strong>项目</strong> Tab：名称、价格、时长、在售、预约、可选封面图</td>
+</tr>
+<tr>
+<td>维护可售卖货品</td>
+<td><strong>产品</strong> Tab：名称、规格、价格、在售、可选封面图（<strong>无库存字段</strong>；见 8.1）</td>
+</tr>
+<tr>
+<td>列表浏览与查找</td>
+<td>列排序 + 分组筛选；信息行无配图、无状态列；<strong>无关键字搜索</strong></td>
+</tr>
+<tr>
+<td>分类/归类</td>
+<td><strong>自定义分组</strong>（可多组、可空组、删组保留条目）+ 系统 <strong>隐藏</strong> 组</td>
+</tr>
+<tr>
+<td>调整展示顺序</td>
+<td><strong>桶内拖拽</strong> <code>sortOrder</code>（在售 / 下架两桶）</td>
+</tr>
+<tr>
+<td>停售</td>
+<td><strong>下架</strong>（落入列表「已下架」分区；顾客端 / 开单 / 权益选品均不可选）</td>
+</tr>
+<tr>
+<td>对 C 端隐藏但 B 端保留</td>
+<td><strong>隐藏</strong>（<code>hidden=true</code> / 系统「隐藏」组；「全部」底部「已隐藏」折叠；<strong>开单可选</strong>）</td>
+</tr>
+<tr>
+<td>被卡引用后的保护</td>
+<td><strong>绑卡锁定</strong>（名称/预约/删除等受限；<strong>在售仍可改</strong>）</td>
+</tr>
+</tbody>
+</table>
+<p>映射不足时以原型字段与行为为准。</p>
+<hr />
+<h1>模块 2　用户场景与成功标准</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 了解 · 测试 ✓</p>
+</blockquote>
+<h2>2.1 角色</h2>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>店主（默认）</td>
+<td>可进行本文全部价目操作（增删改查、分组、排序等）</td>
+</tr>
+<tr>
+<td>店员</td>
+<td><strong>不可编辑/修改价目表</strong>（无价目管理写入权限；本期原型按店主路径演示）</td>
+</tr>
+</tbody>
+</table>
+<h2>2.2 核心场景</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>用户期望</th>
+<th>成功标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新建项目</td>
+<td>填名称价格时长等后出现在项目列表在售区</td>
+<td>列表可见；可被会员卡选项目/折扣（在售且未隐藏）</td>
+</tr>
+<tr>
+<td>新建产品</td>
+<td>填名称/规格（选填）/价格后出现在产品列表</td>
+<td>列表「名称（规格）」+ 价格（无库存列）；在售时可开单（含隐藏）；权益选用须未隐藏</td>
+</tr>
+<tr>
+<td>改价</td>
+<td>绑卡或未绑卡均可改价（规则内）</td>
+<td>toast 成功；客户端同步语义成立；开单中改价触发支付拦截（见 6.8）</td>
+</tr>
+<tr>
+<td>下架</td>
+<td>停售但仍可在价目表看到</td>
+<td>落入「已下架」分区；顾客端 / 开单 / 权益选品均不可见</td>
+</tr>
+<tr>
+<td>隐藏</td>
+<td>对顾客端隐藏但 B 端保留</td>
+<td><code>hidden=true</code>；「全部」主列表不显示、底部「已隐藏」折叠可展开；「隐藏」Tab 可见；<strong>开单可选</strong>（「全部」与「隐藏」Tab）；权益选品仍不可选；<strong>项目隐藏时关闭「可预约」，取消隐藏后仍关，须手动再开</strong></td>
+</tr>
+<tr>
+<td>产品库存</td>
+<td>价目侧不维护库存</td>
+<td>见 <strong>8.1</strong>：表单/列表无库存；开单对价目产品不限购；库存管理另模块</td>
+</tr>
+<tr>
+<td>分组运营</td>
+<td>建组、把条目加入多组、按组筛选</td>
+<td>筛选正确；删组不丢条目；系统「隐藏」组不可删/改名</td>
+</tr>
+<tr>
+<td>拖拽排序</td>
+<td>调整同售卖态桶内顺序</td>
+<td>刷新后顺序保持；自定义分组内可拖；「隐藏」Tab / 「全部」已隐藏折叠 / 列排序激活时不可拖</td>
+</tr>
+<tr>
+<td>绑卡项目</td>
+<td>被卡引用后不能乱改关键属性</td>
+<td>锁定名称/预约/删除有 toast 与锁标；<strong>可改在售/下架</strong></td>
+</tr>
+<tr>
+<td>开单选品</td>
+<td>开单可选在售货（含对 C 端隐藏项）</td>
+<td><strong>仅排除已下架</strong>：<code>onSale</code>；隐藏项可选；价目产品不限购（8.1）</td>
+</tr>
+<tr>
+<td>从建卡管价目</td>
+<td>权益页点「管理价目表」补货后返回继续选</td>
+<td>返回原权益页、列表刷新，<strong>分组 Tab 刷新为「全部」</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1>模块 3　信息架构与页面清单</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 了解 · 测试 ✓</p>
+</blockquote>
+<pre><code>价目表
+ ├─ 列表（项目 Tab / 产品 Tab）
+ │    ├─ 标题栏右侧品牌红「+添加」文字链（跟当前 Tab，不弹窗；无悬浮球）
+ │    ├─ 分组轨（灰底白胶囊 · 可横滑 · 全部/自定义/隐藏）· 深灰齿轮
+ │    ├─ 在售区 →「已下架」分隔行 →（全部）「已隐藏」折叠 → 底部虚线添加行
+ │    ├─ 行：**点行就地向下展开**（详情即展开 · 不再跳页）· 拖拽排序 · 左滑/长按操作（产品：名称规格+价格）
+ │    ├─ **行内展开区**：新增 / 详情表单（字段同三段、**不渲染小标题** + 底部「保存」），见 §6.1.1
+ │    └─ 空态（保留空态 CTA；点 CTA 在**内容区就地展开**新增表单）
+ ├─ 分组管理
+ │    └─ 包含项目 / 包含产品（含系统「隐藏」组）
+ └─ Sheets / 弹层
+      ├─ 行操作 Sheet（单层贴底菜单）
+      ├─ 设置分组（多选，含系统「隐藏」组）
+      ├─ 分组行内展开操作条（包含项目·包含产品 / 重命名 / 删除）
+      ├─ 新建/重命名分组 Dialog
+      ├─ 删除分组确认
+      ├─ 删除条目确认
+      ├─ 放弃修改确认（展开区有未保存改动时收起）
+      └─ 金额键盘（价格）
+</code></pre>
+<h3>3.0 页面流（示意）</h3>
+<div class="mermaid">
+flowchart LR
+  L[价目表列表] -->|标题栏+添加 / 空态 CTA| Add[行内展开区 · 新增]
+  L -->|点行| Edit[行内展开区 · 详情]
+  L -->|齿轮| G[分组管理]
+  G -->|包含项目 / 包含产品| M[包含项目 / 包含产品]
+  G -->|新建或重命名| D[[分组名称 Dialog]]
+  L -->|长按或左滑| A[[行操作 Sheet]]
+  A -->|设置分组| IG[[多选分组 Sheet]]
+  Edit -->|保存| L
+  Add -->|保存| L
+
+</div>
+<p>从会员卡权益页进入：</p>
+<div class="mermaid">
+flowchart LR
+  P[权益选品页] -->|管理价目表| L[价目表列表]
+  L -->|返回| P
+
+</div>
+<p><strong>关键口径：本模块只有「价目表列表」一个页面主体</strong> —— 新增与详情不再是独立页面，而是在列表内<strong>就地向下展开</strong>的一块区域（行内展开区，§6.1.1）。除了分组管理的两级页面（分组管理 / 包含项目·包含产品），其余全部是列表页上的层。</p>
+<table>
+<thead>
+<tr>
+<th>页面/层</th>
+<th>导航标题（原型）</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>列表</td>
+<td>价目表</td>
+<td>Tab 项目/产品；标题栏品牌红「+添加」文字链（跟当前 Tab，不弹窗；无悬浮球）</td>
+</tr>
+<tr>
+<td>行内展开区 · 新增</td>
+<td>添加项目 / 添加产品</td>
+<td>空态时替代空态块；有数据时挂在<strong>在售末行之下、已下架/已隐藏之上</strong>；顶部可见标题；底部「保存」</td>
+</tr>
+<tr>
+<td>行内展开区 · 详情</td>
+<td>项目详情 / 产品详情</td>
+<td>展开在<strong>该行正下方</strong>；底部「保存」。<strong>无「删除」</strong>（删除走左滑 → 行操作 → 删除）</td>
+</tr>
+<tr>
+<td>分组管理</td>
+<td>分组管理</td>
+<td>标题栏右侧加号+「新建」；点行/⋯ 行内展开三钮（包含项目·包含产品 + 重命名居中、删除灰钮钉右 16）</td>
+</tr>
+<tr>
+<td>包含项目 / 包含产品</td>
+<td>包含项目 · {组名}（产品 Tab：包含产品 · {组名}）；系统「隐藏」组为 <code>隐藏项目</code> / <code>隐藏产品</code></td>
+<td>底栏「确定」；系统「隐藏」组可编辑成员；选中态靠字重+明暗区分</td>
+</tr>
+<tr>
+<td>行操作</td>
+<td>条目标题（无副标题）</td>
+<td>设置分组/上下架/隐藏或取消隐藏/删除；单层贴底，取消在 foot</td>
+</tr>
+<tr>
+<td>设置分组</td>
+<td>条目标题</td>
+<td>可多选（含系统「隐藏」）；无自定义组时「去新建分组」→ 新建 Dialog</td>
+</tr>
+</tbody>
+</table>
+<p>功能链路演示节点（FLOW_MAP「项目创建与管理」）：<code>price-list-empty</code> / <code>price-list-filled</code> / <code>price-list-product</code> / <code>price-list-action</code> / <code>price-list-swipe</code> / <code>price-list-swipe-locked</code> / <code>price-list-hidden-open</code> / <code>price-groups</code> / <code>price-group-members</code> / <code>price-group-menu</code> / <code>price-group-create</code> / <code>price-group-rename</code> / <code>price-group-delete</code> / <code>price-item-group</code> / <code>price-item-group-empty</code> / <code>price-item-delete</code> / <code>price-add</code> / <code>price-add-product</code> / <code>price-edit-normal</code> / <code>price-edit-bound</code> / <code>price-edit-off-sale</code> / <code>price-edit-product</code> / <code>price-edit-product-off-sale</code>。</p>
+<p>深链：<code>index.html?flow=&lt;节点 id&gt;</code>（可选 <code>&amp;capture=1</code>）。开单改价拦截节点 <code>bill-pay-price-changed</code> 归属「开单记账」分组，规格见 §6.8。</p>
+<p><strong>新增 / 详情类节点的落地口径（7 个节点）</strong>：<code>price-add</code> / <code>price-add-product</code> / <code>price-edit-normal</code> / <code>price-edit-bound</code> / <code>price-edit-off-sale</code> / <code>price-edit-product</code> / <code>price-edit-product-off-sale</code> —— 一律<strong>先落到列表页，再自动展开</strong>对应位置（新增 → 内容区末尾 / 空态位置；详情 → 该条目的行正下方），<strong>不再有独立全屏页</strong>。深链切换时会先收掉上一轮遗留的展开区，避免两条动画打架。</p>
+<p>实现路由建议（名称可调整）：<code>price-list</code>（含 <code>?panel=add|edit&amp;id=&lt;条目 id&gt;</code> 表达行内展开区）/ <code>price-groups</code> / <code>price-group-members</code> + sheets。<strong>不再需要</strong> <code>price-add</code> / <code>price-edit</code> 独立路由。</p>
+<hr />
+<h1>模块 4　状态机</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 <strong>必看</strong> · 测试 <strong>必看</strong></p>
+</blockquote>
+<h2>4.1 售卖状态 <code>onSale</code></h2>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>产品表现</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在售 <code>true</code></td>
+<td>主列表在售区信息行（无状态胶囊）</td>
+<td>对外可售（仍须未隐藏才顾客端可见）</td>
+</tr>
+<tr>
+<td>已下架 <code>false</code></td>
+<td>「已下架」分区内弱化行</td>
+<td>停售；价目表仍保留</td>
+</tr>
+</tbody>
+</table>
+<pre><code>在售 ──下架──► 已下架 ──上架──► 在售
+</code></pre>
+<ul>
+<li>绑卡 <strong>项目/产品</strong>：<strong>允许</strong> 改在售/下架（左滑、行操作 Sheet、详情表单 Switch 均可）。  </li>
+<li>项目下架时：<strong>可预约</strong> 强制关闭并锁定，直至重新在售。  </li>
+<li>项目隐藏时：<strong>可预约</strong> 强制关闭并锁定；<strong>取消隐藏后仍保持关闭</strong>，须商户在详情中 <strong>手动再打开</strong>（不自动恢复）。</li>
+</ul>
+<h2>4.2 隐藏状态 <code>hidden</code></h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hidden: boolean</code></td>
+<td>条目是否对顾客端隐藏</td>
+</tr>
+<tr>
+<td>系统组</td>
+<td>每桶固定 <code>g_sys_hidden_project</code> / <code>g_sys_hidden_product</code>，名称「隐藏」，<code>system: true</code></td>
+</tr>
+<tr>
+<td>双向同步</td>
+<td>加入/移出系统「隐藏」组 ↔ 切换 <code>hidden</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>系统「隐藏」组：<strong>不可重命名、不可删除</strong>；Tab 排在自定义组 <strong>之后</strong>；分组管理页 <strong>不可拖拽</strong> 排序；<strong>无 ⋯ 菜单</strong>（点主行进入包含项目 / 包含产品）。  </li>
+<li>列表筛选：Tab「<strong>全部</strong>」主列表排除 hidden，<strong>底部</strong>提供可折叠「<strong>已隐藏</strong>」（无数量角标），展开后可查看/操作；Tab「<strong>隐藏</strong>」仅 hidden；自定义组 Tab 仅显示 <strong>非 hidden</strong> 成员。  </li>
+<li>展开「已隐藏」后，将折叠标题滚到列表滚动区顶部附近。  </li>
+<li><strong>与预约</strong>：凡使项目 <code>hidden=true</code>（左滑/行操作隐藏、加入系统「隐藏」组、包含项目页勾选进隐藏组等）⇒ <code>bookable=false</code>；取消隐藏 <strong>不</strong> 自动打开预约。</li>
+</ul>
+<h2>4.3 绑卡锁定（项目为主）</h2>
+<p>绑定依据：项目/产品 <strong>名称</strong>（同桶内 <strong>trim 后唯一</strong>）出现在会员卡模板权益引用中（项目次数、折扣键、产品权益等）时，同步 <code>boundToCard</code> 及模板名列表。</p>
+<p><strong>自动刷新</strong>：<code>boundToCard</code>（及关联模板列表）由当前模板引用 <strong>自动派生</strong>；模板解除对某名称的引用后，下次同步/进入价目相关页即更新，<strong>无需商户手动刷新</strong>。是否落库由联调确认（见模块 7）。</p>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>结果（项目）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未绑卡</td>
+<td>表单字段均可按规则编辑；可删；可上下架</td>
+</tr>
+<tr>
+<td>已绑卡</td>
+<td><strong>不可改</strong>：名称、可预约；<strong>不可删除</strong></td>
+</tr>
+<tr>
+<td>已绑卡仍可改</td>
+<td>价格、时长、封面图（演示）、<strong>在售/下架</strong></td>
+</tr>
+</tbody>
+</table>
+<p>产品：绑卡名称样式同项目（列表名称 <code>is-bound</code> 样式区分，<strong>无独立卡面图标</strong>）；<strong>在售/下架不受绑卡限制</strong>；删除若同时关联优惠券/商城则 toast「已关联会员卡/优惠券/商城，不可删除」（按实际关联动态拼接）。产品详情<strong>无预约开关</strong>，同样<strong>不展示</strong>项目类限制提示（限制一律走「点锁定字段 → toast」）。</p>
+<p>删除锁定视觉：左滑删除钮角标小锁；行操作 Sheet 删除项旁锁标。</p>
+<h2>4.4 表单模式</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>入口</th>
+<th>保存结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新增</td>
+<td>标题栏「+添加」/ 空态 CTA / 底部虚线添加行（均跟当前项目或产品 Tab，<strong>不弹选择层</strong>；无悬浮球）</td>
+<td>在列表内容区<strong>就地展开</strong>表单（§6.1.1）；写入对应 catalog；toast「项目已创建」/「产品已创建」；展开区收起 + 新行归位高亮</td>
+</tr>
+<tr>
+<td>编辑</td>
+<td>点行 → <strong>该行正下方就地展开</strong>（不跳页）</td>
+<td>更新原条目；toast「保存成功」；展开区收起 + 该行高亮闪一次</td>
+</tr>
+</tbody>
+</table>
+<h2>4.5 分组生命周期</h2>
+<pre><code>无组 ──新建──► 有组（可空成员）
+有组 ──包含项目 / 包含产品──► 更新 itemIds（系统「隐藏」组同步 hidden）
+有组 ──重命名──► 同 id 改名（桶内唯一；系统组不可）
+有组 ──删除──► 组消失；条目仍在价目表；若当前筛选该组则回「全部」
+</code></pre>
+<p>条目可同时属于 <strong>多个</strong> 自定义分组；「全部」「隐藏」不是可编辑的自定义分组实体。</p>
+<h2>4.6 可见性矩阵（跨端）</h2>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>顾客端</th>
+<th>开单选品</th>
+<th>建卡权益选品（项目/产品/折扣）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在售且未隐藏</td>
+<td>可见（项目预约另需 <code>bookable</code>）</td>
+<td>可选（价目侧不限购；见 8.1）</td>
+<td>可选</td>
+</tr>
+<tr>
+<td>已下架（含绑卡下架）</td>
+<td>不可见</td>
+<td><strong>不可选</strong></td>
+<td>不可选</td>
+</tr>
+<tr>
+<td>隐藏（<code>hidden=true</code> / 系统「隐藏」组）</td>
+<td>不可见</td>
+<td><strong>可选</strong>（须仍在售）</td>
+<td>不可选</td>
+</tr>
+</tbody>
+</table>
+<p><strong>顾客端可见</strong>（项目/产品）：<code>onSale &amp;&amp; !hidden</code>。<br />
+<strong>开单选品</strong>（项目/产品）：<code>onSale</code>（<strong>含 hidden</strong>；价目产品 <strong>不限购</strong>，见 <strong>8.1</strong>）；分组轨含「全部 / 自定义 / <strong>隐藏</strong>」。<br />
+<strong>建卡权益选品</strong>：<code>onSale &amp;&amp; !hidden</code>（与开单口径不同）。<br />
+<strong>顾客端可预约</strong>（仅项目）：<code>onSale &amp;&amp; !hidden &amp;&amp; bookable</code>。</p>
+<h2>4.7 列表排序相关状态</h2>
+<ul>
+<li><code>sortOrder</code>：桶内顺序（<strong>在售桶</strong> / <strong>下架桶</strong> 两桶隔离）。  </li>
+<li>列头排序 <code>catalogColSort</code>：临时视图排序；开启时禁止拖拽。  </li>
+<li>「<strong>隐藏</strong>」Tab、列排序激活、或「全部」底部「<strong>已隐藏</strong>」折叠区内的条目禁止拖拽（<strong>无搜索</strong>；自定义分组内可拖）。</li>
+</ul>
+<hr />
+<h1>模块 5　交互细则 / 异常流</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 了解 · 测试 ✓</p>
+</blockquote>
+<h2>5.1 通用</h2>
+<ul>
+<li>返回：列表返回到来源（会员卡权益页或默认首页）；子页返回上一级。  </li>
+<li>金额：价格走金额键盘；须为 ≥0 的有效数字；上限 <strong>999,999.99</strong>（整数部分 ≤6 位）；超限 toast「金额不能超过 999,999.99」。  </li>
+<li>文本：项目/产品名 ≤<strong>30</strong>；规格 ≤<strong>20</strong>；分组名 ≤<strong>20</strong>；搜索框软限制 ≤<strong>50</strong>。  </li>
+<li>开单购物车：单品数量在无库存上限时软封顶 <strong>999</strong>（有库存时仍以库存为准）。  </li>
+<li>封面图：高级设置中点选添加演示图，最多 1 张；文案「未上传，不影响保存」；<strong>非正式上传</strong>。</li>
+</ul>
+<h2>5.2 校验失败（保存）</h2>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>提示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目名称为空</td>
+<td>请填写项目名称</td>
+</tr>
+<tr>
+<td>产品名称为空</td>
+<td>请填写产品名称</td>
+</tr>
+<tr>
+<td>同桶名称已存在（trim 后全等，排除自身）</td>
+<td>名称已存在</td>
+</tr>
+<tr>
+<td>价格无效</td>
+<td>请填写有效价格</td>
+</tr>
+<tr>
+<td>价格 &gt; 999,999.99</td>
+<td>金额不能超过 999,999.99</td>
+</tr>
+<tr>
+<td>项目时长无效或不足 1 分钟</td>
+<td>请填写项目时长</td>
+</tr>
+<tr>
+<td>时长选择器确认时不足 5 分钟</td>
+<td>时长至少5分钟</td>
+</tr>
+</tbody>
+</table>
+<p>时长以 <strong>行内时长输入</strong>（分/时切换）为主路径；上限按最多 <strong>480 分钟（8 小时）</strong> 约束；选择器步进确认时至少 <strong>5 分钟</strong>。<br />
+<strong>产品库存</strong>：当前原型价目表单 <strong>无库存字段</strong>，不做上表库存校验（见 8.1）。</p>
+<h2>5.3 分组异常</h2>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>提示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名称为空</td>
+<td>请输入分组名称</td>
+</tr>
+<tr>
+<td>桶内重名</td>
+<td>分组名称已存在</td>
+</tr>
+<tr>
+<td>名称长度</td>
+<td>最多 20 字</td>
+</tr>
+</tbody>
+</table>
+<h2>5.4 拖拽拦截</h2>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>提示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>当前为「隐藏」Tab</td>
+<td>「隐藏」分组内不支持拖拽排序，请切换到「全部」或其它分组</td>
+</tr>
+<tr>
+<td>「全部」底部「已隐藏」折叠区内的条目</td>
+<td>已隐藏的项目不支持拖拽排序</td>
+</tr>
+<tr>
+<td>列排序激活</td>
+<td>请先取消列排序后再手动排序</td>
+</tr>
+</tbody>
+</table>
+<h2>5.5 绑卡 / 下架 / 隐藏拦截（节选）</h2>
+<table>
+<thead>
+<tr>
+<th>时机</th>
+<th>提示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>改绑卡项目名称</td>
+<td>该项目已绑定会员卡，项目名称不可修改</td>
+</tr>
+<tr>
+<td>改绑卡预约</td>
+<td>该项目已绑定会员卡，预约设置不可修改</td>
+</tr>
+<tr>
+<td>下架时点预约</td>
+<td>项目已下架，请先开启「在售」后再设置可预约</td>
+</tr>
+<tr>
+<td>隐藏时点预约</td>
+<td>项目已隐藏，取消隐藏后需手动开启可预约</td>
+</tr>
+<tr>
+<td>删绑卡项</td>
+<td>该项目已绑定会员卡，不可删除</td>
+</tr>
+<tr>
+<td>删关联优惠券/商城项</td>
+<td>已关联优惠券/商城，不可删除（可组合「会员卡」来源）</td>
+</tr>
+<tr>
+<td>隐藏条目</td>
+<td>已隐藏</td>
+</tr>
+<tr>
+<td>取消隐藏</td>
+<td>已取消隐藏</td>
+</tr>
+<tr>
+<td>封面超限</td>
+<td>仅可上传 1 张封面</td>
+</tr>
+<tr>
+<td>添加演示图</td>
+<td>已添加演示图片</td>
+</tr>
+</tbody>
+</table>
+<h2>5.6 空态</h2>
+<p>见模块 6.1。「隐藏」Tab 空态引导左滑将条目移入隐藏。</p>
+<p><strong>进入空态即重绘</strong>：整表无数据时，空态块（插画 + 标题 + 说明 + CTA）<strong>必须</strong>取代列表主体出现 —— 表头、分组轨、列表行、拖拽提示条<strong>一律不出现</strong>（不允许残留进入前的列表）。</p>
+<p><strong>CTA 样式统一</strong>：空态 CTA 项目 / 产品<strong>同款</strong>「虚线品牌红」按钮（见 6.1 空态样式），不因 Tab 切换而改变形状、颜色、圆角、字号。</p>
+<p><strong>CTA 行为（v1.14）</strong>：点击空态 CTA <strong>不跳页</strong> —— 在<strong>内容区就地展开</strong>「新增」展开区（§6.1.1），<strong>替代空态块</strong>（表头、分组轨一并收起，列表外壳保留）。新增成功保存后：展开区收起 → 新行入列 → 由归位动效落到它该在的位置 → 高亮闪一次；此时列表已有数据，底部虚线添加行随之出现。</p>
+<hr />
+<h1>模块 6　功能规格</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 了解 · 测试 ✓</p>
+</blockquote>
+<p>下列字段、按钮、跳转均须与原型一致；视觉以原型为准（品牌色 <code>#F32F41</code> 等）。</p>
+<h2>6.1 价目表列表</h2>
+<p><strong>结构</strong></p>
+<ul>
+<li>标题：价目表；右侧标题栏 <strong>品牌红「+」图标 +「添加」文字链</strong>（无底色/无圆角/无胶囊按钮壳；字色与图标均为 <code>#F32F41</code>）  </li>
+<li><strong>不弹窗 / 不选类型 Sheet</strong>  </li>
+<li>当前 Tab 为 <strong>项目</strong> → 打开「新增项目」<strong>行内展开区</strong>（§6.1.1，不跳页）  </li>
+<li>当前 Tab 为 <strong>产品</strong> → 打开「新增产品」<strong>行内展开区</strong>  </li>
+<li>「+」为 12×12 SVG（线性十字），与「添加」二字<strong>基线居中对齐</strong>  </li>
+<li><strong>无右下悬浮球「+」</strong>（新建入口：标题栏文字链 + 空态 CTA + <strong>列表底部虚线「添加项目/添加产品」行</strong>）  </li>
+<li>Tab：项目 | 产品（独立记住各 Tab 的当前分组筛选）；<strong>选中态规格见下方「主 Tab 规格」</strong>  </li>
+<li><strong>无关键字搜索</strong>（已移除搜索框）  </li>
+<li>空态 CTA 仍为「添加项目」/「添加产品」（跟当前 Tab）</li>
+</ul>
+<p><strong>主 Tab 规格</strong>（项目 / 产品）</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容器</td>
+<td>白底 <code>#fff</code>、高 <strong>45</strong>、<code>padding-top: 12</code>、上圆角 <code>16 16 0 0</code>、<code>position: relative</code>（承载指示条）</td>
+</tr>
+<tr>
+<td>项</td>
+<td>两项 <code>flex: 1</code> <strong>等宽</strong>（390 画布下各 <strong>194</strong>、高 33）；单项为按钮，<code>aria-selected</code> 随态同步</td>
+</tr>
+<tr>
+<td>未选</td>
+<td>文字 <code>#6C7279</code>、字重 <strong>400</strong>、字号 16、<code>letter-spacing: 0.32px</code>、无下划线、透明底</td>
+</tr>
+<tr>
+<td>选中</td>
+<td>文字 <strong>品牌红</strong> <code>#F32F41</code>、字重 <strong>600</strong>；<strong>品牌红下划线</strong>（见下）</td>
+</tr>
+<tr>
+<td>指示条（下划线）</td>
+<td><strong>单一元素</strong> <code>.price-catalog-tabs__ink</code>，非每项各画一条 —— 切换时在两项间<strong>滑动</strong><br>· 颜色 <code>var(--brand)</code>；高 <strong>3</strong>；圆角 <strong>2</strong>；贴容器下沿 <code>bottom: 0</code>、<code>bottomGap = 0</code><br>· 宽 = <strong>文字宽 + 20</strong>（最短 40）；本项目/产品同为 2 字（实测文字宽 <strong>32.64</strong>）→ 实测 <strong>53</strong><br>· 水平中心 = 所在项中心（两项等宽 → 第 1 项 <strong>25%</strong>、第 2 项 <strong>75%</strong>）；<code>transform: translateX(-50%)</code> 居中<br>· <code>pointer-events: none</code>（不拦截点击）</td>
+</tr>
+<tr>
+<td>位置实现</td>
+<td><strong>纯 CSS 驱动</strong>：容器 <code>data-active="project"｜"product"</code> → 指示条 <code>left</code> 在 <code>25%</code> / <code>75%</code> 间切换。<strong>不做 JS 几何测量</strong>，因此屏幕处于 <code>display:none</code> 时同样正确</td>
+</tr>
+<tr>
+<td>宽度实现</td>
+<td>JS <code>syncPriceCatalogTabInk()</code> 用 <code>Range</code> 量标签文字宽，写入 CSS 变量 <code>--pct-ink-w</code>；量不到（隐藏态）时保留 CSS 兜底 <code>52px</code>。<code>projShowScreen('screen-p-list')</code> 与 <code>syncPriceCatalogTabs()</code> 都会重试，可见后即落到真实宽度</td>
+</tr>
+<tr>
+<td>切换动效</td>
+<td><code>left</code> 与 <code>width</code> 过渡 <strong>160ms</strong>，缓动 <code>cubic-bezier(.22,.82,.24,1)</code>。实测 24 帧采样：<code>409 → 483 → 539 → 569 → 585 → 593 → 598 → 601 → 602 → 603</code>（136ms 内到位，落点误差 &lt;1px）—— 是<strong>滑动</strong>而非瞬移</td>
+</tr>
+<tr>
+<td>降级</td>
+<td><code>prefers-reduced-motion: reduce</code> → <code>transition: none</code>（直接切换）</td>
+</tr>
+<tr>
+<td>不改变布局</td>
+<td>指示条<strong>绝对定位</strong>，不参与流：Tab 条高仍 45、两项仍各 194（实测 A…/D1/D2）</td>
+</tr>
+<tr>
+<td>- 可关闭提示条：<code>长按项目可拖动排序，左滑快捷操作；分组可左右滑动</code>（文案固定含「项目」；关闭状态以 session 记忆）；<strong>整表无数据时整个提示条隐藏</strong>（无内容可拖）</td>
+<td></td>
+</tr>
+<tr>
+<td>- 分组轨：灰底 <code>#F2F2F2</code> 圆角轨道；<code>全部</code> + 自定义组 + 系统 <strong>隐藏</strong>（隐藏 Tab 带 hide 图标：<strong>内联 16×16 / stroke 1.5 的眼 + 斜线</strong>，胶囊内 14×14，色随 Tab 文字 —— 未选 <code>#6C7279</code>、选中品牌红）；<strong>未选</strong> 灰字纯文字；<strong>选中</strong> 白胶囊 + <strong>品牌红</strong>字；可左右横滑，右侧渐隐；右侧 <strong>深灰 18px</strong> 齿轮进「分组管理」；<strong>整表无数据时分组轨一并隐藏</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>- <strong>「全部」Tab 列表结构</strong>（自上而下）：</td>
+<td></td>
+</tr>
+<tr>
+<td>1. 在售且未隐藏条目</td>
+<td></td>
+</tr>
+<tr>
+<td>2. <strong>「已下架」分隔行</strong>（仅当存在未隐藏的下架条目时出现）</td>
+<td></td>
+</tr>
+<tr>
+<td>3. 底部折叠条「<strong>已隐藏</strong>」（无数量；块底 <code>#EEEEEE</code>，与展开区 <code>#F7F7F7</code> 区分）；展开后可查看/操作隐藏条目</td>
+<td></td>
+</tr>
+<tr>
+<td>4. （有数据时）底部虚线 <strong>添加项目 / 添加产品</strong> 行：等高 44、左右各留 16、<strong>1px 虚线品牌红</strong>、圆角 12、无底色；左侧 <code>+</code> 约 18px；文案跟当前 Tab（「添加项目」/「添加产品」）；按下底色 <code>--brand-soft</code></td>
+<td></td>
+</tr>
+<tr>
+<td>- 表头可点循环排序：升序 → 降序 → 取消</td>
+<td></td>
+</tr>
+<tr>
+<td>- 项目列：<code>项目名称</code> / <code>时长（分钟）</code> / <code>价格（¥）</code>（<strong>无状态列</strong>）</td>
+<td></td>
+</tr>
+<tr>
+<td>- 产品列：<code>产品名称（规格）</code> / <code>价格（¥）</code>（规格并入名称；<strong>无库存列</strong>）</td>
+<td></td>
+</tr>
+<tr>
+<td>- 行：拖拽把手、名称（产品为「名称（规格）」；绑卡时名称 <code>is-bound</code> 样式，<strong>无卡面图标</strong>）、时长（仅项目）、价格；<strong>无行内状态胶囊</strong>；<strong>展开后标题行只留把手+名称</strong>（时长/价格隐藏，避免与展开区字段重复）</td>
+<td></td>
+</tr>
+<tr>
+<td>- 默认排序：在售优先 → 桶内 <code>sortOrder</code> → 名称</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>空态</strong></p>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>标题</th>
+<th>说明</th>
+<th>CTA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>整表无数据</td>
+<td>暂无项目 / 暂无产品</td>
+<td>项目：添加后可在选择项目与办卡中使用；产品：添加后可在开单记账中使用</td>
+<td>添加项目 / 添加产品（标题栏「+添加」仍可用）</td>
+</tr>
+<tr>
+<td>某自定义组无成员</td>
+<td>本组暂无…</td>
+<td>可将价目表中的条目加入本组</td>
+<td>添加…到本组 → 包含项目 / 包含产品</td>
+</tr>
+<tr>
+<td>「隐藏」Tab 无成员</td>
+<td>暂无隐藏…</td>
+<td>左滑条目可将项目/产品移入隐藏</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>空态块规格</strong>（整表无数据；三类空态共用同一骨架）</p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容器</td>
+<td>占据列表主体（<code>flex:1</code>）、白底、水平居中、整表无数据时<strong>表头与分组轨不出现</strong></td>
+</tr>
+<tr>
+<td>插画</td>
+<td><code>assets/catalog/empty-box.svg</code>，144 × 144，距标题 20</td>
+</tr>
+<tr>
+<td>标题 / 说明</td>
+<td>14px <code>#B2B2B2</code>；说明距 CTA 28</td>
+</tr>
+<tr>
+<td>CTA</td>
+<td><strong>项目 / 产品同款</strong>：宽 168 × 高 36、<strong>1px 虚线品牌红</strong> <code>#F32F41</code>、圆角 12、透明底、品牌红字、按下底色 <code>--brand-soft</code>；文案「添加项目」/「添加产品」跟当前 Tab</td>
+</tr>
+</tbody>
+</table>
+<p><strong>行进入</strong>：点击主区域 → <strong>就地向下展开</strong>该行的详情（不跳页，见 §6.1.1）；再次点击同一行 / 点展开区之外（表头、列表空白、别的浮层以外的地方）→ 收起。<br />
+<strong>左滑</strong>：分组 · 下架/上架 · 隐藏/取消隐藏 · 删除（锁定时角标锁）。<br />
+<strong>长按</strong>：无垂直拖动则打开行操作 Sheet（<strong>仅条目标题，无副标题</strong>；单层 <code>picker-sheet--menu</code>，取消在 foot）。</p>
+<h3>6.1.1 行内展开区（新增 / 编辑 / 详情）</h3>
+<blockquote>
+<p>本模块的<strong>唯一交互主体</strong>。新增与详情都不再是独立页面（v1.14 起废止全屏页），而是在列表内容区<strong>就地向下展开</strong>的一块区域。</p>
+</blockquote>
+<p><strong>位置</strong></p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>出现位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>详情（编辑）</td>
+<td><strong>目标行的正下方</strong>（DOM：<code>&lt;tr 该行的 swipe 容器&gt;</code> 的下一兄弟）</td>
+</tr>
+<tr>
+<td>新增（有数据）</td>
+<td>列表内容区<strong>末尾</strong>（底部虚线「添加项目/添加产品」行之后）</td>
+</tr>
+<tr>
+<td>新增（空态）</td>
+<td>列表内容区<strong>顶部</strong>，<strong>替代空态块</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>视觉形态</strong>：<strong>选中行的「向下延伸」</strong>——不是一张独立卡片，也不是全屏页、不是 Sheet。</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>两侧</td>
+<td><strong>贴边</strong>：<code>margin: 0</code>，左右与列表同沿（画布 390 时左 0 / 右 0）；新增态仅底部留 <code>12px</code></td>
+</tr>
+<tr>
+<td>底色</td>
+<td><strong>与选中行同为 <code>#F7F7F7</code></strong>（<code>--page</code> 灰），不是白底</td>
+</tr>
+<tr>
+<td>描边 / 圆角 / 阴影</td>
+<td><strong>全部去掉</strong>（<code>border:none</code>、<code>border-radius:0</code>、<code>box-shadow:none</code>；<strong>无</strong>顶部凹陷渐变）——任何阴影或圆角都会立刻读成「另一张卡」</td>
+</tr>
+<tr>
+<td>承载行</td>
+<td>展开时挂 <code>.has-inline-panel</code>：行底色同为 <code>#F7F7F7</code>、行分隔线隐藏（<code>.table-row::after { opacity: 0 }</code>），与展开区<strong>连成一块</strong>，交界处无接缝</td>
+</tr>
+<tr>
+<td>字段区</td>
+<td><strong>不再套白卡</strong>（v1.17）：<code>.proj-form-section</code> 透明、无圆角，与展开区同宽贴边；容器 <code>padding: 0 0 12px</code>（左右无内缩）。字段直接铺在灰底上；顶沿仍有一条 <strong>0.5px <code>#EBEBEB</code></strong> 发丝线（左右各内缩 16、与行间分隔线同色同内缩）；行内标签仍 <code>padding: 0 16px</code></td>
+</tr>
+<tr>
+<td>题头 / 通知条</td>
+<td><strong>详情态无题头</strong>（v1.15）。<strong>新增态</strong>有可见标题「添加项目 / 添加产品」（v1.20）；详情限制原因改由「点锁定字段 → toast」承担（见 §6.2）</td>
+</tr>
+<tr>
+<td>页脚</td>
+<td><code>padding: 12 16</code>，上方 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>（左右内缩 16）；<strong>通栏实心「保存」主按钮</strong>（高 48、圆角 12、品牌红 <code>#F32F41</code> 底、白字 16/500 + 白存盘图标）。<strong>详情态无「删除」</strong>（删除走左滑 → 行操作 → 删除）</td>
+</tr>
+<tr>
+<td>空态新增</td>
+<td>表头一并收起（<code>.table-card.is-add-panel</code>）；列表外壳保持可见；底部虚线添加行隐藏</td>
+</tr>
+</tbody>
+</table>
+<p><strong>高度预算（v1.15 新增，v1.16 收紧）</strong>：展开区高度<strong>不得超过原全屏表单的 2/3</strong>（实测已压到 <strong>40%～53%</strong>：项目详情 686→<strong>312</strong>、绑卡态 784→<strong>410</strong>、产品详情 559→312、下架态 686→312、新增 638→312、新增产品 563→312；上限 457/523）。压缩手段只有三条，且都不许丢信息：</p>
+<ol>
+<li>删掉题头（46px）与通知条（34px）；</li>
+<li>三个分组小标题「基本信息 / 售卖设置 / 高级设置」<strong>不再渲染</strong>（字段直接铺在灰底上）；</li>
+<li>「在售」与「可预约」由两行并为<strong>一行</strong>（<code>proj-form-row--switches</code> + <code>.switch-pair</code>）；</li>
+<li>「可预约」的<strong>副标题</strong>「打开后项目会在小程序-预约中显示」<strong>不再渲染</strong>（它原本独占一行）；这句话的信息改由<strong>点击开关后的短 toast</strong> 承担（见 §6.2 开关文案），因此不会丢信息。</li>
+<li>（v1.16）封面行的<strong>副标题</strong>「未上传，不影响保存」<strong>不再渲染</strong>——它不承载限制信息、也不承担状态说明（封面本来就是选填），删掉不丢信息。</li>
+<li>（v1.16）字段区顶部那 12px 留白取消（字段区贴展开区顶沿），标签改短文案、值色与图标按设计稿重排，行高与字段<strong>一个不少</strong>。</li>
+<li>（v1.17）字段区<strong>去掉白底 / 圆角 / 左右 16px 边距</strong>，并删除顶部凹陷阴影 —— 展开区彻底是选中行的灰底延伸。</li>
+</ol>
+<p><strong>字段区视觉规范（v1.16 起，v1.17 修订；对齐 Figma「价目表-项目详情·普通」<code>1258:605</code> 人工修改稿）</strong></p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>展开区高度</td>
+<td><strong>约 308</strong>＝字段区 240 + 页脚（顶 12 + 保存 48 + 底 12）</td>
+</tr>
+<tr>
+<td>字段区</td>
+<td>与展开区<strong>同宽贴边</strong>、<strong>无白底无圆角</strong>；顶沿 <strong>0.5px <code>#EBEBEB</code></strong> 发丝线（内缩 16）</td>
+</tr>
+<tr>
+<td>行</td>
+<td><strong>5 行 × 48px</strong>：名称 / 价格 / 时长 / 在售·可预约 / 封面图；行间分隔线 1px <code>#EBEBEB</code>、<code>scaleY(.5)</code>、内缩 16</td>
+</tr>
+<tr>
+<td>标签</td>
+<td><strong>名称 / 价格 / 时长 / 封面图（可选）</strong>（去掉「项目 / 产品」前缀）；固定 68px 列宽不变；无障碍名称仍由 <code>aria-label</code> 承担</td>
+</tr>
+<tr>
+<td>名称值</td>
+<td><code>#929292</code>、<strong>Medium(500)</strong>、右对齐</td>
+</tr>
+<tr>
+<td>价格值</td>
+<td><code>#FE8D4B</code>、<strong>Medium(500)</strong>、右对齐</td>
+</tr>
+<tr>
+<td>行右铅笔图标</td>
+<td>名称 / 价格行右端 <strong>16×16</strong>（描边 <code>#C7C7CC</code>、线宽 1.05；图形＝10×10 铅笔 + 右下 5.25 长横线），与值间距 <strong>4px</strong>（其余行仍 8px）；<code>pointer-events:none</code>，只作「可点编辑」的视觉线索</td>
+</tr>
+<tr>
+<td>时长分段</td>
+<td>数字框 68×32 + 分/时 90×32（白底、<code>#EDEDED</code> 1px、圆角 8）；<strong>选中底色 <code>#FE8B4B@10%</code></strong>（原蓝 <code>#4A7BF4@10%</code>）、<strong>选中字 <code>#FF8A4C</code></strong>、未选中字 <code>#929292</code></td>
+</tr>
+<tr>
+<td>开关</td>
+<td>40×22、圆角 11、白点 18×18；开启轨道渐变 <code>135deg #FF974B → #FE7A4C</code>（与设计稿逐色一致）</td>
+</tr>
+<tr>
+<td>封面行</td>
+<td>单行「封面图（可选）」+ 右侧 chevron（16×16 框内 8×4、<code>#929292</code>）；<strong>无副标题</strong></td>
+</tr>
+<tr>
+<td>保存按钮</td>
+<td><strong>通栏实心主按钮</strong>：宽 = 展开区 − 左右 16、高 <strong>48</strong>、圆角 12；品牌红 <code>#F32F41</code> 底、白字 16 Medium + 白存盘图标；页脚上方 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>（左右内缩 16）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>表头固定与滚动容器（v1.15 新增）</strong></p>
+<p>滚动容器从 <code>.page-body</code> <strong>下移到 <code>#projProjectTable</code></strong>：<code>.table-card</code> 为 <code>flex column</code>，Tab 条 / 分组轨 / 表头都是 <code>flex-shrink:0</code> 的固定层，<code>#projProjectTable</code> 为 <code>flex:1; overflow-y:auto</code>（隐藏滚动条）。</p>
+<ul>
+<li>滚动内容时 <strong>Tab 条、分组轨、表头位置一律不动</strong>（实测位移 Δ = 0.00），只有行在动；</li>
+<li><strong>表头下沿 = 列表可视区顶边</strong>：行不会钻到表头底下，展开区顶边锚定（+12）也以这条线为基准；</li>
+<li>展开区的滚动定位、<code>scrollTop</code> 读写一律以 <code>#projProjectTable</code> 为准，<strong>不要再用 <code>.page-body</code></strong>。</li>
+</ul>
+<p><strong>内部版式（工整基准，前端须照此实现）</strong></p>
+<p>展开区只有 <strong>两级左基准</strong>，所有元素必须落在其中一条线上（实测值，画布 390）：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>左沿</th>
+<th>命中元素</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>展开区贴边</td>
+<td>0（与列表同沿）</td>
+<td>灰底展开区本身</td>
+</tr>
+<tr>
+<td>列表内容级</td>
+<td><strong>16px</strong></td>
+<td>表单标签、控件、行分隔线（左右同为 16）；页脚「保存」居中</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>标签是固定列宽 <code>68px</code></strong>（覆盖 4 字标签 + 必填星号），<strong>不是内容宽</strong> —— 内容宽会让控件左沿参差（实测曾出现 <code>593.5 / 565.5 / 537.5</code> 三种）。</li>
+<li>所有非整行（横向）表单行：<strong>标签右沿 = 首个控件左沿</strong>，控件左沿全局唯一。</li>
+<li>例外是 <code>proj-form-row--switches</code>：「在售」的标签与开关、「可预约」的标签与开关<strong>成对并排在同一行</strong>（第一对左沿与标签列同基准）——这一行的标签不参与上面的对齐网格判定。</li>
+<li>行高 ≥ <strong>48</strong>（触控热区 ≥ 44；<code>--switches</code> 行撤掉副标题后同样只剩 48）；行分隔线为 1px、左右各内缩 16、<code>scaleY(.5)</code> 发丝线。</li>
+<li>（v1.17）字段区不再套白卡，因此原先「白卡级 16 + 内容级再进 16 = 32」的两级左基准合并为<strong>一级 16px</strong>。</li>
+</ul>
+<p><strong>「最佳操作位」（滚动定位）</strong></p>
+<p>展开时必须滚动列表，把展开区送到手指最舒服的位置。规则（滚动容器是 <strong><code>#projProjectTable</code></strong>，见上「表头固定与滚动容器」）：</p>
+<table>
+<thead>
+<tr>
+<th>面板高度</th>
+<th>落点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>≤ 可视区高</strong></td>
+<td><strong>垂直居中</strong>：上下留白相等</td>
+</tr>
+<tr>
+<td><strong>&gt; 可视区高</strong></td>
+<td><strong>顶边锚定</strong>：顶边贴表头下沿 <strong>+12px</strong>（<code>CIN_FOCUS_GAP</code>），其余部分靠滚动查看</td>
+</tr>
+</tbody>
+</table>
+<p><strong>落点会被物理夹住</strong>：目标 <code>scrollTop = clamp(0, maxTop)</code>。下面三种情况滚不动，此时<strong>只保证「整块可见」</strong>，不再追求严格居中（前端不要为此改成别的算法）：</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>为什么滚不动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>选中/新增的是列表<strong>首行</strong></td>
+<td>已经在顶部，再往上滚没有内容</td>
+</tr>
+<tr>
+<td><strong>空态</strong>新增</td>
+<td>列表没有可滚内容（<code>maxTop = 0</code>）</td>
+</tr>
+<tr>
+<td>新增区挂在<strong>内容末尾</strong></td>
+<td>已经在底部，再往下滚没有内容</td>
+</tr>
+</tbody>
+</table>
+<p><strong>实现要点（易错，务必照做）</strong>：展开动画是把 <code>height</code> 从 0 长起来，<code>scrollHeight</code> 会<strong>先变矮再变高</strong>，浏览器会把 <code>scrollTop</code> 夹回 → 面板再也回不到焦点线（实测「已下架」区块内条目偏差可达 <strong>378px</strong>）。因此：</p>
+<ol>
+<li>先以<strong>自然高度</strong>（未收起）量出落点并立即设 <code>scrollTop</code>；</li>
+<li>动画期间<strong>逐帧锁死面板顶边</strong>（每帧比对顶边偏差并补回 <code>scrollTop</code>）；</li>
+<li>新增态需先让新行入列并可见，再量落点。</li>
+</ol>
+<p><strong>动效</strong>（统一缓动 <code>cubic-bezier(.22,.82,.24,1)</code>，变量 <code>--cip-ease</code>）</p>
+<blockquote>
+<p><strong>节奏口径（v1.15）</strong>：保存反馈必须<strong>快、干净利落</strong>——三个时长整组压短（收起 240→120、归位 420→260、高亮 1200→320）。原先 1.2s 的高亮显得拖沓，用户会以为界面卡住。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>动效</th>
+<th>时长</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>展开</td>
+<td><strong>320ms</strong>（<code>--cip-open</code>）</td>
+<td><code>height 0 → 目标</code> + <code>margin-bottom</code> + <code>opacity</code>（透明度约 75% 时长）；同帧起飞，落定后清掉内联样式</td>
+</tr>
+<tr>
+<td>收起</td>
+<td><strong>120ms</strong>（<code>--cip-close</code>）</td>
+<td>反向：<code>height → 0</code> + <code>opacity → 0</code>（透明度约 80% 时长）</td>
+</tr>
+<tr>
+<td>新增归位</td>
+<td><strong>260ms</strong>（<code>--cip-flip</code>）</td>
+<td>收起后 <code>ghost</code> 从展开区尺寸<strong>长成</strong>目标行（见下）</td>
+</tr>
+<tr>
+<td>保存高亮</td>
+<td><strong>320ms</strong>（<code>--cip-glow</code>）</td>
+<td>该行 <code>catalogRowSavedGlow</code> 一次：浅绿底 <code>#F3FAF5</code> + 淡绿内描边 <code>rgba(52,199,89,.28)</code>，<strong>70% 处开始淡出</strong>；结束后移除类，行上不留痕</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>四个时长在 CSS 与 JS 中由 <code>--cip-open/--cip-close/--cip-flip/--cip-glow</code> 单一来源保证一致，<strong>不得各写一份</strong>。</li>
+<li><code>prefers-reduced-motion: reduce</code> → 全部动效直给，不做过渡（高亮与 FLIP 都不播）。</li>
+<li>高亮只有 320ms，<strong>任何「等 1s 后再断言」的测试都抓不到它</strong>：验证要在动效进行中采样（<code>is-saved-glow</code> 出现过即可），并另断言「结束后不再挂着」。</li>
+</ul>
+<p><strong>保存反馈</strong></p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>反馈序列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>详情保存</td>
+<td>收起（120ms）→ <strong>重绘该行</strong>（名称/价格/时长可能已变）→ 滚动保证该行在可视区 → 该行<strong>高亮闪一次</strong>（320ms 后自动淡出）+ toast「保存成功」</td>
+</tr>
+<tr>
+<td>新增保存</td>
+<td>收起（120ms）→ 重绘（新行入列）→ 滚动到新行 → <strong>完整 FLIP 归位</strong>：一个 <code>ghost</code> 从原展开区的位置和尺寸，<strong>同时</strong>把高度压到行高、把宽度长到通栏行宽、并淡出（260ms），与下方真实行无缝交接 → 新行<strong>高亮闪一次</strong> + toast「项目已创建 / 产品已创建」</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>FLIP 口径</strong>：展开区是贴边灰底、目标是通栏行 → ghost <strong>必须两边同时变</strong>（高变矮 + 宽变宽），只做位移会看出穿帮。末帧 ghost 淡出（内部内容在 42% 时长处先退场，避免被压成一条），由真实行接管。</p>
+</blockquote>
+<p><strong>收起时机（手风琴）</strong></p>
+<ul>
+<li>全列表<strong>同时只能有一个展开区</strong>；切换目标时旧的一定先收再展。</li>
+<li>收起路径<strong>全部</strong>要播收起动画：再点同一行 / 点展开区之外（表头、列表空白）/ 点另一行 / 点底部添加行 / 切 Tab。</li>
+<li><strong>有未保存改动时</strong>先弹确认 Dialog：「放弃修改？」<code>这一项还有没保存的改动，收起后将不会保留。</code> → 「继续编辑」/「放弃」。</li>
+</ul>
+<p><strong>状态与数据口径</strong></p>
+<table>
+<thead>
+<tr>
+<th>关注点</th>
+<th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>当前编辑项</td>
+<td><code>state.projEditingId</code>（详情态 = 该条目 id；新增态 = <code>null</code>），<strong>禁用</strong>独立的全屏页状态</td>
+</tr>
+<tr>
+<td>展开区状态</td>
+<td><code>catalogInline = { mode: 'add'｜'edit'｜null, id, dirty, busy, base }</code></td>
+</tr>
+<tr>
+<td>脏值判定</td>
+<td>进入时快照表单可编辑字段（<code>base</code>），输入 / 开关 / 时长 / 图片变更时与快照比对置 <code>dirty</code></td>
+</tr>
+<tr>
+<td>保存</td>
+<td>复用同一份提交流程（校验 → 写库 → 返回 <code>{ok,id,isNew,isProduct}</code>），与「底部添加行」「标题栏 +添加」「空态 CTA」入口<strong>共用</strong>，不得各写一套</td>
+</tr>
+<tr>
+<td>长按拖拽热区</td>
+<td>展开区占位期间，该行的长按拖拽与左滑按 §6.7 规则继续生效</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DOM / 类名钩子</strong>（给前端对齐用；实现风格可换，语义要留）</p>
+<p><code>#catalogInlinePanel</code>（外壳；新增态 <code>aria-label</code> + <code>.catalog-inline-panel__head</code> 可见标题为「添加项目 / 添加产品」；详情态仅 <code>aria-label</code>）· <code>.catalog-inline-panel--joined</code>（详情态，紧接选中行）· <code>.catalog-inline-panel--add</code>（新增态，挂在售末行下）· <code>.catalog-inline-panel__foot</code>（页脚）· <code>#catalogInlineBody</code>（表单容器）· <code>#catalogInlineSave</code>（保存）· <code>.catalog-flip-ghost</code>（新增归位 ghost）· <code>.table-row-swipe.has-inline-panel</code>（承载行）· <code>.table-row-swipe.is-saved-glow</code>（保存高亮）· <code>.table-card.is-add-panel</code>（空态新增）。</p>
+<blockquote>
+<p>v1.15 起<strong>不再有</strong> <code>#catalogInlineHead</code> / <code>#catalogInlineTitle</code> / <code>#catalogInlineNotice</code>（题头与通知条已删）。</p>
+</blockquote>
+<h2>6.2 新增 / 编辑 · 项目</h2>
+<p>表单字段按下表分为三段（<strong>基本信息 → 售卖设置 → 高级设置</strong>）——v1.15 起<strong>不再渲染三段小标题</strong>，全部字段并入展开区里的一张白卡；下表的分段只表示字段归属与顺序。</p>
+<table>
+<thead>
+<tr>
+<th>分区</th>
+<th>字段</th>
+<th style="text-align: center;">必填</th>
+<th>默认（新增）</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本信息</td>
+<td>名称</td>
+<td style="text-align: center;">✓</td>
+<td>空</td>
+<td>最多 30 字；<strong>同桶唯一</strong>（trim 后）；绑卡后锁定；placeholder「请输入」；值灰字 <code>#929292</code> Medium、行右带铅笔图标（v1.16 标签由「项目名称」改「名称」）</td>
+</tr>
+<tr>
+<td>基本信息</td>
+<td>价格</td>
+<td style="text-align: center;">✓</td>
+<td>空</td>
+<td>元；金额键盘；≥0；上限 <strong>999,999.99</strong>；键盘「确定」后<strong>回填表单价格值</strong>（保存校验以此为准，禁止只写入输入框而不回填）；值 <code>#FE8D4B</code> Medium、行右带铅笔图标（v1.16 标签由「项目价格」改「价格」）；<strong>点价格不得收起展开区</strong>（键盘打开期间外部收起手势暂停；输入缓冲去掉展示前缀 <code>¥</code>）</td>
+</tr>
+<tr>
+<td>基本信息</td>
+<td>时长</td>
+<td style="text-align: center;">✓</td>
+<td>60 分钟</td>
+<td>行内分/时输入；≥1 分钟；选中态底色 <code>#FE8B4B@10%</code>、选中字 <code>#FF8A4C</code>（v1.16 标签由「项目时长」改「时长」）</td>
+</tr>
+<tr>
+<td>售卖设置</td>
+<td>在售</td>
+<td style="text-align: center;">—</td>
+<td>开</td>
+<td>绑卡 <strong>不锁定</strong>；点击开关后短 toast：开 <code>已上架，顾客端可见</code> / 关 <code>已下架，顾客端不可见、不可预约</code>（关在售会<strong>连带关掉可预约</strong>并锁定它）</td>
+</tr>
+<tr>
+<td>售卖设置</td>
+<td>可预约</td>
+<td style="text-align: center;">—</td>
+<td>开</td>
+<td>表单标签为「可预约」；<strong>下架、隐藏或绑卡时锁定</strong>（压暗 + 点它弹原因）；隐藏解除后仍为关，须手动开。v1.15 起<strong>没有副标题</strong>，信息改为点击开关时的短 toast：开 <code>已开启，项目会在小程序「预约」中显示</code> / 关 <code>已关闭，小程序「预约」中不再显示</code></td>
+</tr>
+<tr>
+<td>高级设置</td>
+<td>封面图（可选）</td>
+<td style="text-align: center;">—</td>
+<td>未上传</td>
+<td>折叠轨 +「添加图片」；最多 1 张演示图；v1.16 起<strong>无副标题</strong>（原「未上传，不影响保存」已删）、标签去掉「项目」前缀</td>
+</tr>
+</tbody>
+</table>
+<p>分类写入默认「其他」（对用户可无独立控件）。</p>
+<p><strong>限制信息的展示口径（v1.15）</strong>：展开区<strong>没有提示条</strong>了。字段级的限制改为<strong>「锁定 + 点它说原因」</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>锁定表现</th>
+<th>点它时（toast 文案）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>绑卡</td>
+<td><strong>名称</strong>输入框 <code>disabled</code>、行挂 <code>.is-locked</code></td>
+<td><code>该项目已绑定会员卡，项目名称不可修改</code></td>
+</tr>
+<tr>
+<td>绑卡</td>
+<td><strong>可预约</strong>开关 <code>disabled</code>、<code>opacity .45</code>、<code>pointer-events:none</code>（锁定只挂在这一格上，<strong>「在售」永远可点</strong>）</td>
+<td><code>该项目已绑定会员卡，预约设置不可修改</code></td>
+</tr>
+<tr>
+<td>已下架</td>
+<td>可预约开关锁定</td>
+<td><code>项目已下架，请先开启「在售」后再设置可预约</code></td>
+</tr>
+<tr>
+<td>已隐藏</td>
+<td>可预约开关锁定</td>
+<td><code>项目已隐藏，取消隐藏后需手动开启可预约</code></td>
+</tr>
+<tr>
+<td>绑卡 / 关联卡券 / 商城</td>
+<td>删除入口锁定（左滑角标锁）</td>
+<td><code>该项目已绑定会员卡，不可删除</code> / <code>已关联会员卡/优惠券/商城，不可删除</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>绑卡项<strong>仍可改</strong>：价格、服务时长、封面图、在售/下架；<strong>不可改</strong>：名称、预约设置、删除。</li>
+<li>锁定原因通过 <code>data-lock-toast</code> 属性承载，点击被锁元素时由统一处理器弹 toast —— 新增状态时只需加一条文案，不要各写一套 <code>disabled</code> 判断。</li>
+</ul>
+<p>展开区页脚：<strong>仅「保存」</strong>（通栏实心主按钮，品牌红底白字）。删除不在展开区内 —— 走行左滑 → 行操作 Sheet → 删除，确认文案「确认删除？」「删除后不可恢复，是否继续？」。</p>
+<h2>6.3 新增 / 编辑 · 产品</h2>
+<p>与项目共用表单骨架（字段归属同三段，同样<strong>不渲染小标题</strong>）。展开区 <code>aria-label</code> 为「新增产品 / 产品详情」。</p>
+<table>
+<thead>
+<tr>
+<th>分区</th>
+<th>字段</th>
+<th style="text-align: center;">必填</th>
+<th>默认（新增）</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本信息</td>
+<td>名称</td>
+<td style="text-align: center;">✓</td>
+<td>空</td>
+<td>最多 30 字；表单标签「名称」（v1.16）；<strong>同桶唯一</strong>（trim 后）；校验空名时 toast「请填写产品名称」；重名 toast「名称已存在」</td>
+</tr>
+<tr>
+<td>基本信息</td>
+<td>规格</td>
+<td style="text-align: center;">—</td>
+<td>空</td>
+<td>placeholder「选填」；最多 20；空则列表仅显示名称；<strong>无铅笔图标</strong>（保持 <code>#1A1A1A</code> Regular，设计稿未定义该行）</td>
+</tr>
+<tr>
+<td>基本信息</td>
+<td>价格</td>
+<td style="text-align: center;">✓</td>
+<td>空</td>
+<td>同价格规则（≥0；上限 999,999.99）；键盘「确定」后<strong>回填表单价格值</strong>，保存校验以此为准；值 <code>#FE8D4B</code> Medium、行右带铅笔图标</td>
+</tr>
+<tr>
+<td>售卖设置</td>
+<td>在售</td>
+<td style="text-align: center;">—</td>
+<td>开</td>
+<td></td>
+</tr>
+<tr>
+<td>高级设置</td>
+<td>封面图（可选）</td>
+<td style="text-align: center;">—</td>
+<td>未上传</td>
+<td>同项目演示图规则；v1.16 起无副标题、标签去掉「产品」前缀</td>
+</tr>
+</tbody>
+</table>
+<p>无时长、无预约开关、<strong>无库存字段</strong>（见 8.1）。分类默认「产品」。产品详情<strong>无</strong>项目类限制提示条（v1.15 起两者都没有提示条）。</p>
+<h2>6.4 分组管理</h2>
+<ul>
+<li>列表行：拖拽把手（系统「隐藏」组为<strong>等宽空白占位</strong>，名称与普通组左对齐）· 组名 · <code>{n} 个项目|个产品</code> · 更多「⋯」（系统组为等宽空白占位，无「⋯」）  </li>
+<li><strong>点整行或「⋯」</strong> → 该行<strong>向下展开</strong>操作条（手风琴，同时只开一行）：<strong>包含项目 / 包含产品</strong>（<strong>按当前 Tab</strong> 取名，文件夹内条目图标）/ <strong>重命名</strong>（铅笔）/ <strong>删除</strong>（32×32 圆角 8、<code>#BEBEBE</code> 灰底 + <strong>白</strong>垃圾桶、<strong>无文案</strong>）；前两项上图标下文案，图标 22×22、线与文案色 <code>#7D7D7D</code></li>
+<li><strong>展开条版式（v1.21，Figma <code>1397:632</code>）</strong>：整块同底 <strong><code>#E7E7E7</code></strong>；行下沿一条 <strong>0.5px <code>rgba(0,0,0,.08)</code></strong> 发丝线（左右内缩 16）；操作条高 <strong>82</strong>（上 4 / 下 12）、行高 <strong>69</strong>；「包含项目·包含产品 + 重命名」<strong>整组水平居中、间距 16</strong>（单格 68.33 × 66），<strong>删除钮钉右内边距 16</strong>（32×32、垂直居中于操作带）</li>
+<li><strong>进入分组管理时一律收起</strong>（齿轮 / 返回 / 深链均同）；不默认展开任何行  </li>
+<li><strong>不再使用</strong>分组底部菜单 Sheet  </li>
+<li>空态：暂无分组 / 创建分组后可快速筛选价目表  </li>
+<li>底栏：<strong>已取消</strong>；<strong>加号 SVG +「新建」</strong>改到标题栏右侧文字链 → Dialog（最多 20 字，不可与已有分组重名）  </li>
+<li>标题栏右侧入口：<strong>加号与文字同为 14px 盒</strong>（加号 14 单位 / stroke 1.5、<code>gap 4</code>、右内边距 12），flex 居中即同轴；列表页「+添加」同规格（v1.22）</li>
+<li>操作落地：包含项目 / 包含产品 → 对应页（<strong>自右侧滑入覆盖分组管理</strong>，300ms <code>cubic-bezier(.32,.72,0,1)</code>；底层分组管理左移 22% + <code>rgba(0,0,0,.1)</code> 蒙层）；重命名 / 删除 → 现有 Dialog（<strong>系统「隐藏」组无展开条</strong>，点主行进包含项目 / 包含产品）  </li>
+<li>删除确认：仅删除分组，不会删除项目/产品  </li>
+<li>组顺序：自定义组在分组管理页拖拽排序；系统「隐藏」组 <strong>固定末尾</strong>  </li>
+<li>「隐藏」分组 Tab 展示隐藏图标（<strong>内联 16×16 / stroke 1.5 的眼 + 斜线</strong>，Tab 内 14×14）；列表底部「已隐藏」折叠 <strong>不带</strong> 数量角标；分组轨样式同列表（灰轨白胶囊）  </li>
+</ul>
+<h2>6.5 包含项目 / 包含产品</h2>
+<ul>
+<li>标题：<code>包含项目 · {组名}</code>（产品 Tab：<code>包含产品 · {组名}</code>）；系统「隐藏」组直接叫 <strong><code>隐藏项目</code> / <code>隐藏产品</code></strong>（不再拼组名）  </li>
+<li>列出当前 Tab 桶内 <strong>全部</strong> 价目（<strong>名称 + 价格</strong>；含 hidden 条目）；已选 N · 反选 · 全选  </li>
+<li><strong>选中态区分（v1.22：字感，不靠底色）</strong>：未选名称 <code>15px/400/#8A8A8A</code>、价格 <code>13px/400/#B9B9B9</code>；选中名称 <code>15px/600/#1A1A1A</code>、价格 <code>13px/500/#1A1A1A</code>；色值过渡 120ms。勾选框 <strong>18×18</strong>（未选 1.5px <code>#C8C9CC</code> 描边 / 选中 <code>#F32F41</code> 实心 + 白勾）<strong>保持原样</strong>，仅作控件确认符  </li>
+<li>系统「隐藏」组：勾选即移入隐藏 / 取消即取消隐藏  </li>
+<li>无可选项：暂无可选项目/产品  </li>
+<li>确定 → toast「已更新成员」→ 回分组管理（该页<strong>自右侧滑出</strong>，蒙层淡出，300ms；<code>prefers-reduced-motion</code> / 抓取模式为即时切换）  </li>
+</ul>
+<h2>6.6 设置分组（条目）</h2>
+<ul>
+<li>副标题：可同时加入多个分组  </li>
+<li>多选 <strong>全部</strong> 分组（含系统「隐藏」）；确定 →「已更新分组」并同步 <code>hidden</code>  </li>
+<li>无自定义组：「去新建分组」（左侧加号图标）  </li>
+<li>点「去新建分组」→ <strong>不离开本 Sheet</strong>，叠开「新建分组」Dialog  </li>
+<li>确定新建 → toast「已新建分组」→ 回到本 Sheet 勾选列表（含新组与「隐藏」；新组默认勾选，须点 Sheet「确定」才写入）  </li>
+<li>取消 Dialog → 仍停在空态 Sheet  </li>
+<li>演示深链：<code>price-item-group-empty</code>（轨上仅「全部 / 隐藏」）  </li>
+</ul>
+<h2>6.7 拖拽排序（列表）</h2>
+<p>仅在同一 <code>sort-bucket</code> 内重排并写回 <code>sortOrder</code>：</p>
+<table>
+<thead>
+<tr>
+<th>桶</th>
+<th>条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sale</td>
+<td>在售</td>
+</tr>
+<tr>
+<td>off</td>
+<td>已下架</td>
+</tr>
+</tbody>
+</table>
+<p>不可跨桶；<strong>自定义分组 Tab 内可拖</strong>（仍限同售卖态桶）。「隐藏」Tab / 「全部」已隐藏折叠内条目 / 列排序激活时拦截（文案见模块 5；<strong>无搜索</strong>）。</p>
+<p><strong>进入手势</strong>（两条等价入口，都要能拖）</p>
+<table>
+<thead>
+<tr>
+<th>入口</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>长按行主体</td>
+<td>按住 400ms 后进入待拖态（轻微振动反馈；此时<strong>松手不移动 = 打开行操作 Sheet</strong>，原语义不变）</td>
+</tr>
+<tr>
+<td>按住行左侧拖拽把手</td>
+<td><strong>立即</strong>进入待拖态，无需长按</td>
+</tr>
+</tbody>
+</table>
+<p>进入待拖态后，<strong>垂直位移超过 8px 且不小于水平位移</strong>即正式起拖（水平位移超过 10px 则判为左滑，让位给快捷操作）。</p>
+<p><strong>拖拽中</strong></p>
+<ul>
+<li>被拖行<strong>脱离文档流</strong>跟随指针（不再占位、层级提升、半透明），原位插入一个<strong>等高占位块</strong>标示落点；</li>
+<li>指针越过某行<strong>中线</strong>时占位块移动到该行之前 / 之后；</li>
+<li>列表容器加 <code>is-reordering</code>（拖拽期间屏蔽其它手势）。</li>
+</ul>
+<p><strong>落位与写回</strong></p>
+<ol>
+<li>松手 → 被拖行插入占位块位置，占位块移除；</li>
+<li>按该桶<strong>最终 DOM 顺序</strong>把 <code>sortOrder</code> 写回 <code>0…n-1</code>；</li>
+<li>重绘列表（<code>在售优先 → 桶内 sortOrder → 名称</code>）。</li>
+</ol>
+<p><strong>写回口径</strong>：只覆盖<strong>同桶可见项</strong>的相对次序；跨桶条目与当前筛除在外的条目保持原有相对顺序（列排序激活 / 分组筛选下不写回 —— 这两类情况本就拦截拖拽）。</p>
+<p><strong>原型范围说明</strong>：独立原型为<strong>内存演示数据</strong>，整页刷新会重置为演示造数（见「先读这几条」第 7 条）。因此验收口径为 <strong>「同会话重绘后顺序保持」</strong>（重绘列表、切 Tab 往返）；<strong>「刷新后顺序保持」由服务端持久化 <code>sortOrder</code> 保证</strong>，属接口约定（模块 7）。</p>
+<h2>6.8 与会员卡 / 开单联结</h2>
+<table>
+<thead>
+<tr>
+<th>入口</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>添加项目权益 / 添加产品权益 / 添加折扣权益 标题「管理价目表」</td>
+<td><code>openPriceCatalog</code>，记录返回页；返回后刷新对应选择列表，并 <strong>刷新分组 Tab</strong>（重置为「全部」）</td>
+</tr>
+<tr>
+<td>权益选择列表</td>
+<td><strong>仅</strong> <code>onSale &amp;&amp; !hidden</code>；可按项目或产品 <strong>自定义</strong> 分组 Tab 筛选（<strong>不展示</strong> 系统「隐藏」Tab）</td>
+</tr>
+<tr>
+<td>分组空</td>
+<td>本组暂无…；请在「管理价目表」中将项目/产品加入本组</td>
+</tr>
+<tr>
+<td><strong>开单选品</strong></td>
+<td>通过 <code>CardCatalogBridge.getBillProjects</code> / <code>getBillProducts</code> 读取价目实时目录，再过滤为 <strong>仅排除已下架</strong>（<code>onSale</code>；<strong>含 hidden</strong>）；分组轨含系统「隐藏」Tab；价目产品 <strong>不限购</strong>（<code>catalogStockLimit</code> 恒返回 null，见 <strong>8.1</strong>）；改价后开单侧可见最新价；缓存/推送实现【待联调确认】</td>
+</tr>
+<tr>
+<td><strong>开单支付·价目改价</strong></td>
+<td>进入结账时快照应付；打开支付 / 确认支付前按价目重算；若与快照不一致 → Dialog「支付金额已变化」：「价目表已更新，当前应付与开单时不一致，请返回核对后再支付。」按钮「知道了」→ 关闭支付层，留在开单详情。范围：账单 <code>payMask</code>（非办卡/充值支付）</td>
+</tr>
+</tbody>
+</table>
+<p>会员卡权益组合、办卡支付等 <strong>不在本文展开</strong>（见 <code>PRD-会员卡管理.md</code>）。</p>
+<hr />
+<h1>模块 7　数据模型与接口约定</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 <strong>必看</strong> · 测试 ✓</p>
+</blockquote>
+<h2>7.1 项目 <code>Project</code></h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>唯一</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>展示与绑卡匹配键；<strong>同桶唯一</strong>（trim 后）</td>
+</tr>
+<tr>
+<td>price</td>
+<td>number</td>
+<td>金额，建议存分或两位小数【待联调确认】</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>number</td>
+<td>分钟</td>
+</tr>
+<tr>
+<td>onSale</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>hidden</td>
+<td>boolean</td>
+<td>对顾客端隐藏；与系统「隐藏」组成员同步</td>
+</tr>
+<tr>
+<td>bookable</td>
+<td>boolean</td>
+<td>可预约</td>
+</tr>
+<tr>
+<td>images</td>
+<td>string[]</td>
+<td>封面图本地/演示路径；表单规范化最多 1 张</td>
+</tr>
+<tr>
+<td>hasImage</td>
+<td>boolean</td>
+<td>是否有图（可由 <code>images.length</code> 派生；正式环境应为图片 URL 列表【待联调确认】）</td>
+</tr>
+<tr>
+<td>category</td>
+<td>string</td>
+<td>默认「其他」</td>
+</tr>
+<tr>
+<td>boundToCard</td>
+<td>boolean</td>
+<td><strong>按模板引用自动派生并刷新</strong>；是否另落库【待联调确认】</td>
+</tr>
+<tr>
+<td>boundToCoupon / boundToMall</td>
+<td>boolean</td>
+<td>删除锁定来源【待联调确认】</td>
+</tr>
+<tr>
+<td>boundTemplateIds / Names</td>
+<td>string[]</td>
+<td>引用模板</td>
+</tr>
+<tr>
+<td>sortOrder</td>
+<td>number</td>
+<td>桶内序</td>
+</tr>
+</tbody>
+</table>
+<h2>7.2 产品 <code>Product</code></h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td><strong>同桶唯一</strong>（trim 后）</td>
+</tr>
+<tr>
+<td>spec</td>
+<td>string</td>
+<td>可空；列表展示拼入名称</td>
+</tr>
+<tr>
+<td>price</td>
+<td>number</td>
+<td></td>
+</tr>
+<tr>
+<td>stock</td>
+<td>number | null</td>
+<td><strong>本期价目表单不读写</strong>；保存不写入；开单限购忽略（见 8.1）。字段可保留兼容，语义不与本期价目 UI 绑定</td>
+</tr>
+<tr>
+<td>onSale</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>hidden</td>
+<td>boolean</td>
+<td>同项目</td>
+</tr>
+<tr>
+<td>category</td>
+<td>string</td>
+<td>默认「产品」</td>
+</tr>
+<tr>
+<td>images / hasImage</td>
+<td>同项目</td>
+<td></td>
+</tr>
+<tr>
+<td>bound*</td>
+<td>同项目</td>
+<td></td>
+</tr>
+<tr>
+<td>sortOrder</td>
+<td>number</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>7.3 分组 <code>CatalogGroup</code></h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>系统隐藏组：<code>g_sys_hidden_project</code> / <code>g_sys_hidden_product</code></td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>桶内唯一，≤20 字</td>
+</tr>
+<tr>
+<td>system</td>
+<td>boolean</td>
+<td>系统固定组（「隐藏」）；不可重命名/删除</td>
+</tr>
+<tr>
+<td>itemIds</td>
+<td>string[]</td>
+<td>成员 id；允许空</td>
+</tr>
+</tbody>
+</table>
+<p>桶：<code>project</code> | <code>product</code> 两套分组互不影响。</p>
+<h2>7.4 能力清单（路径【待联调确认】；正式文档暂无交付时间）</h2>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>列表查询</td>
+<td>按类型、分组、排序；<strong>分页见下</strong></td>
+</tr>
+<tr>
+<td>创建/更新/删除项目或产品</td>
+<td>校验（含同桶名称唯一）；删前校验绑卡/优惠券/商城</td>
+</tr>
+<tr>
+<td>上下架 / 隐藏</td>
+<td></td>
+</tr>
+<tr>
+<td>更新 sortOrder（批量）</td>
+<td>桶内重排</td>
+</tr>
+<tr>
+<td>分组 CRUD</td>
+<td>删组不删货；系统组只读除成员</td>
+</tr>
+<tr>
+<td>设置组成员 / 条目多分组</td>
+<td>含系统「隐藏」同步</td>
+</tr>
+<tr>
+<td>封面图上传</td>
+<td><strong>本期不做正式 OSS</strong>；原型最多 1 张演示</td>
+</tr>
+<tr>
+<td>绑卡状态查询或同步</td>
+<td>与会员卡模板引用对齐；<strong>自动刷新</strong></td>
+</tr>
+<tr>
+<td>开单价目桥接</td>
+<td>实时目录供开单消费；开单侧过滤仅排除已下架（含 hidden）；价目产品不限购</td>
+</tr>
+<tr>
+<td>库存数量读写</td>
+<td><strong>不在本期价目表</strong>；由后续「库存管理」模块负责【待联调确认】</td>
+</tr>
+<tr>
+<td>变更后通知顾客端缓存/展示</td>
+<td>同步策略【待联调确认】</td>
+</tr>
+</tbody>
+</table>
+<h3>列表分页（常规方案）</h3>
+<ul>
+<li>默认 <strong>每页 20 条</strong>，上拉/翻页加载更多。  </li>
+<li><strong>优先服务端过滤（类型/分组/排序）后再分页</strong>；客户端仅渲染当前页。【若联调改为端内全量再切片，需书面确认】  </li>
+<li>单店预期体量 <strong>≤500 条目</strong>；列表首屏可交互目标作联调参考（非硬 SLA）。  </li>
+<li><strong>本期仅单店</strong>数据范围。</li>
+</ul>
+<h2>7.5 时序（示意）</h2>
+<pre><code>商户保存项目
+  → API 更新价目
+  → 写库成功
+  → 异步/同步刷新顾客端可见价目【待联调确认】
+  → 开单模块读取最新目录【待联调确认】
+  → 客户端 toast 成功并回列表
+
+商户从权益页打开价目表
+  → 带 returnContext
+  → 编辑保存
+  → 返回权益页
+  → 重新拉取在售目录（开单含 hidden；顾客端 / 权益仍为 onSale&amp;&amp;!hidden）与分组
+</code></pre>
+<hr />
+<h1>模块 8　业务规则</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 <strong>必看</strong> · 测试 ✓</p>
+</blockquote>
+<ol>
+<li><strong>权益选品范围</strong>：会员卡/折扣/产品权益选择器只展示 <code>onSale=true &amp;&amp; hidden=false</code>。  </li>
+<li><strong>开单选品范围</strong>：仅 <code>onSale=true</code>（<strong>含 hidden</strong>；已下架不可选；与权益口径不同）。  </li>
+<li><strong>顾客端可见</strong>：<code>onSale &amp;&amp; !hidden</code>；项目预约另需 <code>bookable</code>。  </li>
+<li><strong>产品库存</strong>：价目侧本期不维护；开单对价目产品不限购（见 <strong>8.1</strong>）。  </li>
+<li><strong>开单支付·价目改价</strong>：结账快照应付；打开/确认支付前重算；不一致则 Dialog「支付金额已变化」→「知道了」关支付层，留在开单详情（见 6.8）。  </li>
+<li><strong>绑卡匹配</strong>：以 <strong>名称</strong> 与模板权益引用对齐；<strong>同桶名称唯一</strong>；改名锁定避免孤儿引用；解除引用后 <code>boundToCard</code> <strong>自动刷新</strong>。  </li>
+<li><strong>绑卡上下架</strong>：绑卡 <strong>不</strong> 阻止改 <code>onSale</code>。  </li>
+<li><strong>删组</strong>：只移除分组实体与成员关系，不删除项目/产品。  </li>
+<li><strong>多分组</strong>：同一条目可出现在多个 <code>itemIds</code> 中；加入系统「隐藏」组即 <code>hidden=true</code>。  </li>
+<li><strong>排序桶</strong>：<strong>在售</strong> / <strong>下架</strong> 两桶隔离；<code>sortOrder</code> 仅在桶内生效。  </li>
+<li><strong>下架与预约</strong>：项目下架 ⇒ <code>bookable=false</code> 且不可开，直到重新在售。  </li>
+<li><strong>隐藏与预约</strong>：项目隐藏 ⇒ <code>bookable=false</code> 且隐藏期间不可开；<strong>取消隐藏后仍为关</strong>，须手动再开「可预约」。  </li>
+<li><strong>B→C / 开单同步</strong>：价目变更后客户端与开单侧按 <strong>实时目录/价格</strong> 语义生效；推送与缓存细节【待联调确认】；顾客端页面结构不在范围。  </li>
+<li><strong>列排序 vs 手动排序</strong>：列排序为临时视图；手动拖拽前须取消列排序；「隐藏」Tab 与「全部」已隐藏折叠内不可拖。  </li>
+<li><strong>产品无预约字段</strong>；项目才有「可预约」。  </li>
+<li><strong>权益选品分组 Tab</strong>：仅自定义组 +「全部」；<strong>不展示</strong> 系统「隐藏」Tab；从「管理价目表」返回后 <strong>刷新分组 Tab（重置为「全部」）</strong>。  </li>
+<li><strong>封面图</strong>：选填；演示最多 <strong>1 张</strong>；正式 OSS <strong>本期不做</strong>。  </li>
+<li><strong>权限</strong>：店主可编辑价目；店员不可编辑。  </li>
+<li><strong>门店范围</strong>：<strong>本期仅单店</strong>。</li>
+</ol>
+<h2>8.1 产品库存规则（以当前原型为准）</h2>
+<p>适用范围说明：<strong>价目表产品侧本期不维护库存字段</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>当前原型表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>产品表单</td>
+<td><strong>无</strong>「库存」输入；保存时不写入价目 <code>stock</code></td>
+</tr>
+<tr>
+<td>产品列表</td>
+<td>列仅为 <strong>名称（规格）+ 价格</strong>，<strong>无库存列</strong></td>
+</tr>
+<tr>
+<td>开单限购</td>
+<td><code>catalogStockLimit()</code> <strong>恒返回不限购</strong>；不按价目 <code>stock</code> 封顶</td>
+</tr>
+<tr>
+<td>与「库存管理」</td>
+<td>后续库存能力走独立模块 / <code>StockStore</code> 等路径；<strong>不与本期价目表单字段绑定</strong></td>
+</tr>
+</tbody>
+</table>
+<p>开单选品范围仍为 <code>onSale</code>（含 hidden）。支付金额因价目改价不一致时，仍走 Dialog「支付金额已变化」（FLOW：<code>bill-pay-price-changed</code>，归属开单分组）。</p>
+<blockquote>
+<p>若后续产品再次在价目表恢复「选填库存」UI，须同步改本节与 §6.1 / §6.3 / §5.2 / §9.1 / 验收用例。</p>
+</blockquote>
+<hr />
+<h1>模块 9　文案清单与权限</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 部分 · 测试 ✓</p>
+</blockquote>
+<h2>9.1 文案清单（须与原型一致）</h2>
+<p><strong>导航/按钮</strong>：价目表、项目、产品、分组管理、包含项目、包含产品、新增项目、新增产品、项目详情、产品详情、保存、删除、新建分组、确定、取消、全选、反选、设置分组、下架、上架、隐藏、取消隐藏、分组、重命名、包含项目、包含产品、去新建分组、+添加、添加项目、添加产品、封面图（可选）、添加图片、在售、已下架、已隐藏、可预约、规格、时长（分钟）、价格（¥）、全部、添加项目、添加产品、知道了。
+<strong>表单标签</strong>（v1.16 改短）：名称、价格、时长、规格、在售、可预约、封面图（可选）。</p>
+<p><strong>Toast</strong>：请输入分组名称、分组名称已存在、名称已存在、已重命名、已新建分组、已删除分组、已更新成员、已更新分组、已隐藏、已取消隐藏、已上架、已下架、保存成功、项目已创建、产品已创建、已删除、请填写项目名称、请填写产品名称、请填写有效价格、请填写项目时长、时长至少5分钟、「隐藏」分组内不支持拖拽排序，请切换到「全部」或其它分组、已隐藏的项目不支持拖拽排序、请先取消列排序后再手动排序、已添加演示图片、已移除图片、仅可上传 1 张封面、项目已隐藏，取消隐藏后需手动开启可预约、项目已下架，请先开启「在售」后再设置可预约、系统分组不可重命名或删除；以及模块 5.5 绑卡/预约/删除拦截句（删除可为「已关联会员卡/优惠券/商城，不可删除」动态拼接）。</p>
+<p><strong>Dialog（开单支付）</strong>：标题「支付金额已变化」；正文「价目表已更新，当前应付与开单时不一致，请返回核对后再支付。」；按钮「知道了」。</p>
+<p><strong>Dialog/Sheet</strong>：确认删除？、删除后不可恢复，是否继续？、删除分组？、仅删除分组，不会删除项目/产品。、最多 20 字，不可与已有分组重名、可同时加入多个分组、去新建分组、长按项目可拖动排序，左滑快捷操作；分组可左右滑动、未上传，不影响保存。</p>
+<p><strong>Toast（开关与锁定）</strong>：已上架，顾客端可见 / 已下架，顾客端不可见、不可预约 / 已开启，项目会在小程序「预约」中显示 / 已关闭，小程序「预约」中不再显示 / 该项目已绑定会员卡，项目名称不可修改 / 该项目已绑定会员卡，预约设置不可修改 / 项目已下架，请先开启「在售」后再设置可预约 / 项目已隐藏，取消隐藏后需手动开启可预约。</p>
+<p><strong>空态</strong>：暂无项目/产品、暂无隐藏项目/产品、本组暂无项目/产品、暂无分组、创建分组后可快速筛选价目表、暂无可选项目/产品、可将价目表中的条目加入本组、左滑条目可将项目/产品移入隐藏、添加后可在选择项目与办卡中使用、添加后可在开单记账中使用、请在「管理价目表」中将项目/产品加入本组。</p>
+<h2>9.2 权限</h2>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>价目表</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>店主</td>
+<td>增删改查、分组、排序、上下架/隐藏等全文操作</td>
+</tr>
+<tr>
+<td>店员</td>
+<td><strong>不可编辑/修改</strong>价目表（无写入权限）</td>
+</tr>
+</tbody>
+</table>
+<p>本期交互原型按 <strong>店主</strong> 路径演示，不单独做店员只读壳。</p>
+<hr />
+<h1>模块 10　验收 P0 + 造数场景</h1>
+<blockquote>
+<p>读者：测试 <strong>必看</strong></p>
+</blockquote>
+<h2>10.1 造数</h2>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>空数据</td>
+<td>项目/产品/分组皆空（原型「无数据」）</td>
+</tr>
+<tr>
+<td>有数据</td>
+<td>演示多项项目与产品、多分组（含空组）、含下架/隐藏/绑卡/优惠券或商城锁样例（原型「有数据」）</td>
+</tr>
+</tbody>
+</table>
+<p>正式环境自备等价数据；演示开关不进产品。</p>
+<h2>10.2 Given → When → Then（P0）</h2>
+<ol>
+<li><strong>Given</strong> 项目 Tab 为空，<strong>When</strong> 保存合法新项目，<strong>Then</strong> 列表在售区出现，可被选项目（未隐藏时）。  </li>
+<li><strong>Given</strong> 产品 Tab，<strong>When</strong> 保存带规格产品，<strong>Then</strong> 列表名称列展示「名称（规格）」；<strong>无库存列</strong>。  </li>
+<li><strong>Given</strong> 产品表单，<strong>When</strong> 查看基本信息，<strong>Then</strong> 有规格（选填）、无库存输入。  </li>
+<li><strong>Given</strong> 在售未隐藏产品，<strong>When</strong> 开单对该产品加购任意数量，<strong>Then</strong> 不以价目 <code>stock</code> 限购（<code>catalogStockLimit</code> 不限购）。  </li>
+<li><strong>Given</strong> 列表有数据，<strong>When</strong> 滚到底部，<strong>Then</strong> 可见虚线「添加项目」或「添加产品」行（跟当前 Tab）。  </li>
+<li><strong>Given</strong> 未绑卡在售项目，<strong>When</strong> 下架，<strong>Then</strong> 落入「已下架」分区；顾客端不可见；开单与权益选品均不可见。  </li>
+<li><strong>Given</strong> 绑卡项目，<strong>When</strong> 尝试删除或改名称/预约，<strong>Then</strong> toast 拦截且数据不变；删除控件可见锁标。  </li>
+<li><strong>Given</strong> 绑卡项目，<strong>When</strong> 改在售/下架并保存或左滑，<strong>Then</strong> 操作成功。  </li>
+<li><strong>Given</strong> 绑卡项目，<strong>When</strong> 改价格并保存，<strong>Then</strong> 保存成功。  </li>
+<li><strong>Given</strong> 已下架项目详情，<strong>When</strong> 查看预约开关，<strong>Then</strong> 关闭且不可开，直到重新在售。  </li>
+<li><strong>Given</strong> 在售且可预约的项目，<strong>When</strong> 左滑隐藏或加入系统「隐藏」组，<strong>Then</strong> 「全部」主列表不显示但底部「已隐藏」折叠可展开；「隐藏」Tab 显示；顾客端不可见；<strong>开单仍可选</strong>；权益选品不可见；<strong><code>bookable=false</code></strong>。  </li>
+<li><strong>Given</strong> 隐藏前可预约的项目，<strong>When</strong> 取消隐藏，<strong>Then</strong> 回到「全部」主列表可见（在售时顾客端可见）；<strong>「可预约」仍为关</strong>，须手动再开。  </li>
+<li><strong>Given</strong> 新建分组并在包含项目页勾选多项，<strong>When</strong> 确定，<strong>Then</strong> 按组筛选只显示非 hidden 成员。  </li>
+<li><strong>Given</strong> 条目属于两组，<strong>When</strong> 删除其中一组，<strong>Then</strong> 条目仍在，另一组关系保留。  </li>
+<li><strong>Given</strong> 在售区两行，<strong>When</strong> 长按行主体（或按住行左侧拖拽把手）上下拖动并松手，<strong>Then</strong> 被拖行落到占位块位置；<code>sortOrder</code> 按桶内最终顺序写回；<strong>同会话重绘</strong>（重绘列表 / 切 Tab 往返）后顺序保持；接口侧刷新后顺序保持。  </li>
+<li><strong>Given</strong> 当前「隐藏」Tab，<strong>When</strong> 拖拽，<strong>Then</strong> toast「「隐藏」分组内不支持拖拽排序，请切换到「全部」或其它分组」。<br />
+16b. <strong>Given</strong> 「全部」Tab 已展开「已隐藏」折叠，<strong>When</strong> 拖拽折叠内条目，<strong>Then</strong> toast「已隐藏的项目不支持拖拽排序」。  </li>
+<li><strong>Given</strong> 列排序激活，<strong>When</strong> 拖拽，<strong>Then</strong> toast「请先取消列排序后再手动排序」。  </li>
+<li><strong>Given</strong> 从添加项目权益进「管理价目表」并新增项目，<strong>When</strong> 返回，<strong>Then</strong> 回到权益页且可选到新在售未隐藏项目，<strong>分组 Tab 刷新为「全部」</strong>。  </li>
+<li><strong>Given</strong> 已下架产品，<strong>When</strong> 开单选品，<strong>Then</strong> 列表中不出现该产品。<br />
+19b. <strong>Given</strong> 在售且已隐藏产品，<strong>When</strong> 开单选品，<strong>Then</strong> 「全部」与「隐藏」Tab 均可见且可加购；权益选品仍不可见。  </li>
+<li><strong>Given</strong> 开单已选品并进入支付前，<strong>When</strong> 价目表改价导致应付与快照不一致，<strong>Then</strong> Dialog「支付金额已变化」；点「知道了」关闭支付层并留在开单详情。  </li>
+<li><strong>Given</strong> 开单已选价目产品且支付成功，<strong>When</strong> 支付完成，<strong>Then</strong> <strong>不</strong>因价目表 <code>stock</code> 扣减（库存管理另模块）。  </li>
+<li><strong>Given</strong> 时长选择器确认，<strong>When</strong> 总时长不足 5 分钟，<strong>Then</strong> toast「时长至少5分钟」。  </li>
+<li><strong>Given</strong> 项目详情高级设置，<strong>When</strong> 添加第 2 张封面，<strong>Then</strong> toast「仅可上传 1 张封面」。  </li>
+<li><strong>Given</strong> 「全部」列表有下架与隐藏条目，<strong>When</strong> 浏览，<strong>Then</strong> 无状态列；可见居中「已下架」分隔行（下沿线）与「已隐藏」折叠（无数量）。  </li>
+<li><strong>Given</strong> 当前为项目 Tab 且列表有数据，<strong>When</strong> 点标题栏「+添加」，<strong>Then</strong> <strong>不弹窗</strong>，在列表内容区就地展开「新增项目」（§6.1.1）；标题栏入口为<strong>品牌红图标+文字链</strong>（无红底胶囊按钮壳）。  </li>
+<li><strong>Given</strong> 当前为产品 Tab 且列表有数据，<strong>When</strong> 点标题栏「+添加」，<strong>Then</strong> <strong>不弹窗</strong>，在列表内容区就地展开「新增产品」。  </li>
+<li><strong>Given</strong> 任意价目表列表态，<strong>When</strong> 查看界面，<strong>Then</strong> <strong>无</strong>右下悬浮球「+」；整表无数据时可用空态 CTA 添加，标题栏「+添加」始终可用。  </li>
+<li><strong>Given</strong> 同桶已存在名称「精致剪发」，<strong>When</strong> 再保存同名项目（trim 后相同），<strong>Then</strong> toast「名称已存在」且不写入。  </li>
+<li><strong>Given</strong> 模板已解除对某项目名称的引用，<strong>When</strong> 进入价目列表或触发绑卡同步，<strong>Then</strong> 该条目 <code>boundToCard</code> 自动为 false，无需手动刷新。  </li>
+<li><strong>Given</strong> 产品表单，<strong>When</strong> 查看规格输入框，<strong>Then</strong> placeholder 为「选填」；<strong>无库存输入框</strong>。</li>
+<li><strong>Given</strong> 项目 Tab 整表无数据，<strong>When</strong> 从导航 / 深链进入空态，<strong>Then</strong> <strong>只</strong>出现空态块（插画 + 标题「暂无项目」+ 说明 + 虚线 CTA）；<strong>不出现</strong>表头、分组轨、列表行与拖拽提示条（不得残留进入前的列表）。  </li>
+<li><strong>Given</strong> 空态，<strong>When</strong> 看 CTA（项目 / 产品分别查看），<strong>Then</strong> 两者为<strong>同款</strong>虚线品牌红按钮（宽 168 × 高 36、1px 虚线 <code>#F32F41</code>、圆角 12、透明底、品牌红字），仅文案随 Tab 变（「添加项目」/「添加产品」）。  </li>
+<li><strong>Given</strong> 空态，<strong>When</strong> 点 CTA → 填名称 → 金额键盘输入并「确定」→「保存」，<strong>Then</strong> 键盘值<strong>回填表单价格</strong>；保存成功回列表并在售区出现该行；toast「项目已创建」（产品为「产品已创建」）。  </li>
+<li><strong>Given</strong> 列表有数据，<strong>When</strong> 滚到底部，<strong>Then</strong> 底部虚线添加行为 1px 虚线品牌红、圆角 12、高 44、左侧 <code>+</code> 18px（<strong>不是</strong>浏览器默认按钮外观）。  </li>
+<li><strong>Given</strong> 处于「行操作 Sheet」等自带浮层的节点，<strong>When</strong> 切换导航 / 深链到另一节点，<strong>Then</strong> 上一节点的 Sheet / Dialog <strong>不残留</strong>；目标节点自身该开的浮层照常打开。  </li>
+<li><strong>Given</strong> 任意 Tab 有数据，<strong>When</strong> 长按行主体并垂直拖动，<strong>Then</strong> 该行跟手抬起、原位留等高占位块，松手后落到占位块位置（<strong>不得</strong>出现拖拽无响应或未捕获异常）。  </li>
+<li><strong>Given</strong> 价目表列表，<strong>When</strong> 看「项目 / 产品」Tab，<strong>Then</strong> 选中项<strong>同时</strong>有三重差异：文字<strong>品牌红</strong> <code>#F32F41</code>、字重 <strong>600</strong>、下方<strong>品牌红下划线</strong>（高 3 / 圆角 2 / 贴 Tab 条下沿 / 宽 = 文字宽 + 20）；未选项为 <code>#6C7279</code> 400 且<strong>无</strong>下划线。仅靠文字变化区分视为<strong>不通过</strong>。  </li>
+<li><strong>Given</strong> 项目 Tab 选中，<strong>When</strong> 点「产品」，<strong>Then</strong> 下划线<strong>滑动</strong>（有中间帧）到第 2 项中心并在 <strong>160ms</strong> 内到位，落点误差 &lt;1px；<strong>不出现</strong>瞬移，也<strong>不出现</strong>两条下划线同时存在。  </li>
+<li><strong>Given</strong> 产品 Tab 选中，<strong>When</strong> 刷新页面 / 从导航重新进入列表，<strong>Then</strong> Tab 条高度仍为 <strong>45</strong>、两项仍各 <strong>194</strong> 等宽（下划线绝对定位，不参与流、不撑开布局）。  </li>
+<li><strong>Given</strong> 系统设定「减少动态效果」，<strong>When</strong> 切换 Tab，<strong>Then</strong> 下划线<strong>直接</strong>切换位置（无过渡），选中态仍然可辨。  </li>
+<li><strong>Given</strong> 列表有数据，<strong>When</strong> 点某行主区域，<strong>Then</strong> 该行<strong>正下方</strong>就地展开详情区（<strong>不跳页</strong>、不出现新页面）；再点同一行 / 点展开区之外，<strong>Then</strong> 收起。展开区<strong>两侧贴边、灰底 <code>#F7F7F7</code> 与选中行同色、无圆角无描边无阴影</strong>，字段直接铺在灰底上——<strong>不得</strong>读成「另一张浮起来的白卡」，也<strong>不得</strong>有顶部凹陷阴影。  </li>
+<li><strong>Given</strong> 已展开某行的详情，<strong>When</strong> 点另一行，<strong>Then</strong> 旧展开区<strong>先收起</strong>、新展开区再展开；任意时刻<strong>只有一个</strong>展开区。  </li>
+<li><strong>Given</strong> 展开区高度 ≤ 可视区，<strong>When</strong> 展开，<strong>Then</strong> 上下留白<strong>相等</strong>（垂直居中）；<strong>Given</strong> 展开区高于可视区，<strong>Then</strong> 顶边贴表头下沿 <strong>+12px</strong>。<strong>Given</strong> 落点被物理夹住（选中首行 / 空态无可滚内容 / 新增区在内容末尾），<strong>Then</strong> 保证展开区<strong>整块可见</strong>即可。三种情况下<strong>均不得</strong>出现顶边被顶出可视区、或展开后位置明显偏离（含「已下架」区块内的条目）。  </li>
+<li><strong>Given</strong> 展开区内改了名称/价格但未保存，<strong>When</strong> 点行头 / 点外部 / 点另一行收起，<strong>Then</strong> 弹「放弃修改？」确认；点「继续编辑」保留改动，点「放弃」丢弃。  </li>
+<li><strong>Given</strong> 展开区内保存成功（详情），<strong>When</strong> 保存，<strong>Then</strong> 展开区收起（<strong>120ms</strong>）→ 列表该行<strong>立即</strong>显示新名称/新价格 → 该行高亮闪一次（<strong>320ms</strong> 内淡出；底 <code>#F3FAF5</code>、描边约 28% 绿，不得用过重的实心 <code>#34C759</code>）→ toast「保存成功」。<strong>不得</strong>出现 1s 级别的拖沓高亮。<br />
+45b. <strong>Given</strong> 详情或新增展开区已打开，<strong>When</strong> 点价格字段，<strong>Then</strong> 打开金额键盘且<strong>展开区保持打开</strong>；输入并「确定」后价格回填；<strong>不得</strong>因点价格而退出编辑。<br />
+45c. <strong>Given</strong> 某行已展开，<strong>When</strong> 看该行标题区，<strong>Then</strong> <strong>不显示</strong>时长与价格（只留把手+名称）；「已隐藏」折叠块底色为 <code>#EEEEEE</code>，与展开区 <code>#F7F7F7</code> <strong>可区分</strong>。  </li>
+<li><strong>Given</strong> 空态点 CTA 打开新增展开区（<strong>表头与分组轨收起</strong>、列表外壳保留、底部虚线添加行隐藏），<strong>When</strong> 填名称 + 金额键盘「确定」+ 保存，<strong>Then</strong> 展开区收起（120ms）→ 新行入列 → 归位动效（ghost 高变矮 + 宽变宽 + 淡出，<strong>260ms</strong>）→ 新行高亮闪一次（320ms）→ toast「项目已创建」（产品「产品已创建」）；底部虚线添加行出现。  </li>
+<li><strong>Given</strong> 展开区（新增或详情），<strong>When</strong> 检查内部版式，<strong>Then</strong> 表单标签为<strong>固定 68px 列宽</strong>、所有控件左沿落在<strong>同一条竖线</strong>上、行分隔线左右各内缩 16；<strong>不得</strong>出现控件左沿参差（如 4 字标签与 2 字标签各行其是）；<strong>不再有</strong>三段分组小标题。v1.16 起标签文案为 <strong>名称 / 价格 / 时长 / 封面图（可选）</strong>；v1.18 起页脚「保存」为<strong>通栏实心主按钮</strong>（高 48、品牌红底白字）。  </li>
+<li><strong>Given</strong> 展开区，<strong>When</strong> 检查触控热区与高度，<strong>Then</strong> 每个表单行高 ≥ <strong>48</strong>、「保存」按钮 ≥ <strong>44</strong>、展开区<strong>无横向溢出</strong>；整体高度 ≤ 原全屏表单的 <strong>2/3</strong>；<strong>不再有</strong>题头、提示条与「可预约」副标题。<br />
+48b. <strong>Given</strong> 展开区的「在售 / 可预约」开关，<strong>When</strong> 点击，<strong>Then</strong> 弹出<strong>短 toast</strong> 说明后果（<code>已上架，顾客端可见</code> / <code>已下架，顾客端不可见、不可预约</code> / <code>已开启，项目会在小程序「预约」中显示</code> / <code>已关闭，小程序「预约」中不再显示</code>），且状态真的翻转；<strong>Given</strong> 关掉「在售」，<strong>Then</strong> 「可预约」被<strong>连带置为关并锁定</strong>；<strong>Given</strong> 锁定态（绑卡/下架/隐藏）点开关，<strong>Then</strong> 弹的是<strong>锁定原因</strong>而不是开关文案。  </li>
+<li><strong>Given</strong> 展开区已展开，<strong>When</strong> 长按承载行或按住其拖拽把手上下拖动，<strong>Then</strong> 拖拽排序照常可用（§6.7 规则不变）。  </li>
+<li><strong>Given</strong> 深链 <code>price-edit-normal</code> / <code>price-edit-product</code> 等 7 个新增/详情类节点，<strong>When</strong> 进入，<strong>Then</strong> 落在<strong>列表页</strong>并<strong>自动展开</strong>对应位置（新增在内容区、详情在目标行下方）且位于最佳操作位；<strong>不得</strong>出现独立全屏页，也不得残留上一轮的展开区。  </li>
+<li><strong>Given</strong> 价目表列表（有数据），<strong>When</strong> 上下滚动内容区，<strong>Then</strong> <strong>Tab 条、分组轨、表头一律不动</strong>（位移 Δ = 0），只有列表行在动；表头下沿即列表可视区顶边，行<strong>不得</strong>钻到表头底下。  </li>
+<li><strong>Given</strong> 绑卡项目（原型深链 <code>price-edit-bound</code> 演示项），<strong>When</strong> 查看展开区，<strong>Then</strong> 名称输入框不可编辑、可预约开关压暗且不可开；<strong>点它们</strong>分别弹 toast「该项目已绑定会员卡，项目名称不可修改」/「该项目已绑定会员卡，预约设置不可修改」；点「在售」<strong>不</strong>弹锁定 toast（锁定只挂在该格上）。</li>
+<li><strong>Given</strong> 展开区（项目 / 产品的详情与新增），<strong>When</strong> 检查字段区视觉，<strong>Then</strong> 名称值 <code>#929292</code> <strong>Medium</strong>、价格值 <code>#FE8D4B</code> <strong>Medium</strong>，两行右端各有 <strong>16×16 铅笔图标</strong>（<code>#C7C7CC</code>、线宽 1.05、与值间距 4px），时长选中态为 <strong><code>#FE8B4B@10%</code> 淡底 + <code>#FF8A4C</code> 字</strong>（未选中字 <code>#929292</code>）；<strong>不得</strong>再出现蓝色选中态。</li>
+<li><strong>Given</strong> 展开区，<strong>When</strong> 展开，<strong>Then</strong> 字段区<strong>与展开区顶沿齐平、同宽贴边</strong>（无白底、无圆角、无左右灰缝），顶沿有一条 <strong>0.5px <code>#EBEBEB</code></strong> 发丝线（左右内缩 16，与行间分隔线同色同内缩）；<strong>不得</strong>再出现白卡或顶部凹陷阴影。</li>
+<li><strong>Given</strong> 展开区，<strong>When</strong> 查看底部「保存」，<strong>Then</strong> 是<strong>通栏实心主按钮</strong>（左右各 16、高 48、圆角 12）、品牌红 <code>#F32F41</code> 底、白字 + 白存盘图标；页脚上方有 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>；<strong>不得</strong>再是透明药丸红字。</li>
+<li><strong>Given</strong> 项目详情展开区，<strong>When</strong> 量高度，<strong>Then</strong> <strong>约 308px</strong>（字段区 240 + 页脚 12+48+12）；产品详情 / 下架态 / 新增形态同量级、绑卡态更高；封面行只有一行「封面图（可选）」，<strong>不得</strong>再有「未上传，不影响保存」。</li>
+<li><strong>Given</strong> 价目表列表行，<strong>When</strong> 检查垂直对齐，<strong>Then</strong> 名称 / 时长 / 价格在 52px 行高内<strong>垂直居中</strong>（<code>align-items: center</code> + <code>line-height: 19px</code>）；<strong>不得</strong>出现字下留白明显多于字上的视觉偏上。</li>
+<li><strong>Given</strong> 产品 Tab，<strong>When</strong> 查看列表行，<strong>Then</strong> 名称与价格在同一行、垂直居中、与表头对齐；<strong>不得</strong>因空时长格把价格挤到下一行。</li>
+<li><strong>Given</strong> 任意行展开，<strong>When</strong> 查看该行标题，<strong>Then</strong> 只显示拖拽图标 + 名称；时长与价格<strong>隐藏</strong>（已在展开区字段里）。</li>
+<li><strong>Given</strong> 分组管理某行已展开，<strong>When</strong> 量测展开条，<strong>Then</strong> 整块底色为 <strong><code>#E7E7E7</code></strong>、行下沿有 <strong>0.5px <code>rgba(0,0,0,.08)</code></strong> 发丝线（左右内缩 16）、操作条高 <strong>82</strong>；「包含项目·包含产品 + 重命名」<strong>整组水平居中、间距 16</strong>（单格 68.33 × 66）；<strong>删除</strong>为 <strong>32×32、圆角 8、<code>#BEBEBE</code> 灰底 + 白垃圾桶、无文案</strong>，距卡片右沿 <strong>16</strong>；<strong>不得</strong>再是「左缩进 44 对齐组名」或红色纯图标。</li>
+<li><strong>Given</strong> 分组管理页，<strong>When</strong> 点展开条「包含项目 / 包含产品」，<strong>Then</strong> 对应页<strong>自右侧滑入</strong>覆盖分组管理（300ms），底层分组管理<strong>左移 22%</strong> 并叠 <strong><code>rgba(0,0,0,.1)</code></strong> 蒙层；<strong>不得</strong>是瞬时硬切。</li>
+<li><strong>Given</strong> 包含项目 / 包含产品页，<strong>When</strong> 点返回或「确定」，<strong>Then</strong> 该页<strong>自右侧滑出</strong>、蒙层淡出、回到分组管理且展开态已收起；系统「减少动态效果」或 Figma 抓取模式下动效降级为即时切换（功能不变）。</li>
+<li><strong>Given</strong> 分组管理某行已展开，<strong>When</strong> 读入口文案，<strong>Then</strong> 项目 Tab 为 <strong>「包含项目」</strong>、产品 Tab 为 <strong>「包含产品」</strong>（图标为<strong>文件夹内条目</strong>线描 22×22）；<strong>不得</strong>再出现「编辑成员」字样与双人图标。</li>
+<li><strong>Given</strong> 点该入口进入，<strong>Then</strong> 页面标题为 <strong><code>包含项目 · {组名}</code></strong>（产品 Tab 为 <code>包含产品 · {组名}</code>；系统「隐藏」组为 <strong><code>隐藏项目</code> / <code>隐藏产品</code></strong>）；左侧导航同样为「分组 · 包含项目」。</li>
+<li><strong>Given</strong> 包含项目 / 包含产品页同时存在已选与未选条目，<strong>When</strong> 对比二者，<strong>Then</strong> 未选名称 <strong><code>15px/400/#8A8A8A</code></strong>、价格 <strong><code>13px/400/#B9B9B9</code></strong>；选中名称 <strong><code>15px/600/#1A1A1A</code></strong>、价格 <strong><code>13px/500/#1A1A1A</code></strong>；<strong>不得</strong>再依赖整行底色/描边区分，勾选框仍为 18×18 原样。</li>
+<li><strong>Given</strong> 分组管理页与价目表列表页标题栏右侧入口，<strong>When</strong> 量测加号与文字，<strong>Then</strong> 二者<strong>同为 14px 盒</strong>、flex 垂直居中，墨迹中轴差 <strong>≤ 0.5px</strong>；加号为 <strong>14 单位 / stroke 1.5</strong>（<strong>不得</strong>再用 12 单位 / stroke 1.8，那会让描边比 15px 文字重约 40%）。「隐藏」Tab 图标为 <strong>16×16 / stroke 1.5 的眼 + 斜线</strong>（Tab 内 14×14），线宽与重命名/删除图标成族。</li>
+</ol>
+<hr />
+<h1>模块 11　非功能（极简）</h1>
+<blockquote>
+<p>读者：前端 ✓ · 后端 ✓ · 测试 ✓</p>
+</blockquote>
+<ul>
+<li>画布与动效对齐原型 390×844。  </li>
+<li>列表分页与体量见模块 7.4（默认每页 20；单店 ≤500 为预期体量）。  </li>
+<li>埋点：无专表；若现网统一规范另案。  </li>
+<li>图片正式上传 / OSS：<strong>本期不做</strong>（原型演示封面最多 1 张）。  </li>
+<li><strong>本期仅单店</strong>。</li>
+</ul>
+<hr />
+<h1>模块 12　交付物</h1>
+<table>
+<thead>
+<tr>
+<th>交付</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本文 <code>PRD-项目创建与管理.md</code></td>
+<td>开发与测试准稿</td>
+</tr>
+<tr>
+<td>交互原型 <code>index.html</code></td>
+<td>唯一可视依据（价目表独立原型；深链见 §3）；大原型镜像 <code>../card/demo.html</code></td>
+</tr>
+</tbody>
+</table>
+<p>开发与测试只需 <strong>PRD + 原型</strong>。与会员卡交叉时，会员卡流程以 <code>PRD-会员卡管理.md</code> 为准，价目数据与锁定规则以本文为准。冲突时以原型界面为准修正 PRD。</p>
+<p class="foot-note">给 AI / 研发请使用同目录 <code>PRD-项目创建与管理.md</code>；本页仅作阅读预览。交互以本目录 <code>index.html</code> 为准。</p>
+</article></div>
+
+<script src="assets/vendor/mermaid.min.js"></script>
+<script>
+(function(){
+  if (!window.mermaid) return;
+  mermaid.initialize({
+    startOnLoad: true,
+    securityLevel: 'loose',
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fff5f6',
+      primaryBorderColor: '#F32F41',
+      primaryTextColor: '#1f2329',
+      secondaryColor: '#f2f3f5',
+      tertiaryColor: '#ffffff',
+      lineColor: '#8f959e',
+      fontFamily: 'PingFang SC, Microsoft YaHei, sans-serif'
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

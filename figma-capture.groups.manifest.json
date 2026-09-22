@@ -1,0 +1,21 @@
+{
+  "fileKey": "Qb2Jcn0E9NllrGE7vdbH8q",
+  "nodeId": "1280:175",
+  "port": 8770,
+  "basePath": "/index.html",
+  "selector": "#frame",
+  "frameWidth": 390,
+  "gap": 80,
+  "fontFamily": "Noto Sans SC",
+  "bitmapPlaceholder": "#E8E8E8",
+  "iconsMustBeSvg": true,
+  "sliceBitmapsOnlyWhenUserAsks": true,
+  "screens": [
+    {
+      "capture": "price-group-menu",
+      "name": "分组管理",
+      "delay": 2800,
+      "captureId": "ba5d1121-4744-4395-8e51-5b12e3941dd7"
+    }
+  ]
+}

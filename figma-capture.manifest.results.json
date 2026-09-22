@@ -1,0 +1,14 @@
+{
+  "finishedAt": "2026-09-21T07:59:27.799Z",
+  "results": [
+    {
+      "capture": "price-edit-normal",
+      "name": "价目表-项目详情·普通",
+      "captureId": "672b624d-b04d-489f-83c8-0eb5b97701b6",
+      "pageUrl": "http://127.0.0.1:8766/index.html?capture=price-edit-normal",
+      "ok": false,
+      "status": "pending",
+      "error": "captureForDesign timeout"
+    }
+  ]
+}
