@@ -67,10 +67,13 @@ const navSheets = [
   { id: 'price-item-delete', label: '删除价目 Dialog' },
 ];
 
+/* 首页 = 价目表 · 项目（「功能入口」页已取消，v1.24）：生成时就把 `on` 打到该项上，
+   不依赖 boot 时的 JS 高亮（app.js 的 HOME_FLOW 与之对应，两处需同改）。 */
 function navBtns(items, startIdx) {
   return items.map((it, i) => {
     const idx = startIdx == null ? '·' : String(startIdx + i);
-    return `<button type="button" class="nav-item" data-flow="${it.id}"><span class="idx">${idx}</span>${it.label}</button>`;
+    const on = it.id === 'price-list-filled' ? ' on' : '';
+    return `<button type="button" class="nav-item${on}" data-flow="${it.id}"><span class="idx">${idx}</span>${it.label}</button>`;
   }).join('\n    ');
 }
 
@@ -83,10 +86,6 @@ ${FAVICON}
   <div class="nav-brand">
     <div class="t">价目表重构</div>
     <div class="s">独立原型 · 项目创建与管理</div>
-  </div>
-  <div class="nav-group">
-    <div class="g-t">入口</div>
-    <button type="button" class="nav-item on" data-flow="hub"><span class="idx">⌂</span>功能入口</button>
   </div>
   <div class="nav-group">
     <div class="g-t">价目表</div>
@@ -107,18 +106,6 @@ ${FAVICON}
   <div id="frame" class="phone-shell">
     <div class="phone-inner phone">
 ${statusBar}
-<div class="screen" id="screen-hub">
-  <div class="page-title-bar"><span class="title">功能入口</span></div>
-  <div class="page-body hub-body">
-    <button type="button" class="hub-card" id="hubGoPrice" data-hub-go="price">
-      <img class="hub-card__icon" src="assets/workbench/price.png" width="44" height="44" alt="">
-      <span>
-        <span class="hub-card__title">价目表</span>
-        <span class="hub-card__desc">项目/产品、分组、新增与详情</span>
-      </span>
-    </button>
-  </div>
-</div>
 ${fragment}
       <div class="toast-msg" id="toastMsg" role="status" aria-live="polite"></div>
     </div>

@@ -41,10 +41,11 @@ python -m http.server 8770
 
 ## 深链
 
+不带参数打开 `index.html` = **首页「价目表 · 项目」**（v1.25 起，原「功能入口」演示页与 `?flow=hub` 已取消）。
+
 | URL | 说明 |
 |-----|------|
-| `?flow=hub` | 功能入口 |
-| `?flow=price-list-filled` | 价目表 · 项目（有数据） |
+| `?flow=price-list-filled` | 价目表 · 项目（有数据）· **即首页** |
 | `?flow=price-list-product` | 价目表 · 产品 |
 | `?flow=price-groups` | 分组管理 |
 | `?flow=price-add` | 新增项目 |
@@ -58,7 +59,7 @@ python -m http.server 8770
 
 | 文件 | 说明 |
 |------|------|
-| `index.html` | 左侧链路导航 + 390×844 手机框（由 `price-fragment.html` 经 `_build-index.js` 生成） |
+| `index.html` | 左侧链路导航 + 390×844 手机框（由 `price-fragment.html` 经 `_build-index.js` 生成；首页 = 价目表 · 项目，无「功能入口」页） |
 | `catalog.js` / `base.css` | 价目核心（**手改，源在本目录**） |
 | `price-fragment.html` | 内联进 `index.html` 的页面片段（**手改**） |
 | `amount-keypad.js` | 金额数字键盘 |

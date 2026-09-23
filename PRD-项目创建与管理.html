@@ -59,11 +59,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.24</td>
+<td>v1.25</td>
 </tr>
 <tr>
 <td>日期</td>
-<td>2026-09-22</td>
+<td>2026-09-23</td>
 </tr>
 <tr>
 <td>交互原型（唯一可视依据）</td>
@@ -94,6 +94,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.25</td>
+<td>2026-09-23</td>
+<td><strong>图标换 Stratis 稿 + 包含项目/产品页改通栏白列表 + 取消「功能入口」演示页</strong>：①「包含项目 / 包含产品」入口图标换成 Figma 图标库 <strong>Stratis UI Icons <code>folder-minus-01</code></strong>（节点 <code>101:3599</code>，24×24 / stroke 2）：<strong>保留 <code>d</code> 路径不变</strong>，仅把 stroke 折算为 <strong>1.7</strong>（渲染 22×22 → 1.7 × 22/24 ≈ <strong>1.56px</strong>，与同族重命名 / 删除完全一致；照搬 2 会得到 1.83px，比同族<strong>重 17%</strong>）。实测三枚墨迹：包含项目 <strong>19.16 × 16.12 / 1.56px</strong>（viewBox 24）、重命名 <strong>18.06 × 17.25 / 1.56px</strong>、删除 <strong>18.06 × 17.14 / 1.56px</strong> —— 新图标线宽与同族一致，且高度比原「文件夹+长短两行」（13.66px）<strong>更贴近</strong>同族（17.2px）。②该页去卡片壳改<strong>通栏白色列表</strong>：删 <code>.catalog-member-card</code> 的 <code>border-radius:12px / margin:0 16px 16px / overflow:hidden</code>，<code>#screen-p-group-members</code> 及其 <code>.page-body</code> 底色由 <code>#F7F7F7</code> 改 <strong><code>var(--card)</code></strong> —— 整页（标题栏 + 选择条 + 列表）纯白，与列表页 <code>.page-body</code> 白底同规格；选择条补一条 <strong>1px <code>#EBEBEB</code></strong> 底边（白对白需要分界，取本页行分隔线同色）。列表保持左右 16px 内边距、行高 52 / <code>padding:14px 0</code>、行分隔线 <code>#EBEBEB</code>、末行无线；实测桌面 / 手机 / 产品 Tab 三种情形<strong>页面灰采样点均为 0</strong>。③<strong>取消「功能入口」演示页</strong>：删掉左侧导航「入口」组、首屏 <code>screen-hub</code>、<code>hub-*</code> 样式与 <code>app.js</code> 的 <code>openHub</code> / hub 卡片绑定；<strong>原型首页 = <code>price-list-filled</code>（价目表 · 项目）</strong>，导航高亮直接打在该项（生成时即带 <code>on</code>，不依赖启动期 JS）；列表页标题栏<strong>返回按钮随之下线</strong>（已无上级页），<code>projBackFromCatalog</code> 兜底改为回列表页、<code>openWorkbench</code> 兜底改为 <code>runPriceFlow('price-list-filled')</code>；<code>?flow=hub</code> 不再存在，访问会走既有兜底 toast「未接入: hub」。④顺带修正 <code>_tmp_verify_catalog.mjs</code> 一条<strong>过时断言</strong>（E 组 deep link 落地页）：原断言把「可见 screen 恰好等于目标页」当判据，与 v1.21 起的<strong>推栈转场</strong>天然冲突 —— 推栈完成后底层分组管理会<strong>有意</strong>保留 <code>is-stack-back</code>（x −85.36 / z 1，供右滑退出）。改为排除 <code>is-stack-back</code> 垫底页后，全量回归 <strong>100 PASS / 0 FAIL</strong>（改动前该套件亦为 99/1，同一条，非本次引入）。改动同步 §3.0 / §6.5 / §10.2（验收 +76～79）。</td>
+</tr>
 <tr>
 <td>v1.24</td>
 <td>2026-09-22</td>
@@ -549,6 +554,7 @@ flowchart LR
 
 </div>
 <p><strong>关键口径：本模块只有「价目表列表」一个页面主体</strong> —— 新增与详情不再是独立页面，而是在列表内<strong>就地向下展开</strong>的一块区域（行内展开区，§6.1.1）。除了分组管理的两级页面（分组管理 / 包含项目·包含产品），其余全部是列表页上的层。</p>
+<p><strong>原型首页（v1.25）</strong>：<code>index.html</code> 不带参数打开 = <strong><code>price-list-filled</code>（价目表 · 项目）</strong>。原先的「功能入口」演示页（<code>?flow=hub</code> + <code>screen-hub</code>）<strong>已取消</strong> —— 它只是独立原型的入口索引，不属于产品功能；左侧导航现在只剩「价目表 / 浮层·叠加态 / 文档」三组。相应地列表页标题栏<strong>不再有返回按钮</strong>（已无上级页；从会员卡权益页进入的返回语义见 §6.8）。</p>
 <table>
 <thead>
 <tr>
@@ -581,7 +587,7 @@ flowchart LR
 <tr>
 <td>包含项目 / 包含产品</td>
 <td>包含项目 · {组名}（产品 Tab：包含产品 · {组名}）；系统「隐藏」组为 <code>隐藏项目</code> / <code>隐藏产品</code></td>
-<td>底栏「确定」；系统「隐藏」组可编辑成员；选中态靠字重+明暗区分</td>
+<td>整页纯白（白标题栏 + 白选择条 + <strong>通栏白列表</strong>，无卡片壳）；底栏「确定」；系统「隐藏」组可编辑成员；选中态靠字重+明暗区分</td>
 </tr>
 <tr>
 <td>行操作</td>
@@ -1588,7 +1594,9 @@ flowchart LR
 <h2>6.5 包含项目 / 包含产品</h2>
 <ul>
 <li>标题：<code>包含项目 · {组名}</code>（产品 Tab：<code>包含产品 · {组名}</code>）；系统「隐藏」组直接叫 <strong><code>隐藏项目</code> / <code>隐藏产品</code></strong>（不再拼组名）  </li>
-<li><strong>页头版式（v1.24：与原型其它页同规格）</strong>：白标题栏（44px，手机模式随缩放 48.5px）+ <strong>白选择条</strong>（<code>.pick-select-bar.catalog-members-bar</code>，与列表页 Tab 条 <code>.page-tabs</code> 同规格）+ 灰正文（<code>#F7F7F7</code>）。该页为推栈页，顶部偏移取自 <strong><code>--statusbar-h</code></strong>（假状态栏可见时 53px、手机模式隐藏时 0）—— <strong>不得</strong>再写死 53px，否则手机模式会多出一条空带把标题栏压低  </li>
+<li><strong>页头版式（v1.25：整页纯白 + 通栏列表）</strong>：白标题栏（44px，手机模式随缩放 48.5px）+ <strong>白选择条</strong>（<code>.pick-select-bar.catalog-members-bar</code>，与列表页 Tab 条 <code>.page-tabs</code> 同规格）—— 选择条补一条 <strong>1px <code>#EBEBEB</code></strong> 底边作为与列表的分界（白对白需要一条发丝线，取本页行分隔线同色）。该页为推栈页，顶部偏移取自 <strong><code>--statusbar-h</code></strong>（假状态栏可见时 53px、手机模式隐藏时 0）—— <strong>不得</strong>再写死 53px，否则手机模式会多出一条空带把标题栏压低  </li>
+<li><strong>列表（v1.25：去卡片壳，改通栏白列表）</strong>：<code>#screen-p-group-members</code> 及其 <code>.page-body</code> 底色 = <code>var(--card)</code>（原 <code>#F7F7F7</code> 会让白卡四周露出 16px 灰缝）；<code>.catalog-member-card</code> 取消 <code>border-radius:12px / margin:0 16px 16px / overflow:hidden</code>，改为通栏（左右 0、无圆角）；行规格不变 —— 左右内边距 <strong>16px</strong>、行高 <strong>52</strong>、<code>padding: 14px 0</code>、行分隔线 <strong>1px <code>#EBEBEB</code></strong>（左右内缩 16）、<strong>末行无分隔线</strong>。实测桌面 / 手机 / 产品 Tab 三种情形页面灰 <code>#F7F7F7</code> 采样点均为 <strong>0</strong>（仅剩品牌红勾选框与底栏保存主按钮）  </li>
+<li><strong>入口图标（v1.25）</strong>：<code>folder-minus-01</code>（Figma 图标库 <strong>Stratis UI Icons</strong>，节点 <code>101:3599</code>）—— 24×24 线稿、<code>d</code> 路径原样，stroke 折算 <strong>1.7</strong>（渲染 22×22 得 <strong>1.56px</strong>，与同族重命名 / 删除一致）  </li>
 <li>列出当前 Tab 桶内 <strong>全部</strong> 价目（<strong>名称 + 价格</strong>；含 hidden 条目）；已选 N · 反选 · 全选  </li>
 <li><strong>选中态区分（v1.22：字感，不靠底色）</strong>：未选名称 <code>15px/400/#8A8A8A</code>、价格 <code>13px/400/#B9B9B9</code>；选中名称 <code>15px/600/#1A1A1A</code>、价格 <code>13px/500/#1A1A1A</code>；色值过渡 120ms。勾选框 <strong>18×18</strong>（未选 1.5px <code>#C8C9CC</code> 描边 / 选中 <code>#F32F41</code> 实心 + 白勾）<strong>保持原样</strong>，仅作控件确认符  </li>
 <li>系统「隐藏」组：勾选即移入隐藏 / 取消即取消隐藏  </li>
@@ -2140,7 +2148,7 @@ flowchart LR
 <li><strong>Given</strong> 分组管理某行已展开，<strong>When</strong> 量测展开条，<strong>Then</strong> 整块底色为 <strong><code>#E7E7E7</code></strong>、行下沿有 <strong>0.5px <code>rgba(0,0,0,.08)</code></strong> 发丝线（左右内缩 16）、操作条高 <strong>82</strong>；「包含项目·包含产品 + 重命名」<strong>整组水平居中、间距 16</strong>（单格 68.33 × 66）；<strong>删除</strong>为 <strong>32×32、圆角 8、<code>#BEBEBE</code> 灰底 + 白垃圾桶、无文案</strong>，距卡片右沿 <strong>16</strong>；<strong>不得</strong>再是「左缩进 44 对齐组名」或红色纯图标。</li>
 <li><strong>Given</strong> 分组管理页，<strong>When</strong> 点展开条「包含项目 / 包含产品」，<strong>Then</strong> 对应页<strong>自右侧滑入</strong>覆盖分组管理（300ms），底层分组管理<strong>左移 22%</strong> 并叠 <strong><code>rgba(0,0,0,.1)</code></strong> 蒙层；<strong>不得</strong>是瞬时硬切。</li>
 <li><strong>Given</strong> 包含项目 / 包含产品页，<strong>When</strong> 点返回或「确定」，<strong>Then</strong> 该页<strong>自右侧滑出</strong>、蒙层淡出、回到分组管理且展开态已收起；系统「减少动态效果」或 Figma 抓取模式下动效降级为即时切换（功能不变）。</li>
-<li><strong>Given</strong> 分组管理某行已展开，<strong>When</strong> 读入口文案，<strong>Then</strong> 项目 Tab 为 <strong>「包含项目」</strong>、产品 Tab 为 <strong>「包含产品」</strong>（图标为<strong>文件夹内条目</strong>线描 22×22）；<strong>不得</strong>再出现「编辑成员」字样与双人图标。</li>
+<li><strong>Given</strong> 分组管理某行已展开，<strong>When</strong> 读入口文案，<strong>Then</strong> 项目 Tab 为 <strong>「包含项目」</strong>、产品 Tab 为 <strong>「包含产品」</strong>（图标为 <strong>Stratis <code>folder-minus-01</code></strong> 线描，22×22 渲染、stroke 折算 1.7 → 1.56px，见验收 77）；<strong>不得</strong>再出现「编辑成员」字样与双人图标。</li>
 <li><strong>Given</strong> 点该入口进入，<strong>Then</strong> 页面标题为 <strong><code>包含项目 · {组名}</code></strong>（产品 Tab 为 <code>包含产品 · {组名}</code>；系统「隐藏」组为 <strong><code>隐藏项目</code> / <code>隐藏产品</code></strong>）；左侧导航同样为「分组 · 包含项目」。</li>
 <li><strong>Given</strong> 包含项目 / 包含产品页同时存在已选与未选条目，<strong>When</strong> 对比二者，<strong>Then</strong> 未选名称 <strong><code>15px/400/#8A8A8A</code></strong>、价格 <strong><code>13px/400/#B9B9B9</code></strong>；选中名称 <strong><code>15px/600/#1A1A1A</code></strong>、价格 <strong><code>13px/500/#1A1A1A</code></strong>；<strong>不得</strong>再依赖整行底色/描边区分，勾选框仍为 18×18 原样。</li>
 <li><strong>Given</strong> 分组管理页与价目表列表页标题栏右侧入口，<strong>When</strong> 量测加号与文字，<strong>Then</strong> 二者<strong>同为 14px 盒</strong>、flex 垂直居中，墨迹中轴差 <strong>≤ 0.5px</strong>；加号为 <strong>14 单位 / stroke 1.5</strong>（<strong>不得</strong>再用 12 单位 / stroke 1.8，那会让描边比 15px 文字重约 40%）。「隐藏」Tab 图标为 <strong>16×16 / stroke 1.5 的眼 + 斜线</strong>（Tab 内 14×14），线宽与重命名/删除图标成族。</li>
@@ -2152,7 +2160,11 @@ flowchart LR
 <li><strong>Given</strong> 线上站点 <a href="https://xdean-designer.github.io/menu/">https://xdean-designer.github.io/menu/</a>，<strong>When</strong> 打开控制台，<strong>Then</strong> <strong>无 404 / 无脚本报错</strong>（站内已有内联 SVG favicon）；<code>index.html</code> / <code>base.css</code> / <code>shell.css</code> / <code>mobile-preview.js</code> / <code>catalog.js</code> / <code>app.js</code> / <code>amount-keypad.js</code> / <code>assets/**</code> 全部 200。</li>
 <li><strong>Given</strong> 手机模式（假状态栏已隐藏），<strong>When</strong> 从分组管理点「包含项目 / 包含产品」推入，<strong>Then</strong> 该页<strong>距画布顶为 0</strong>、标题栏 top 与列表页 / 分组管理<strong>完全一致</strong>（430 视口实测三者均为 0）；<strong>不得</strong>多出一条状态栏高度的空带（旧版为 53 × scale = 58.5px）。</li>
 <li><strong>Given</strong> 桌面壳或 Figma 抓取模式（<code>?capture=1</code>，假状态栏可见），<strong>When</strong> 推入同一页，<strong>Then</strong> 顶部偏移仍为 <strong>53px</strong>（三种模式实测：桌面 55 / 手机 0 / 抓取 53 距画布顶）；<strong>推入动画中、退出动画中、退出后</strong>三个时点的偏移均为 0（手机）/ 53（桌面），<strong>不得</strong>闪出空带。实现须走单一来源 <strong><code>--statusbar-h</code></strong>，<strong>不得</strong>在推栈层再写死 53px。</li>
-<li><strong>Given</strong> 包含项目 / 包含产品页，<strong>When</strong> 量测选择条（已选 N · 反选 · 全选），<strong>Then</strong> 底色为<strong>白 <code>#FFFFFF</code></strong>（与列表页 Tab 条 <code>.page-tabs</code> 同规格），<strong>不得</strong>露成页面灰 <code>#F7F7F7</code>；内边距 <code>14px 16px 10px</code>、标题 <code>13px/600</code>、按钮 <code>14px/500</code> 品牌红 <code>#F32F41</code>；底栏沿用通用 <code>.bottom-bar</code>（56px、按钮 48px）。</li>
+<li><strong>Given</strong> 包含项目 / 包含产品页，<strong>When</strong> 量测选择条（已选 N · 反选 · 全选），<strong>Then</strong> 底色为<strong>白 <code>#FFFFFF</code></strong>（与列表页 Tab 条 <code>.page-tabs</code> 同规格），<strong>不得</strong>露成页面灰 <code>#F7F7F7</code>；内边距 <code>14px 16px 10px</code>、标题 <code>13px/600</code>、按钮 <code>14px/500</code> 品牌红 <code>#F32F41</code>；选择条下沿有 <strong>1px <code>#EBEBEB</code></strong> 分界线（v1.25 起列表改纯白，白对白需要一条发丝线）；底栏沿用通用 <code>.bottom-bar</code>（56px、按钮 48px）。</li>
+<li><strong>Given</strong> 不带参数打开 <code>index.html</code>，<strong>When</strong> 看首屏，<strong>Then</strong> 落地 <strong><code>price-list-filled</code>（价目表 · 项目）</strong>、左侧导航高亮该项；<strong>不得</strong>再出现「功能入口」导航组、<code>screen-hub</code> 页、<code>hub-*</code> 样式与 <code>openHub</code>；<code>?flow=hub</code> 节点已取消（访问走既有兜底 toast「未接入: hub」）；列表页标题栏<strong>不再有返回按钮</strong>（已无上级页）。</li>
+<li><strong>Given</strong> 分组管理某行已展开，<strong>When</strong> 量测三枚操作图标（22×22 渲染）的描边与墨迹，<strong>Then</strong> 描边<strong>三者一致为 1.56px</strong>（包含项目 viewBox 24 / stroke 1.7：1.7 × 22/24 ≈ 1.56）；墨迹分别 <strong>19.16 × 16.12</strong>（包含项目）/ <strong>18.06 × 17.25</strong>（重命名）/ <strong>18.06 × 17.14</strong>（删除）；<strong>不得</strong>照搬 Stratis 原始 <code>stroke: 2</code>（渲染 1.83px，比同族<strong>重 17%</strong>）。</li>
+<li><strong>Given</strong> 包含项目 / 包含产品页（<strong>桌面 / 手机 / 产品 Tab</strong> 三种情形），<strong>When</strong> 从画布顶逐 3px 采样整页底色，<strong>Then</strong> <strong>页面灰 <code>#F7F7F7</code> 采样点为 0</strong> —— 整页只剩白 <code>#FFFFFF</code> 与品牌红 <code>#F32F41</code>（勾选框 / 底栏保存主按钮）；<code>#screen-p-group-members</code> 及其 <code>.page-body</code> 底色为 <code>var(--card)</code>。</li>
+<li><strong>Given</strong> 包含项目 / 包含产品页，<strong>When</strong> 量测列表，<strong>Then</strong> 列表壳<strong>通栏</strong>（相对正文内容区左右偏移 <strong>0</strong>、宽 = 内容宽；桌面经典滚动条吃掉 15px 属正常，真机为覆盖式滚动条）、<strong>无圆角（<code>border-radius: 0</code>）、无外边距（<code>margin: 0</code>）</strong>；行左右内边距 <strong>16</strong>、行高 <strong>52</strong>、<code>padding: 14px 0</code>、行分隔线 <strong>1px <code>#EBEBEB</code></strong>（左右内缩 16）、<strong>末行无分隔线</strong>；首行顶边<strong>紧贴选择条下沿</strong>。</li>
 </ol>
 <hr />
 <h1>模块 11　非功能（极简）</h1>

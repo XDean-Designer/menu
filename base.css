@@ -17,17 +17,6 @@
   position: absolute; left: 50%; top: 50%;
   transform: translate(-50%, -50%); z-index: 100;
 }
-.hub-body { padding: 16px; background: #F7F7F7; }
-.hub-card {
-  display: flex; align-items: center; gap: 14px;
-  background: #fff; border-radius: 12px; padding: 16px;
-  border: none; width: 100%; text-align: left; cursor: pointer;
-  font-family: inherit; box-shadow: 0 1px 4px rgba(0,0,0,.04);
-}
-.hub-card:active { background: #FAFAFA; }
-.hub-card__icon { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
-.hub-card__title { font-size: 16px; font-weight: 600; color: var(--text, #1a1a1a); }
-.hub-card__desc { font-size: 12px; color: var(--text-sec, #999); margin-top: 4px; }
 /* 标题绝对居中后，右侧操作贴右（demo L8551） */
 .page-title-bar .title-add-btn {
   position: relative; z-index: 2; flex: 0 0 auto; margin-left: auto; align-self: center;
@@ -972,10 +961,15 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 .catalog-members-bar { background: var(--card); flex-shrink: 0; }
 /* 提高特异性，压过更后面定义的 `.pick-select-bar { background: transparent }`
    （同特异性时后定义者胜出，会让上面这条失效、选择条露成页面灰 #F7F7F7）。
-   规格与列表页 Tab 条 `.page-tabs`（白底）一致：白标题栏 + 白选择条 + 灰正文。 */
-.pick-select-bar.catalog-members-bar { background: var(--card); }
+   规格与列表页 Tab 条 `.page-tabs`（白底）一致：白标题栏 + 白选择条 + 白列表。 */
+.pick-select-bar.catalog-members-bar {
+  background: var(--card);
+  /* 白对白：选择条与下方列表需要一条发丝线分界（同色于本页行分隔线 #EBEBEB） */
+  border-bottom: 1px solid #EBEBEB;
+}
+/* v1.24 起该页去卡片壳：通栏白色列表（原先白卡浮在灰底上，四周留 16px 灰缝） */
 .catalog-member-card {
-  margin: 0 16px 16px; background: var(--card); border-radius: 12px; overflow: hidden;
+  margin: 0; background: var(--card); border-radius: 0;
 }
 .catalog-member-list { padding: 0 16px; }
 .catalog-member-item {
@@ -2182,8 +2176,10 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   background: #F7F7F7;
 }
 #screen-p-group-members {
-  background: #F7F7F7;
+  /* v1.24 起整页白底（去卡片壳，通栏白列表），与列表页 `.page-body` 白底一致 */
+  background: var(--card);
 }
+#screen-p-group-members .page-body { background: var(--card); }
 #screen-p-groups.is-push-under {
   z-index: 1;
   transform: translate3d(0, 0, 0);

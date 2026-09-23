@@ -66,7 +66,8 @@ function closeUnlimitedValidityDialog() {
   if (el) el.classList.remove('open');
 }
 function confirmUnlimitedValidityDialog() { closeUnlimitedValidityDialog(); }
-function openWorkbench() { if (g.openHub) g.openHub(); }
+/* 「功能入口 / 工作台」页已取消（v1.24）：兜底回首页「价目表 · 项目」 */
+function openWorkbench() { if (typeof g.runPriceFlow === 'function') g.runPriceFlow('price-list-filled'); }
 function setFlowNavHighlight(id) { if (g.__setNavHighlight) g.__setNavHighlight(id); }
 function closeAllFlowOverlays() {
   document.querySelectorAll('.picker-mask.open, .dialog-mask.open').forEach(function (el) {
@@ -850,7 +851,11 @@ function filterCatalogByActiveGroup(list) {
 
 const CATALOG_GROUP_DRAG_ICON = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(4 4.25)"><line x1="0.75" y1="0.75" x2="9.25" y2="0.75" stroke="#929292" stroke-width="1.5" stroke-linecap="round"/><line x1="0.75" y1="8.75" x2="9.25" y2="8.75" stroke="#929292" stroke-width="1.5" stroke-linecap="round"/><line x1="1.659" y1="4.75" x2="8.341" y2="4.75" stroke="#929292" stroke-width="1.5" stroke-linecap="round"/></g></svg>';
 /* 分组行展开操作：编辑成员→「包含项目/包含产品」用文件夹内条目图标；重命名铅笔；删除灰底白垃圾桶 */
-const CATALOG_GROUP_ACT_MEMBERS_ICON = '<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2.75 6.55C2.75 5.67 3.46 4.95 4.35 4.95H8.1C8.55 4.95 8.98 5.13 9.3 5.45L10.47 6.62H17.65C18.54 6.62 19.25 7.34 19.25 8.22V15.45C19.25 16.33 18.54 17.05 17.65 17.05H4.35C3.46 17.05 2.75 16.33 2.75 15.45V6.55Z" stroke="currentColor" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.6 10.62H14.4" stroke="currentColor" stroke-width="1.56" stroke-linecap="round"/><path d="M7.6 13.28H11.4" stroke="currentColor" stroke-width="1.56" stroke-linecap="round"/></svg>';
+/* 「包含项目 / 包含产品」入口图标：Stratis UI Icons 的 `folder-minus-01`（Figma 节点 101:3599）。
+   原始 24 单位 / stroke 2；本行图标族统一渲染线宽 1.56px，故渲染 22×22 时
+   把 stroke 折算为 1.7（1.7 × 22/24 ≈ 1.56px）—— 照搬 2 会得到 1.83px，比旁边的
+   重命名 / 删除重约 17%。路径数据未改动。 */
+const CATALOG_GROUP_ACT_MEMBERS_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8.60589 13.4059H15.3941M2.40094 17.541L2.40103 8.41668C2.40104 7.50276 2.4007 6.20103 2.4004 5.25848C2.4002 4.59556 2.93753 4.05879 3.60045 4.05879H9.31867L12.0837 7.01243H20.4C21.0627 7.01243 21.6 7.54971 21.6 8.21246L21.5997 17.5411C21.5996 18.8666 20.5251 19.9411 19.1997 19.9411L4.80093 19.941C3.47544 19.941 2.40093 18.8665 2.40094 17.541Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const CATALOG_GROUP_ACT_RENAME_ICON = '<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 18.3333H19.25" stroke="currentColor" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.125 3.20833C15.4897 2.84366 15.9843 2.63879 16.5 2.63879C17.0157 2.63879 17.5103 2.84366 17.875 3.20833C18.2397 3.57301 18.4445 4.06761 18.4445 4.58333C18.4445 5.09906 18.2397 5.59366 17.875 5.95833L6.41667 17.4167L2.75 18.3333L3.66667 14.6667L15.125 3.20833Z" stroke="currentColor" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const CATALOG_GROUP_ACT_DELETE_ICON = '<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2.75 5.5H19.25" stroke="currentColor" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.33333 5.5V4.4C7.33333 3.96239 7.50717 3.54271 7.81661 3.23327C8.12604 2.92384 8.54573 2.75 8.98333 2.75H13.0167C13.4543 2.75 13.874 2.92384 14.1834 3.23327C14.4928 3.54271 14.6667 3.96239 14.6667 4.4V5.5" stroke="currentColor" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.4167 5.5L16.775 16.6833C16.7294 17.1371 16.5163 17.5576 16.1773 17.8627C15.8383 18.1678 15.3977 18.3356 14.9417 18.3333H7.05833C6.60226 18.3356 6.16171 18.1678 5.82271 17.8627C5.48371 17.5576 5.2706 17.1371 5.225 16.6833L4.58333 5.5" stroke="currentColor" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.16667 10.0833V14.6667M12.8333 10.0833V14.6667" stroke="currentColor" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const CATALOG_GROUP_CREATE_PLUS_ICON = '<svg class="btn-catalog-group-create__plus" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
@@ -3882,7 +3887,6 @@ function wireProjCatalogModule() {
     if (!btn) return;
     cycleCatalogColSort(btn.dataset.colSort);
   });
-  document.getElementById('projBackFromList')?.addEventListener('click', projBackFromCatalog);
   document.getElementById('catalogInlineDiscardAbort')?.addEventListener('click', () => { catalogInlinePendingSwitch = null; closeCatalogInlineDiscardDialog(); });
   document.getElementById('catalogInlineDiscardOk')?.addEventListener('click', () => {
     if (catalogInlinePendingSwitch) confirmCatalogInlineDiscardSwitch();
@@ -4144,10 +4148,11 @@ function resolveProductDemoTarget(kind) {
 }
 
 /* --- standalone overrides --- */
+/* 列表页已是原型首页（「功能入口」页已取消，v1.24），返回按钮随之下线；
+   保留此函数并指向列表页，避免遗留调用落到大原型分支（openWorkbench / screen2）。 */
 function projBackFromCatalog() {
   closeAllFlowOverlays();
-  if (g.openHub) g.openHub();
-  else projShowScreen('screen-hub');
+  projShowScreen('screen-p-list');
 }
 
 function showToast(msg, isWarn) {
@@ -4164,7 +4169,7 @@ function showOnlyScreen(id) {
   document.querySelectorAll('#frame .screen').forEach(function (el) {
     el.classList.toggle('hidden', el.id !== id);
   });
-  setFlowNavHighlight(id === 'screen-hub' ? 'hub' : id);
+  setFlowNavHighlight(id);
 }
 
 /* PRICE_FLOW from demo FLOW_NAV */

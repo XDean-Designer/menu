@@ -17,13 +17,9 @@
     <div class="s">独立原型 · 项目创建与管理</div>
   </div>
   <div class="nav-group">
-    <div class="g-t">入口</div>
-    <button type="button" class="nav-item on" data-flow="hub"><span class="idx">⌂</span>功能入口</button>
-  </div>
-  <div class="nav-group">
     <div class="g-t">价目表</div>
     <button type="button" class="nav-item" data-flow="price-list-empty"><span class="idx">1</span>价目表 · 空态</button>
-    <button type="button" class="nav-item" data-flow="price-list-filled"><span class="idx">2</span>价目表 · 项目</button>
+    <button type="button" class="nav-item on" data-flow="price-list-filled"><span class="idx">2</span>价目表 · 项目</button>
     <button type="button" class="nav-item" data-flow="price-list-product"><span class="idx">3</span>价目表 · 产品</button>
     <button type="button" class="nav-item" data-flow="price-groups"><span class="idx">4</span>分组管理</button>
     <button type="button" class="nav-item" data-flow="price-group-members"><span class="idx">5</span>分组 · 包含项目</button>
@@ -67,22 +63,9 @@
         <svg width="27.3" height="12" viewBox="0 0 27.328 13" fill="none" xmlns="http://www.w3.org/2000/svg"><g><rect x="0.5" y="0.5" width="24" height="12" rx="3" stroke="#1A1A1A" opacity="0.35"/><path d="M26 4.66667V8.66667C26.8047 8.32789 27.328 7.5398 27.328 6.66667C27.328 5.79353 26.8047 5.00544 26 4.66667" fill="#1A1A1A" opacity="0.4"/><rect x="2" y="2" width="21" height="9" rx="1.33333" fill="#1A1A1A"/></g></svg>
       </div>
     </div>
-<div class="screen" id="screen-hub">
-  <div class="page-title-bar"><span class="title">功能入口</span></div>
-  <div class="page-body hub-body">
-    <button type="button" class="hub-card" id="hubGoPrice" data-hub-go="price">
-      <img class="hub-card__icon" src="assets/workbench/price.png" width="44" height="44" alt="">
-      <span>
-        <span class="hub-card__title">价目表</span>
-        <span class="hub-card__desc">项目/产品、分组、新增与详情</span>
-      </span>
-    </button>
-  </div>
-</div>
 <!-- ==== PRICE CATALOG (from card/demo.html) ==== -->
         <div class="screen hidden" id="screen-p-list">
           <header class="page-title-bar">
-            <button type="button" class="back" id="projBackFromList" aria-label="返回"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
             <span class="title">价目表</span>
             <button type="button" class="title-add-btn" id="btnProjTitleAdd" aria-label="添加"><svg class="title-add-btn__plus" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="title-add-btn__text">添加</span></button>
           </header>

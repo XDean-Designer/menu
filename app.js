@@ -9,21 +9,10 @@
   }
   g.__setNavHighlight = setNavHighlight;
 
-  g.openHub = function () {
-    try {
-      document.querySelectorAll('.picker-mask.open, .dialog-mask.open').forEach(function (el) {
-        el.classList.remove('open');
-      });
-    } catch (e) {}
-    g.showOnlyScreen('screen-hub');
-    setNavHighlight('hub');
-  };
+  /* 原型已取消「功能入口」页：首页 = 价目表 · 项目（v1.24） */
+  var HOME_FLOW = 'price-list-filled';
 
   function goFlow(id) {
-    if (id === 'hub') {
-      g.openHub();
-      return;
-    }
     if (typeof g.runPriceFlow === 'function') g.runPriceFlow(id);
     else if (g.PRICE_FLOW && typeof g.PRICE_FLOW[id] === 'function') {
       g.PRICE_FLOW[id]();
@@ -40,20 +29,6 @@
         }
       });
     });
-    var hub = document.getElementById('hubGoPrice');
-    if (hub) {
-      hub.addEventListener('click', function () {
-        goFlow('price-list-filled');
-      });
-    }
-    var listBack = document.getElementById('projBackFromList');
-    if (listBack) {
-      listBack.addEventListener('click', function (e) {
-        /* catalog.js also binds; ensure hub when standalone */
-        e.stopImmediatePropagation();
-        g.openHub();
-      }, true);
-    }
   }
 
   function applyDeepLink() {
@@ -66,7 +41,7 @@
       if (!flow && capture !== '1') flow = capture;
     }
     if (flow) goFlow(flow);
-    else g.openHub();
+    else goFlow(HOME_FLOW);
   }
 
   function boot() {
