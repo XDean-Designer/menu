@@ -2417,7 +2417,7 @@ function projRenderList() {
     const offBlock = document.createElement('div');
     offBlock.className = 'catalog-offsale-block';
     offBlock.innerHTML = `
-      <div class="catalog-offsale-head">已下架</div>
+      <div class="catalog-offsale-head">已下架 · 停售</div>
       <div class="catalog-offsale-list"></div>`;
     const offMount = offBlock.querySelector('.catalog-offsale-list');
     offSaleList.forEach(p => {
@@ -2430,7 +2430,7 @@ function projRenderList() {
     block.className = 'catalog-hidden-block' + (state.catalogHiddenExpanded ? ' is-open' : '');
     block.innerHTML = `
       <button type="button" class="catalog-hidden-toggle" data-catalog-hidden-toggle aria-expanded="${state.catalogHiddenExpanded ? 'true' : 'false'}">
-        <span class="catalog-hidden-toggle__label">${CATALOG_HIDE_ICON}已隐藏</span>
+        <span class="catalog-hidden-toggle__label">${CATALOG_HIDE_ICON}已隐藏 · 仅顾客端不可见</span>
         ${CATALOG_HIDDEN_CHEV_ICON}
       </button>
       <div class="catalog-hidden-list"></div>`;
