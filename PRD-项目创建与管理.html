@@ -59,7 +59,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.29</td>
+<td>v1.30</td>
 </tr>
 <tr>
 <td>日期</td>
@@ -94,6 +94,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.30</td>
+<td>2026-09-23</td>
+<td><strong>「已隐藏」折叠条改为「已下架」同款版式（仅底色与文字色保留差异）+ 修掉两分区交界处叠线</strong>（承接 v1.29 的分区标题改造）。<strong>① 版式统一</strong>：<code>.catalog-hidden-toggle</code> 原为 <code>space-between</code>、<code>min-height:37px</code>、<code>padding:8px 12px</code>、<code>15px/400</code>、眼睛图标在左 + 折叠箭头在右；现与 <code>.catalog-offsale-head</code> 完全同款 —— <strong>同宽 388 / 同高 26（写死 <code>height</code>+<code>min/max-height</code>）/ 13px / 400 / <code>justify-content:center</code> / <code>padding:0 16px</code> / <code>line-height:18px</code></strong>，实测 parity <code>heightSame / fontSizeSame / weightSame / centerSame / padSame</code> <strong>全为真</strong>。<strong>② 只保留两处刻意差异</strong>：底色 <code>#EEEEEE</code>（vs <code>#fff</code>）与文字色 <code>--text</code> <code>#333333</code>（vs <code>--text-sec</code> <code>#929292</code>）＝「同款但文字颜色区分」；块底 <code>#EEEEEE</code> 维持 v1.19 规则不变（实测 <code>hiddenBlockBg</code> 仍为 <code>rgb(238,238,238)</code>）。<strong>③ 移除眼睛图标、保留折叠箭头</strong>：删掉 label 内的 <code>${CATALOG_HIDE_ICON}</code>（<strong>常量本身保留</strong>，仍供「隐藏」Tab 使用，实测该 Tab <code>hasIco:true</code> 未受影响）；箭头作为唯一「可展开」线索保留，并由 <code>stroke="#929292"</code> 改 <strong><code>stroke="currentColor"</code></strong>（随文字色 → <code>#333</code>，非文字对比度 2.59:1 → <strong>10.6:1</strong>，越过 WCAG 3:1 建议线），尺寸 16→<strong>14px</strong>（按 v1.22「图标/文字 ≈ 1.07」比例折算）；实测 <code>14×14</code> / <code>color: rgb(51,51,51)</code> / <code>stroke="currentColor"</code>。<strong>④ 热区取舍</strong>：触控高度 <strong>26px</strong>（全宽 388）。<strong>放弃伪元素外扩至 44px</strong> —— 实测上方 <strong>1px</strong> 即为「已下架」区块内的可点行（<code>ROW:接发</code>）、下方 <strong>12px</strong> 后即为底部「添加项目」行，外扩会直接抢相邻元素点击，而 26＋12＝38px 仍不足 44。<strong>⑤ 修掉交界处叠线（真 bug）</strong>：<code>#projProjectTable .table-row-swipe:has(+ .catalog-hidden-block) .table-row::after</code> 原为 <code>display:block</code>，而 <code>.catalog-hidden-block::before</code> 在 <code>top:0</code> <strong>无条件</strong>画线 —— 当<strong>有隐藏、无已下架</strong>时二者落在<strong>同一 y</strong>、叠成一条比其它发丝线更重的线（已用左滑「上架」把演示数据构造成该状态复现：<code>matchedByHasRule:['卸甲重做']</code>、该行 <code>::after</code> 曾被设为 <code>block</code>）。现改为 <strong><code>display:none</code></strong>，该线由隐藏块自己提供 —— 与 §6.1.1 对「已下架」的处理对称。实测三态 <code>lineDrawers</code> 均为<strong>单条</strong>：有已下架 <code>['HIDDEN_BLOCK::before']</code>、<strong>无已下架同样 <code>['HIDDEN_BLOCK::before']</code></strong>、展开态同样 1 条。<strong>⑥ 验证</strong>：全量回归 <code>_tmp_verify_catalog.mjs</code> <strong>100 PASS / 0 FAIL</strong>；<code>_tmp_verify_hidden_toggle.mjs</code> 已同步改写检查项（由「查眼睛图标」改为「查箭头 + 与已下架几何 parity」）。改动同步 §6.1（列表结构第 3 项）/ §6.1.1（分区标题与分区线）/ §10.2（验收 24 改写）。</td>
+</tr>
 <tr>
 <td>v1.29</td>
 <td>2026-09-23</td>
@@ -1026,7 +1031,7 @@ flowchart LR
 <td></td>
 </tr>
 <tr>
-<td>3. 底部折叠条「<strong>已隐藏 · 仅顾客端不可见</strong>」（无数量；块底 <code>#EEEEEE</code>，与展开区 <code>#F7F7F7</code> 区分；<strong>分区线在其上方</strong>）；展开后可查看/操作隐藏条目</td>
+<td>3. 底部折叠条「<strong>已隐藏 · 仅顾客端不可见</strong>」（无数量；块底 <code>#EEEEEE</code>，与展开区 <code>#F7F7F7</code> 区分；<strong>分区线在其上方</strong>；<strong>版式与「已下架」标题同款 —— 同高 26 / 13px / 居中，仅底色与文字色不同，另仅多一个 14px 折叠箭头</strong>，见 §6.1.1）；展开后可查看/操作隐藏条目</td>
 <td></td>
 </tr>
 <tr>
@@ -1286,7 +1291,10 @@ flowchart LR
 <li>所有非整行（横向）表单行：<strong>标签右沿 = 首个控件左沿</strong>，控件左沿全局唯一。</li>
 <li>例外是 <code>proj-form-row--switches</code>：「在售」的标签与开关、「可预约」的标签与开关<strong>成对并排在同一行</strong>（第一对左沿与标签列同基准）——这一行的标签不参与上面的对齐网格判定。</li>
 <li>行高 ≥ <strong>48</strong>（触控热区 ≥ 44；<code>--switches</code> 行撤掉副标题后同样只剩 48）；行分隔线为 1px、左右各内缩 16、<code>scaleY(.5)</code> 发丝线。</li>
-<li><strong>分区标题与分区线</strong>：列表分区自上而下为「在售 → 已下架 → 已隐藏」，两个分区标题<strong>各带副标题点出业务差异</strong> —— <strong><code>已下架 · 停售</code></strong>（13px/400/<code>--text-sec</code>/居中，<code>.catalog-offsale-head</code>）与 <strong><code>已隐藏 · 仅顾客端不可见</code></strong>（15px/400/<code>--text</code>/左对齐 + 折叠箭头，<code>.catalog-hidden-toggle__label</code>）；<strong>「仅」字不可省</strong>（下架同样对顾客端不可见，去掉「仅」后副标题反而与「已下架」同义）。<strong>分区线一律画在标题上方</strong>（<code>16px 0</code> / <code>::before top:0</code>，左右各内缩 16、<code>#EBEBEB</code>），两个分区方向必须一致；<strong>标题与它自己的内容之间不得有线</strong>。在售末行必须<strong>让位</strong>给分区线（<code>#projProjectTable .table-row-swipe:has(+ .catalog-offsale-block) .table-row::after{display:none}</code> —— 须带 ID 前缀才生效，否则被上方的 <code>display:block</code> 覆盖并与分区线叠成重线）。</li>
+<li><strong>分区标题与分区线</strong>：列表分区自上而下为「在售 → 已下架 → 已隐藏」。两个分区标题<strong>共用同一套版式</strong> —— <strong>同宽 388 / 同高 26 / 13px / 400 / 居中 / 内边距 <code>0 16px</code></strong>，<strong>只有底色与文字色不同</strong>：<strong><code>已下架 · 停售</code></strong> ＝ <code>#fff</code> 底 + <code>--text-sec</code>(#929292) 字（<code>.catalog-offsale-head</code>，<strong>不可点</strong>）；<strong><code>已隐藏 · 仅顾客端不可见</code></strong> ＝ <code>#EEEEEE</code> 底 + <code>--text</code>(#333333) 字（<code>.catalog-hidden-toggle</code>，<strong>可点展开</strong>）。<strong>「仅」字不可省</strong>（下架同样对顾客端不可见，去掉「仅」后副标题反而与「已下架」同义）。</li>
+<li><strong>「已隐藏」唯一的非对称元素是折叠箭头</strong>：它在视觉上要与静态的「已下架」同款，但必须保住「可展开」线索，故<strong>只保留 14×14 折叠箭头</strong>（<code>stroke="currentColor"</code> → 随文字色 <code>#333</code>；尺寸按 13px 文字折算，与 v1.22 的「图标/文字 ≈ 1.07」比例一致），并<strong>移除原先的 16×16 眼睛图标</strong> —— 语义已由「已隐藏」三字承担，且 16px 图标在「26px 高 + 13px 字」的标题里过重（24px 的 Tab 内图标不受影响，仍保留）。箭头收起态 <code>rotate(180deg)</code>、展开态 <code>0deg</code>，过渡 <code>.2s ease</code>。</li>
+<li><strong>热区（已知取舍）</strong>：该折叠条触控高度为 <strong>26px</strong>（全宽 388）。<strong>不得用伪元素外扩热区</strong> —— 实测其上方 <strong>1px</strong> 即为「已下架」区块内的可点行、下方 <strong>12px</strong> 后即为底部「添加项目」行，外扩会直接抢走相邻元素的点击；而 26＋12 ＝ 38px 仍不足 44px，故放弃外扩。</li>
+<li><strong>分区线一律画在标题上方</strong>（<code>16px 0</code> / <code>::before top:0</code>，左右各内缩 16、<code>#EBEBEB</code>），两个分区方向必须一致；<strong>标题与它自己的内容之间不得有线</strong>。两处交界都让<strong>行</strong>放弃画线、由<strong>分区标题自己</strong>提供那一条：<code>#projProjectTable .table-row-swipe:has(+ .catalog-offsale-block) .table-row::after{display:none}</code>，以及 <code>:has(+ .catalog-hidden-block)</code> 同理（<strong>均须带 ID 前缀</strong>才生效，否则被上方的 <code>display:block</code> 覆盖）。<strong>两处若同时绘制会落在同一 y、叠成一条比其它发丝线更重的线</strong> —— 注意「无已下架条目」时隐藏块与末行直接相邻，是这条规则唯一会真正命中的场景。</li>
 <li>（v1.17）字段区不再套白卡，因此原先「白卡级 16 + 内容级再进 16 = 32」的两级左基准合并为<strong>一级 16px</strong>。</li>
 </ul>
 <p><strong>「最佳操作位」（滚动定位）</strong></p>
@@ -2128,7 +2136,7 @@ flowchart LR
 <li><strong>Given</strong> 开单已选价目产品且支付成功，<strong>When</strong> 支付完成，<strong>Then</strong> <strong>不</strong>因价目表 <code>stock</code> 扣减（库存管理另模块）。  </li>
 <li><strong>Given</strong> 展开区时长字段未填或为 0，<strong>When</strong> 保存，<strong>Then</strong> toast「请填写项目时长」，保存被拦截。  </li>
 <li><strong>Given</strong> 项目详情高级设置，<strong>When</strong> 添加第 2 张封面，<strong>Then</strong> toast「仅可上传 1 张封面」。  </li>
-<li><strong>Given</strong> 「全部」列表有下架与隐藏条目，<strong>When</strong> 浏览，<strong>Then</strong> 无状态列；可见居中「已下架 · 停售」分区标题与「已隐藏 · 仅顾客端不可见」折叠条（无数量），<strong>两条分区线各自在其标题上方</strong>（左右内缩 16），且<strong>在售末行不再重复画线</strong>（该区段共 2 条线，不得出现 3 条）。  </li>
+<li><strong>Given</strong> 「全部」列表有下架与隐藏条目，<strong>When</strong> 浏览，<strong>Then</strong> 无状态列；可见「已下架 · 停售」分区标题与「已隐藏 · 仅顾客端不可见」折叠条（无数量），二者<strong>同高 26 / 同字号 13 / 同字重 400 / 同居中 / 同内边距 <code>0 16px</code></strong>、<strong>仅底色（<code>#fff</code> vs <code>#EEEEEE</code>）与文字色（<code>#929292</code> vs <code>#333333</code>）不同</strong>；「已隐藏」<strong>只多一个 14px 折叠箭头、无眼睛图标</strong>；<strong>两条分区线各自在其标题上方</strong>（左右内缩 16），且<strong>行不再重复画线</strong> —— 有已下架时该区段共 2 条线，<strong>无已下架条目（隐藏块与末行直接相邻）时交界处同样只有 1 条</strong>；任何情况下同一 y 上不得有 2 个画线者（否则叠成一条更重的线）。  </li>
 <li><strong>Given</strong> 当前为项目 Tab 且列表有数据，<strong>When</strong> 点标题栏「+添加」，<strong>Then</strong> <strong>不弹窗</strong>，在列表内容区就地展开「新增项目」（§6.1.1）；标题栏入口为<strong>品牌红图标+文字链</strong>（无红底胶囊按钮壳）。  </li>
 <li><strong>Given</strong> 当前为产品 Tab 且列表有数据，<strong>When</strong> 点标题栏「+添加」，<strong>Then</strong> <strong>不弹窗</strong>，在列表内容区就地展开「新增产品」。  </li>
 <li><strong>Given</strong> 任意价目表列表态，<strong>When</strong> 查看界面，<strong>Then</strong> <strong>无</strong>右下悬浮球「+」；整表无数据时可用空态 CTA 添加，标题栏「+添加」始终可用。  </li>

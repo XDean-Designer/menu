@@ -866,7 +866,7 @@ const CATALOG_HIDE_ICON = '<span class="catalog-hide-icon" aria-hidden="true"><s
 const CATALOG_CHECK_OFF_ICON = '<svg class="catalog-check-off" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="10" cy="10" r="9.5" stroke="#D7D7D5"/></svg>';
 const CATALOG_CHECK_ON_ICON = '<svg class="catalog-check-on" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#F32F41"/><path d="M6 10L9 13L15 7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const CATALOG_MEMBER_CHECK_ICON = '<span class="catalog-member-check" aria-hidden="true"><svg class="catalog-member-check__off" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.75" y="0.75" width="16.5" height="16.5" rx="2.25" stroke="#C8C9CC" stroke-width="1.5" fill="#fff"/></svg><svg class="catalog-member-check__on" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="3" fill="#F32F41"/><path d="M4.5 9L7.5 12L13.5 5.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
-const CATALOG_HIDDEN_CHEV_ICON = '<svg class="catalog-hidden-toggle__chev" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.65 5.5L8 10.15L3.35 5.5" stroke="#929292" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        const CATALOG_HIDDEN_CHEV_ICON = '<svg class="catalog-hidden-toggle__chev" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.65 5.5L8 10.15L3.35 5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const CATALOG_DRAG_HINT_KEY = 'rtb_catalog_drag_hint_dismissed';
 
 function renderCatalogGroupTabs() {
@@ -2430,7 +2430,7 @@ function projRenderList() {
     block.className = 'catalog-hidden-block' + (state.catalogHiddenExpanded ? ' is-open' : '');
     block.innerHTML = `
       <button type="button" class="catalog-hidden-toggle" data-catalog-hidden-toggle aria-expanded="${state.catalogHiddenExpanded ? 'true' : 'false'}">
-        <span class="catalog-hidden-toggle__label">${CATALOG_HIDE_ICON}已隐藏 · 仅顾客端不可见</span>
+        <span class="catalog-hidden-toggle__label">已隐藏 · 仅顾客端不可见</span>
         ${CATALOG_HIDDEN_CHEV_ICON}
       </button>
       <div class="catalog-hidden-list"></div>`;

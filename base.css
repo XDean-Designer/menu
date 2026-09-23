@@ -1359,20 +1359,25 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 }
 .catalog-offsale-list .table-row-swipe { background: #fff; }
 .catalog-offsale-list .table-row { background: #fff; }
+/* 「已下架」分区标题同款：同高 26 / 同字号 13 / 同居中；仅底色（#EEEEEE）与文字色（--text）与「已下架」不同 */
 .catalog-hidden-toggle {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 4px;
   width: 100%;
-  min-height: 37px;
-  padding: 8px 12px;
+  height: 26px;
+  min-height: 26px;
+  max-height: 26px;
+  padding: 0 16px;
   margin: 0;
   border: none;
   background: transparent;
   color: var(--text);
   font: inherit;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
+  line-height: 18px;
   cursor: pointer;
   font-family: inherit;
   -webkit-tap-highlight-color: transparent;
@@ -1395,8 +1400,9 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   box-sizing: border-box;
 }
 .catalog-hidden-toggle__chev {
-  width: 16px;
-  height: 16px;
+  /* 与标题文字同色（currentColor = --text #333）；尺寸按 v1.22 图标/文字比例折算：13px 文字 → 14px 图标 */
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
   display: block;
   object-fit: contain;
@@ -1425,7 +1431,9 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 #projProjectTable .table-row-swipe:last-child .table-row::after { display: none; }
 /* 在售末行让位给「已下架」分区标题自身的分区线（同 y、同内缩），避免两线叠加 */
 #projProjectTable .table-row-swipe:has(+ .catalog-offsale-block) .table-row::after { display: none; }
-#projProjectTable .table-row-swipe:has(+ .catalog-hidden-block) .table-row::after { display: block; }
+/* 末行同样让位给「已隐藏」块自身的分区线 —— 无已下架条目时二者紧邻，
+   若此行也画线会与 .catalog-hidden-block::before 落在同一 y、叠成一条更重的线 */
+#projProjectTable .table-row-swipe:has(+ .catalog-hidden-block) .table-row::after { display: none; }
 .table-row:active { background: var(--bg-page); }
 .table-row-swipe.is-off-sale .name-text,
 .table-row-swipe.is-off-sale .dur,
