@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD-迁移方案-大类转主分组（阅读预览）</title>
+<style>
+:root{--brand:#F32F41;--text:#1f2329;--text-sec:#646a73;--border:#e5e6eb;--bg:#f5f6f7;--card:#fff;--code-bg:#f2f3f5;--th-bg:#f8f9fa;--link:#3370ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--text);background:var(--bg);line-height:1.7;font-size:15px}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 20px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.topbar__title{font-size:14px;font-weight:600}.topbar__hint{font-size:12px;color:var(--text-sec);font-weight:400;margin-left:8px}
+.topbar__actions{display:flex;gap:8px;flex-wrap:wrap}
+.topbar a{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:6px;font-size:13px;text-decoration:none;font-weight:500}
+.topbar a.primary{background:var(--brand);color:#fff}.topbar a.ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.wrap{max-width:920px;margin:0 auto;padding:24px 20px 64px}
+.article{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px 40px 48px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow-x:clip}
+@media(max-width:640px){.article{padding:20px 16px 32px;border-radius:0;border-left:none;border-right:none;overflow-x:auto}}
+.article>h1:first-child{margin-top:0}
+h1{font-size:28px;font-weight:700;line-height:1.35;margin:0 0 16px}
+h2{font-size:22px;font-weight:650;margin:40px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:17px;font-weight:650;margin:28px 0 10px}h4{font-size:15px;font-weight:650;margin:20px 0 8px}
+p{margin:0 0 12px}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+ul,ol{margin:0 0 14px;padding-left:1.4em}li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+blockquote{margin:12px 0 16px;padding:10px 14px;border-left:3px solid var(--brand);background:#fff5f6;color:var(--text-sec);border-radius:0 8px 8px 0}
+blockquote p{margin:0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;background:var(--code-bg);padding:1px 6px;border-radius:4px}
+pre{background:#1f2329;color:#f5f6f7;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.55;margin:0 0 16px}
+pre code{background:none;padding:0;color:inherit}
+table{width:100%;max-width:100%;border-collapse:collapse;margin:0 0 18px;font-size:14px;display:block;overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+th,td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;min-width:72px}
+th{font-weight:600;white-space:nowrap;background:var(--th-bg)}td{background:#fff}
+tr:nth-child(even) td{background:#fafbfc}
+.article img{max-width:100%;height:auto;display:block}
+table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;border:1px solid var(--border);background:#f5f6f7}
+.foot-note{margin-top:28px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-sec)}
+.mermaid{margin:12px 0 20px;padding:16px;background:#fafbfc;border:1px solid var(--border);border-radius:10px;overflow-x:auto;text-align:center}
+.mermaid svg{max-width:100%;height:auto}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar__title">PRD-迁移方案-大类转主分组<span class="topbar__hint">阅读预览</span></div>
+    <div class="topbar__actions">
+      <a class="ghost" href="index.html">打开交互原型</a>
+      <a class="ghost" href="PRD-迁移方案-大类转主分组.md" download>下载 Markdown</a>
+      <a class="primary" href="PRD-迁移方案-大类转主分组.md" target="_blank" rel="noopener">打开源文件 .md</a>
+    </div>
+  </div>
+  <div class="wrap"><article class="article"><h1>迁移方案：大类 → 主分组（价目表替换线上）</h1>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文档版本</td>
+<td>v1.1</td>
+</tr>
+<tr>
+<td>日期</td>
+<td>2026-09-23</td>
+</tr>
+<tr>
+<td>状态</td>
+<td><strong>决策已拍板，待评审排期</strong>（本文只定方案，不含原型改码）</td>
+</tr>
+<tr>
+<td>涉及模块</td>
+<td>价目表（项目创建与管理）· 提成设置 · 开单选品 · 会员卡权益选品 · 库存 · 经营分析</td>
+</tr>
+<tr>
+<td>关联文档</td>
+<td><code>PRD-项目创建与管理.md</code>（v1.27）· <code>../提成设置/PRD-提成设置.md</code></td>
+</tr>
+<tr>
+<td>结论</td>
+<td>线上「大类」升级为<strong>「主分组」</strong>（必选、1:1、<strong>可改</strong>）+ 新增<strong>可多归属的自定义分组</strong>；提成解析由实测的<strong>「先写先赢」</strong>改为<strong>显式优先级链</strong>；分组变更<strong>不弹窗、自动 <code>forward</code>、仅一条 toast</strong>；<strong>一次性全量替换</strong>，靠上线前体检 + 回滚包兜底。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>修订记录</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1.1</td>
+<td>2026-09-23</td>
+<td><strong>① 分组变更改为「不弹窗、自动 <code>forward</code>、仅 toast」</strong> —— 原 D4「复用两枚按钮（本期全部重算 / 从现在起用新方案）」调整为：分组归属变更<strong>即时生效</strong>，固定走 <code>forward</code>（分界时刻之后按新分组算），<strong>不再让用户二选一</strong>；仅当「被变更的分组」∩「被提成规则引用的分组」≠ ∅ 时弹一条 toast（文案 <code>分组已更新 · 之后的提成按新分组计算</code>），未命中则静默；删组改为 <code>「X」已删除 · N 条提成规则不再生效</code>。改写 §2（D4）· §6（护栏 → 变更提示）· §7（生效口径重写）· §10（M12/M13 改写 + 新增 M17–M19）。<strong>② 明确「分界记录」为必需项</strong> —— 因薪资侧 <code>employee.js</code> 的 <code>finalizeSeedCommLines()</code> 是<strong>重算</strong>（<code>calcStaffTrial(staffId, trialPayload, state.salaryMonth)</code>）而非读存量，且 <code>invalidateCommLineCache()</code> 在仓库中被调用 30 余处，故只落 toast 不落分界会导致<strong>当期金额被静默重算</strong>、toast 文案失真。给出<strong>低成本实现</strong>：分组新增 <code>_prevItemIds</code> + <code>effectiveAt</code>，<code>lineInGroup()</code> 按 <code>line.ymd</code> 取值（<strong>复用方案侧既有 <code>_prev</code> 模式</strong>，零新增 UI；<code>line.ymd</code> 已在试算载荷里）。新增 §3.1 两字段 / §3.3 不变量 6 / §7.1。<strong>③ 明确与方案侧重算弹窗的关系</strong> —— 方案规则改动仍走既有 <code>#comm2RecalcMask</code>（二十七～三十二次定稿）<strong>本次不动</strong>；两条链各自独立、按行日期可组合（新增 §7.3 对照表）。<strong>④ 新增 §11「术语统一：类 → 组」</strong> —— <strong>范围经用户澄清后收窄</strong>：改<strong>只针对</strong>「通过价目表编辑的项目 / 产品」及「价目表功能所产生的分类 / 分组行为」这一条轴，<strong>不涉及任何其他含义的「类」</strong>；新增 §11.0 适用范围与一句话判定准则、§11.1 改名对照表（含 <strong><code>comm2.js</code> L1176 注释 / L1181 / L2600</strong>）、§11.2 排除清单（<code>#comm2CatSheetTitle</code>「分类提成」L425 与帮助弹窗「大类 / 大类卡」L471 / L481 / L574 —— 后两者由同弹窗 L470「每张卡管一类业务」、L478「这单属于哪一类」自证属<strong>业务类型轴</strong>；支出管理「分类管理」）、§11.3 歧义项（<code>comm2.js</code> L2605「该分类下暂无内容」两种读法 + 中性文案建议）、§11.4 执行方式；验收同步 M20 / 新增 <strong>M21（排除项未被误改）/ M22（歧义项）</strong>。<strong>⑤ 勘误</strong>：v1.0/v1.1 初稿曾把帮助弹窗的「大类 / 大类卡」列入改名范围，经核 L470 / L478 上下文后<strong>判定为业务类型轴、移入排除清单</strong>。</td>
+</tr>
+<tr>
+<td>v1.0</td>
+<td>2026-09-23</td>
+<td>首版：现状核对（三边差异 + 实测证据 + 风险清单）· 7 项决策记录 · 目标数据模型与不变量 · P0 数据迁移（映射 / 回滚包 / <code>category</code> 兼容期）· P1 提成优先级链 · P2 变更护栏 · P3 生效时点 · P4 下游对齐 · 上线预案与验收 M1–M16。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. 问题与事实</h2>
+<h3>1.1 三边现状</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>线上（现网）</th>
+<th>原型（本仓库）</th>
+<th>提成设置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>归属概念</td>
+<td><strong>大类</strong>（项目分类 / 产品分类）</td>
+<td><strong>自定义分组</strong> + 系统「隐藏」组</td>
+<td>「整组」= 分组（<code>{kind:'group'}</code>）</td>
+</tr>
+<tr>
+<td>基数</td>
+<td>必选</td>
+<td>可选、可空（条目可为 0 个分组）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>重数</td>
+<td><strong>1:1</strong>（一个条目属于 1 个大类）</td>
+<td><strong>N:N</strong>（可属多组）</td>
+<td>规则可命中多条</td>
+</tr>
+<tr>
+<td>可改</td>
+<td>不可改（前线诉求「大类选错可改」）</td>
+<td>随时可改（含全部取消）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>category</code> 字段</td>
+<td>有效、用户可见</td>
+<td><strong>仍在数据模型里，但写死常量</strong>（项目「其他」/ 产品「产品」）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>解析规则</td>
+<td>—</td>
+<td>—</td>
+<td>实测 <strong>先写先赢</strong>（见 §1.2）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>线上「分组选择」（<code>ProjectGroupSelectFragment</code>）经确认<strong>只是大类的另一个叫法，同一份数据</strong> —— 因此线上<strong>不存在</strong>"多归属分组"这一既有能力；原型引入的是<strong>全新能力</strong>，迁移是干净的 1:1 映射，无需合并两套分组。</p>
+</blockquote>
+<h3>1.2 实测证据：提成不是「取高」，是「先写先赢」</h3>
+<p>直接调用 <code>Comm2Demo.calcStaffTrial</code> 打真实试算链路（试算行 <code>深层补水护理</code> / <code>p21</code> / 原价 268 / 员工 <code>st0</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>覆盖项书写顺序</th>
+<th style="text-align: right;">实际计提</th>
+<th style="text-align: right;">生效费率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A 两条覆盖都指向<strong>同一个具体项目</strong></td>
+<td>5% 在前，20% 在后</td>
+<td style="text-align: right;">13.4</td>
+<td style="text-align: right;"><strong>5%</strong></td>
+</tr>
+<tr>
+<td>A 同上</td>
+<td>20% 在前，5% 在后</td>
+<td style="text-align: right;"><strong>53.6</strong></td>
+<td style="text-align: right;"><strong>20%</strong></td>
+</tr>
+<tr>
+<td>B 两条覆盖各指向一个<strong>分组</strong>（项目同属两组）</td>
+<td>5% 在前</td>
+<td style="text-align: right;">13.4</td>
+<td style="text-align: right;"><strong>5%</strong></td>
+</tr>
+<tr>
+<td>B 同上</td>
+<td>20% 在前</td>
+<td style="text-align: right;"><strong>53.6</strong></td>
+<td style="text-align: right;"><strong>20%</strong></td>
+</tr>
+<tr>
+<td>C <strong>分组</strong>覆盖(40%) vs <strong>具体项目</strong>覆盖(5%)</td>
+<td>分组在前</td>
+<td style="text-align: right;"><strong>107.2</strong></td>
+<td style="text-align: right;"><strong>40%</strong></td>
+</tr>
+<tr>
+<td>C 同上</td>
+<td>项目在前</td>
+<td style="text-align: right;">13.4</td>
+<td style="text-align: right;"><strong>5%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果完全随书写顺序翻转。</strong> 根因（<code>提成设置/comm2.js</code>）：</p>
+<pre><code class="language-text">resolveLineBlock(sch, line)   // L1620
+  for (ov of sch.overrides)                 // 顺序遍历
+    for (t of ov.targets)
+      if (t.kind === 'group' &amp;&amp; lineInGroup(line, t, gk)) return ov;   // 第一条命中即返回
+</code></pre>
+<ul>
+<li>「取高」<strong>只存在于跨方案层</strong>：<code>calcStaffTrial</code> 里 <code>if (!winner || c.amount &gt; winner.amount)</code>（L1866，严格大于 → 并列取列表中更靠前的方案）。</li>
+<li>用户新增规则项走 <code>sch.overrides.push(...)</code>（L2377，<strong>追加到末尾</strong>）；<code>unshift</code> 仅用于系统「快捷开单」（L342，故意置顶）。</li>
+<li>覆盖列表<strong>无拖拽排序、无命中来源显示、无冲突提示</strong>。</li>
+</ul>
+<p><strong>连带隐患</strong>：删除分组后，指向它的规则 <code>lineInGroup</code> 里 <code>find</code> 不到 → <strong>静默不命中 → 回落默认卡</strong>，金额可升可降，全程无提示。</p>
+<p><strong>与文档的矛盾</strong>（需一并修正）：PRD / 帮助弹窗写的「好几张卡都管到同一个项目 → 挑钱多的那张算」「单独加的规则项更优先」—— C 场景证明<strong>覆盖之间的"更优先"不成立</strong>。</p>
+<h3>1.3 若不做本方案会发生什么</h3>
+<table>
+<thead>
+<tr>
+<th>后果</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分类塌缩</td>
+<td>按原型直上，存量 <code>category</code> 全部写入「其他」/「产品」，报表与导入导出失去维度</td>
+</tr>
+<tr>
+<td>提成真空</td>
+<td>分组可空 → 出现无归属条目，提成从"必有类规则覆盖"退化为可能只吃默认卡</td>
+</tr>
+<tr>
+<td>提成不可解释</td>
+<td>多归属使重复命中概率大增，而规则是"先写先赢" → 改费率"没反应"、加规则"不生效"</td>
+</tr>
+<tr>
+<td>无声改钱</td>
+<td>归属从"改起来很麻烦"变成"点两下"，且删组会静默废掉规则</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2. 决策记录（本次拍板）</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>议题</th>
+<th>决策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1</td>
+<td>大类去留</td>
+<td><strong>大类 → 「主分组」</strong>：必选、1:1、<strong>可改</strong>，用于统计 / 导入 / 默认筛选；另可自由加<strong>自定义分组</strong>（多归属）</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>重复命中规则</td>
+<td><strong>显式优先级链</strong>：具体项目/产品 &gt; 分组 &gt; 默认卡；<strong>同层取高</strong>；并列按规则项顺序</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>变更护栏</td>
+<td><strong>允许改，仅 toast 轻提示</strong>（不阻断、不弹确认）</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>分组变更的生效口径</td>
+<td><strong>不弹窗、即时生效、固定 <code>forward</code></strong>：分界时刻<strong>之后</strong>按新分组算；仅一条 toast 告知（文书 §7）。<strong>不再</strong>复用"本期全部重算 / 从现在起用新方案"两枚按钮 —— 那条路径属<strong>方案规则改动</strong>（D8），本决策不涉及</td>
+</tr>
+<tr>
+<td>D5</td>
+<td>线上「分组选择」</td>
+<td>即大类的同义叫法，<strong>同一份数据</strong>；迁移为 1:1</td>
+</tr>
+<tr>
+<td>D6</td>
+<td>下游依赖</td>
+<td>经营分析/报表 · 开单选品 · 会员卡权益选品 · 库存（<strong>导入导出、商城/联盟侧本次判定为不依赖</strong>）</td>
+</tr>
+<tr>
+<td>D7</td>
+<td>上线方式</td>
+<td><strong>一次性全量替换</strong></td>
+</tr>
+<tr>
+<td>D8</td>
+<td>方案规则改动的重算弹窗</td>
+<td><strong>保持不动</strong> —— 方案 <code>defaults</code> / <code>overrides</code> / <code>stationIds</code> / <code>stationLabels</code> 改动仍走既有 <code>#comm2RecalcMask</code>（两枚竖排按钮，二十七～三十二次定稿）</td>
+</tr>
+<tr>
+<td>D9</td>
+<td>术语口径</td>
+<td>替换上线后，其他地方关于项目/产品「<strong>类</strong>」的描述统一改为「<strong>组</strong>」（§11）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>D3 + D7 的代价</strong>：没有灰度观察期、又没有阻断，因此<strong>上线前体检（§9.1）+ 回滚包（§9.2）+ 上线后核对（§9.3）是硬性补偿项</strong>，不可省略。</p>
+<p><strong>D4 的代价</strong>：分组变更<strong>没有"重算历史"的退路</strong>，且用户<strong>无法在不生效的前提下试改</strong>。因此「分界记录」是<strong>必需项而非可选项</strong>（§7.1 给出理由与实现）。</p>
+</blockquote>
+<hr />
+<h2>3. 目标数据模型</h2>
+<h3>3.1 分组 <code>CatalogGroup</code>（在原型基础上扩展）</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th style="text-align: center;">新增</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td style="text-align: center;"></td>
+<td>桶内唯一</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td style="text-align: center;"></td>
+<td>桶内唯一；系统组不可改名</td>
+</tr>
+<tr>
+<td><code>itemIds</code></td>
+<td>string[]</td>
+<td style="text-align: center;"></td>
+<td>组成员</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>number</td>
+<td style="text-align: center;"></td>
+<td>轨内顺序</td>
+</tr>
+<tr>
+<td><code>system</code></td>
+<td>boolean</td>
+<td style="text-align: center;"></td>
+<td>系统组：不可改名 / 不可删 / 不参与提成目标</td>
+</tr>
+<tr>
+<td><code>systemKind</code></td>
+<td><code>'hidden' \| 'fallback'</code></td>
+<td style="text-align: center;">✅</td>
+<td><code>hidden</code> = 隐藏组；<code>fallback</code> = 主分组兜底组（§3.3）</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td><code>'category' \| 'custom'</code></td>
+<td style="text-align: center;">✅</td>
+<td>迁移来源标记（仅作追溯与回滚用，UI 不展示）</td>
+</tr>
+<tr>
+<td><code>_prevItemIds</code></td>
+<td>string[] | null</td>
+<td style="text-align: center;">✅</td>
+<td><strong>归属分界 · 变更前成员快照</strong>（D4）。仅在<strong>成员集发生变化</strong>时写入；无变更时为 <code>null</code></td>
+</tr>
+<tr>
+<td><code>effectiveAt</code></td>
+<td>string | null</td>
+<td style="text-align: center;">✅</td>
+<td><strong>归属分界时刻</strong>（<code>YYYY-MM-DD</code>，与订单行 <code>ymd</code> 同格式）。<code>ymd &lt; effectiveAt</code> 的行按 <code>_prevItemIds</code> 解析，<code>&gt;=</code> 按 <code>itemIds</code> 解析</td>
+</tr>
+<tr>
+<td><code>effectiveKind</code></td>
+<td><code>'member'</code></td>
+<td style="text-align: center;">✅</td>
+<td>分界来源（当前只有成员变更一种；为后续扩展留位）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>与方案侧 <code>_prev</code> 的分工</strong>：方案侧 <code>_prev</code> 快照的是<strong>规则集</strong>（<code>defaults</code> / <code>overrides</code> / …），分组侧 <code>_prevItemIds</code> 快照的是<strong>成员归属</strong>。两者<strong>同模式、可叠加</strong>：同一行先按 <code>schForLine</code> 取当时方案，再按 <code>lineInGroup</code> 取当时成员集（§7.3）。</p>
+</blockquote>
+<p>桶结构不变：<code>state.catalogGroups = { project: [...], product: [...] }</code>。</p>
+<h3>3.2 项目 / 产品（在原型基础上扩展）</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primaryGroupId</code></td>
+<td>string</td>
+<td>✅ <strong>新增</strong>。主分组 id；<strong>非空</strong>，且<strong>必须 ∈ <code>groupIds</code></strong></td>
+</tr>
+<tr>
+<td><code>groupIds</code></td>
+<td>string[]</td>
+<td>归属的自定义分组集合（含 <code>primaryGroupId</code>；<strong>不含</strong>系统「隐藏」组）</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>string</td>
+<td>迁移期<strong>保留只读兼容</strong>（§4.3），新写入不再依赖；下线时机见 §11</td>
+</tr>
+<tr>
+<td><code>hidden</code></td>
+<td>boolean</td>
+<td>保持与系统「隐藏」组成员双向同步（不变）</td>
+</tr>
+</tbody>
+</table>
+<h3>3.3 不变量（Invariants，必须由服务端与前端共同保证）</h3>
+<ol>
+<li><code>primaryGroupId</code> <strong>恒非空</strong>且<strong>恒存在于同桶分组表</strong>。</li>
+<li><code>primaryGroupId ∈ groupIds</code>（勾选里取消不掉主分组；取消主分组需先改指另一个）。</li>
+<li>每个桶<strong>至少存在一个</strong> <code>systemKind:'fallback'</code> 分组（项目「其他」/ 产品「产品」），<strong>不可删除、不可改名、不可设为隐藏</strong>。</li>
+<li>系统「隐藏」组<strong>不入</strong> <code>groupIds</code>、<strong>不可</strong>作为主分组、<strong>不可</strong>作为提成「整组」目标（现 <code>getCustomCatalogGroups()</code> 已按 <code>!g.system</code> 过滤，保持）。</li>
+<li>删除分组时，若它是某些条目的主分组 → <strong>必须先指定迁入分组</strong>（默认指向 fallback 组），再删；指向它的提成规则<strong>必须提示</strong>（§6）。</li>
+<li><strong>归属分界单调</strong>：<code>effectiveAt</code> 一旦写入即为<strong>当前分界点</strong>，后续再改会<strong>覆盖它</strong>（不做多段历史）。写入时必须同时落 <code>_prevItemIds</code>（覆盖前成员集）与 <code>effectiveAt</code>（本次变更时刻），二者<strong>同生同灭</strong> —— 单独存在任一项即为脏数据。</li>
+<li><strong>迁移初始</strong>：<code>_prevItemIds = null</code> / <code>effectiveAt = null</code>（迁移本身是"无前史"的起点，不产生分界，不触发 toast）。</li>
+</ol>
+<h3>3.4 映射（线下 → 新模型，1:1）</h3>
+<table>
+<thead>
+<tr>
+<th>线上</th>
+<th>新模型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大类 <code>c</code></td>
+<td>分组 <code>{ id: 'g_'+c.id, name: c.name, order: c.order, source: 'category' }</code></td>
+</tr>
+<tr>
+<td>条目 <code>it.category === c</code></td>
+<td><code>it.primaryGroupId = 'g_'+c.id</code>；<code>it.groupIds = ['g_'+c.id]</code></td>
+</tr>
+<tr>
+<td>无分类/空分类条目</td>
+<td>指到本桶 fallback 组</td>
+</tr>
+<tr>
+<td>线上「未分类」占位（若有）</td>
+<td>与 fallback 组合并，不新建</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>4. P0 数据迁移</h2>
+<h3>4.1 步骤（幂等、可回滚）</h3>
+<ol>
+<li>冻结写入（价目与提成两侧短时只读窗口）。</li>
+<li>为每个桶建分组表：先建 fallback 组，再按大类顺序建 <code>source:'category'</code> 组（<strong>保留原排序与名称</strong>）。</li>
+<li>回填 <code>primaryGroupId</code> / <code>groupIds</code>（按 §3.4）。</li>
+<li><strong>校验通过后才切读</strong>：见 §9.1 体检项全绿。</li>
+<li>解冻。</li>
+</ol>
+<h3>4.2 回滚包（一次性全量的必需品）</h3>
+<ul>
+<li>保留 <code>category</code> 字段原值（不覆盖），并落一份 <code>迁移映射表</code>（<code>groupId ↔ categoryId</code>）。</li>
+<li>保留迁移前价目全量快照（条目 + 大类 + 排序）。</li>
+<li>回滚动作：切回读 <code>category</code> + 隐藏分组入口；<code>primaryGroupId</code>/<code>groupIds</code> 保留但忽略。<strong>回滚不需要反向写数据</strong>，因此是双向安全的。</li>
+<li>提成侧回滚：<code>source:'category'</code> 分组与原型分组同构，规则无需回滚；但若已按 §5 上线新解析，需一并回退代码版本。</li>
+</ul>
+<h3>4.3 <code>category</code> 字段兼容期</h3>
+<ul>
+<li>迁移后 <code>category</code> <strong>只读保留</strong>，不参与任何计算与展示（除 §9.3 核对）。</li>
+<li>下线时机：<strong>至少跨过一个完整结算周期</strong>，且在 §9.3 抽样核对全绿之后（见 §11 待确认）。</li>
+</ul>
+<hr />
+<h2>5. P1 提成优先级链（替换「先写先赢」）</h2>
+<h3>5.1 分层</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">层</th>
+<th>目标类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">L1</td>
+<td><code>{kind:'project' \| 'product' \| 'card'}</code>（具体标的）</td>
+<td>含系统「快捷开单」（<code>refId=COMM2_QUICK_REF</code>，保持最高优先）</td>
+</tr>
+<tr>
+<td style="text-align: right;">L2</td>
+<td><code>{kind:'group', groupKind}</code>（分组）</td>
+<td>「整组」</td>
+</tr>
+<tr>
+<td style="text-align: right;">L3</td>
+<td><code>sch.defaults[cat]</code>（默认卡）</td>
+<td>兜底</td>
+</tr>
+</tbody>
+</table>
+<h3>5.2 解析算法（替换 <code>resolveLineBlock</code> 的单命中语义）</h3>
+<pre><code class="language-text">candidates = []                       // 收集，不再 return
+for ov in sch.overrides (index asc):
+  for t in ov.targets:
+    tier = (t.kind === 'group') ? 2 : 1
+    if matches(t, line):               // 项目/产品/卡 或 lineInGroup
+      candidates.push({ ov, tier, index })
+
+if candidates empty:
+  if isQuickLine(line): return 系统快捷开单覆盖
+  return sch.defaults[cat]             // L3
+
+minTier = min(candidates.tier)         // 取最具体的那一层
+tiered  = candidates.where(tier === minTier)
+
+eligible = tiered.where(试算可计提)     // scope 通过（§5.3.1）
+if eligible empty: return tiered 首条    // 保持现状：命中即不回落默认卡
+winner = eligible 中 amount 最大者；并列取 index 最小者
+return winner.ov
+</code></pre>
+<p>要点：
+- <strong>分层的判据是"目标具体程度"</strong>，与费率高低、添加先后<strong>无关</strong> —— 这直接修掉 §1.2 的 C 场景（分组 40% 再也压不过具体项目 5%）。
+- <strong>同层取高</strong>用<strong>试算金额</strong>比较（不是费率），与跨方案层一致；并列按规则项顺序，与现文档「钱一样多时按先后」自洽。
+- <strong>跨方案层不动</strong>（<code>calcStaffTrial</code> 的严格大于 + 并列取靠前方案）。
+- 需要在 <code>schemeLineAmount</code> 内改为"对候选集逐块试算再选"，即把现有单块计算抽成 <code>amountOfBlock(sch, block, line)</code> 复用（<code>sign</code> 分支同样要走）。</p>
+<h3>5.3 边界口径</h3>
+<h4>5.3.1 命中但适用范围不符</h4>
+<p>保持现状语义：<strong>命中即不再回落默认卡</strong>。同层取高只在<strong>可计提候选</strong>间进行；若该层全部候选不可计提 → 结果为 0（skipped:<code>scope</code>），并在规则卡上标注「命中但不计提」。→ 避免"改一条规则的适用范围导致金额反而变高"。</p>
+<h4>5.3.2 系统「快捷开单」</h4>
+<p>系统覆盖项<strong>恒为 L1 且 index 最小</strong>（保持 <code>unshift</code> 语义），不吃「项目」默认卡。</p>
+<h4>5.3.3 系统「隐藏」组</h4>
+<p>不作为提成目标出现（<code>getCustomCatalogGroups</code> 的 <code>!g.system</code> 已保证）；迁移后仍须保证（<code>systemKind:'fallback'</code> 的兜底组同理）。</p>
+<h4>5.3.4 同一规则项内多目标</h4>
+<p><code>ov.targets</code> 内部命中多个目标不产生多份候选（同一 <code>ov</code> 只入列一次，取<strong>最高 tier</strong>）。</p>
+<h3>5.4 界面可见化（配合 D2 的"可解释"要求）</h3>
+<ol>
+<li><strong>规则卡标题</strong>：显示命中来源，如 <code>整组·烫染</code> / <code>深层补水护理</code>（现已有，术语按 §11 统一）。</li>
+<li><strong>方案编辑页</strong>：对同一标的被 ≥2 条规则命中的情况，在相关规则卡上加角标「<strong>与其他 N 条规则重叠，按费率/金额取高</strong>」，点开列出重叠项与最终生效者。</li>
+<li><strong>试算页</strong>：每行显示「生效来源 = {规则名}（{层}）」+ 「被 N 条规则覆盖」明细。</li>
+<li><strong>帮助弹窗</strong>：把「好几张卡都管到同一个项目 → 挑钱多的那张算」改写为准确表述 ——
+   <strong>「先看有没有给这个项目单独设规则；有就按单独的算（几条单独规则之间挑钱多的）。没有单独的，再看分组规则（几条分组规则之间挑钱多的）。都没有，才按默认卡算。钱一样多时，按规则项添加的先后。」</strong></li>
+</ol>
+<h3>5.5 与「跨方案取高」的关系</h3>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>规则</th>
+<th>变更</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方案内</td>
+<td>优先级链（L1 &gt; L2 &gt; L3），同层取高</td>
+<td><strong>本次修改</strong></td>
+</tr>
+<tr>
+<td>方案间</td>
+<td>金额最大者；并列取列表靠前方案</td>
+<td>不变</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>6. P2 分组变更提示（D3 + D4：不弹窗、仅 toast）</h2>
+<h3>6.1 总原则</h3>
+<p>分组归属变更（含成员增删、删组、改主分组）<strong>一律即时生效、无弹窗、无二选一</strong>；是否提示<strong>取决于该分组是否被提成规则引用</strong> —— 未被引用则<strong>完全静默</strong>（改一个没人用的分组不该打扰用户）。</p>
+<h3>6.2 触发矩阵与文案</h3>
+<table>
+<thead>
+<tr>
+<th>入口</th>
+<th>弹 toast 的条件</th>
+<th>文案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>包含项目 / 包含产品页 · 确定</td>
+<td>本次变化的<strong>任一</strong>分组被 ≥1 条提成规则引用</td>
+<td><code>分组已更新 · 之后的提成按新分组计算</code></td>
+</tr>
+<tr>
+<td>条目详情 · 改主分组</td>
+<td>主分组（旧或新）被 ≥1 条提成规则引用</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>分组管理 · 删除分组</td>
+<td>该分组被 ≥1 条提成规则引用</td>
+<td><code>「X」已删除 · N 条提成规则不再生效</code></td>
+</tr>
+<tr>
+<td>分组管理 · 重命名</td>
+<td><strong>从不</strong>（id 不变，提成不受影响）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>分组管理 · 新建分组</td>
+<td><strong>从不</strong>（新组尚未被引用）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>任一入口 · 分组未被任何规则引用</td>
+<td><strong>从不</strong></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>文案定稿（简明扼要，与现有 toast 同规格）</strong></p>
+<ul>
+<li>成员变更 / 主分组变更：<strong><code>分组已更新 · 之后的提成按新分组计算</code></strong>（16 字，单行）</li>
+<li>删组：<strong><code>「X」已删除 · N 条提成规则不再生效</code></strong>（N = 引用该组的规则项数）</li>
+</ul>
+<blockquote>
+<p>两条文案都<strong>只说结论、不说原因</strong>，且<strong>不出现"本期"字样</strong> —— 因为生效粒度是<strong>按单据日期</strong>而非"按期"（§7.1），写"本期"会与"已结的单不改"冲突（见 §7.2）。</p>
+</blockquote>
+<h3>6.3 残余风险与强制补偿</h3>
+<p>轻提示<strong>不阻断</strong>，因此以下两点为<strong>强制</strong>补偿：</p>
+<ol>
+<li><strong>删组保护</strong>：若该分组被提成规则引用，删除确认弹窗必须<strong>列出规则名</strong>（一次性、可跳过，但必须出现一次）。</li>
+<li><strong>规则失效可观测</strong>：进入方案编辑页时，对"引用了已删除分组"的规则项标红并提示「目标分组已不存在，该规则不会命中」—— 修掉 §1.2 的静默失效隐患。</li>
+</ol>
+<blockquote>
+<p>与旧版（v1.0）的差别：原「包含项目/产品页确定」文案 <code>已更新成员 · N 个项目的提成将变化</code> <strong>作废</strong> —— 它只说了"会变"、没说"从何时起"，且"将变化"与"即时生效"语义冲突。</p>
+</blockquote>
+<hr />
+<h2>7. P3 生效口径（D4：不弹窗、自动 <code>forward</code>）</h2>
+<h3>7.1 为什么「分界记录」是必需项</h3>
+<p><strong>关键事实</strong>：薪资侧不是"读存量"，而是<strong>每次缓存失效都重算</strong> —— <code>提成设置/employee.js</code>：</p>
+<pre><code class="language-text">finalizeSeedCommLines(lines, staffId)
+  → C.calcStaffTrial(staffId, trialPayload, state.salaryMonth)      // L3511-3512
+  → 每行载荷带 { ymd: ln.ymd }                                      // L3509（二十六次为 forward 加的）
+</code></pre>
+<p>而 <code>invalidateCommLineCache()</code> 在仓库中被调用 <strong>30 余处</strong>（切月份 / 员工变更 / 方案保存 / 归属变更…）。</p>
+<p>因此：<strong>若只加 toast 而不落分界，之后任何一次缓存失效都会用新分组把当期金额静默重算</strong> —— toast 说的"之后的提成按新分组算"当场失真，且用户不会察觉。</p>
+<p><strong>实现（复用方案侧既有 <code>_prev</code> 模式，零新增 UI）</strong></p>
+<pre><code class="language-text">lineInGroup(line, target, groupKind):
+  g = comm2Groups(groupKind).find(x =&gt; x.id === target.refId)
+  if (!g) return false
+  members = (g.effectiveAt &amp;&amp; line.ymd &amp;&amp; line.ymd &lt; g.effectiveAt)
+              ? (g._prevItemIds || [])
+              : (g.itemIds || [])
+  return members.indexOf(line.refId) &gt;= 0
+</code></pre>
+<ul>
+<li>改动面 = <strong>1 个函数 + 2 个字段 + 3 处写入点</strong>（包含项目/产品页确定 / 删组 / 改主分组）</li>
+<li><code>line.ymd</code> <strong>已在试算载荷里</strong>（二十六次为方案侧 <code>forward</code> 引入），无需新增管线</li>
+<li>与 <code>schForLine(sch, periodKey, ymd)</code> <strong>同思路、可叠加</strong>（§7.3）</li>
+</ul>
+<h3>7.2 生效粒度与边界</h3>
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分界时刻<strong>之后</strong>的单据</td>
+<td>按<strong>新</strong>分组算</td>
+</tr>
+<tr>
+<td>分界时刻<strong>之前</strong>的单据</td>
+<td>按<strong>旧</strong>分组算（<code>_prevItemIds</code>）</td>
+</tr>
+<tr>
+<td>已结算 / 历史期</td>
+<td><strong>不回算</strong>（与 v1.0 的"迁移当天不回算"一致，继续成立）</td>
+</tr>
+<tr>
+<td>人工改过的提成值</td>
+<td><strong>恒优先</strong>，任何重算都不覆盖（沿用现状：<code>_manualPreserve</code>）</td>
+</tr>
+<tr>
+<td>迁移当天</td>
+<td><code>effectiveAt = null</code> → 不产生分界 → 全部按迁移后分组表算；迁移<strong>不弹</strong> toast</td>
+</tr>
+<tr>
+<td>连续多次改动</td>
+<td><strong>覆盖</strong>上一个分界点，不做多段历史（§3.3 不变量 6 已标注）</td>
+</tr>
+</tbody>
+</table>
+<h3>7.3 与方案侧重算弹窗的关系（D8，互补不冲突）</h3>
+<table>
+<thead>
+<tr>
+<th>改动类型</th>
+<th>机制</th>
+<th>用户交互</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>分组归属</strong>（成员 / 主分组 / 删组）</td>
+<td>分组侧 <code>_prevItemIds</code> + <code>effectiveAt</code></td>
+<td><strong>无弹窗</strong>，仅 toast（§6.2）；固定 <code>forward</code></td>
+</tr>
+<tr>
+<td><strong>方案规则</strong>（<code>defaults</code> / <code>overrides</code> / <code>stationIds</code> / <code>stationLabels</code>）</td>
+<td>方案侧 <code>_prev</code> + <code>effectiveMode</code> + <code>effectiveAt</code>（二十七～三十二次定稿）</td>
+<td>既有 <code>#comm2RecalcMask</code> 两枚竖排按钮（<code>recalc</code> / <code>forward</code>）<strong>本次不动</strong></td>
+</tr>
+</tbody>
+</table>
+<p>两者<strong>按同一行日期独立解析后叠加</strong>，一行金额的实际取数链：</p>
+<pre><code class="language-text">calcStaffTrial(staffId, lines, periodKey)
+  → 每行: schForLine(sch, periodKey, line.ymd)     // 方案侧：老/新规则集
+  →       schemeLineAmount(sch, line)
+  →         resolveLineBlock(sch, line)            // §5 优先级链（本次修改）
+  →           lineInGroup(line, t, groupKind)      // 分组侧：老/新成员集（§7.1）
+</code></pre>
+<p>即：<strong>方案侧决定"用哪套规则"，分组侧决定"这条规则管不管这个项目"，两者各按行日期取值，互不干扰</strong>。</p>
+<hr />
+<h2>8. P4 下游对齐清单（D6）</h2>
+<table>
+<thead>
+<tr>
+<th>下游</th>
+<th>现状</th>
+<th>迁移要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>经营分析 / 报表</td>
+<td>按大类的统计维度</td>
+<td>维度键由 <code>category</code> 改为 <code>primaryGroupId</code>；报表口径默认用<strong>主分组</strong>，自定义分组不进默认报表（可后续开放多维）</td>
+</tr>
+<tr>
+<td>开单选品</td>
+<td>分组轨「全部 / 自定义 / 隐藏」</td>
+<td>轨来源改为分组表；<strong>隐藏组仍可选</strong>（<code>onSale</code> 含 hidden，口径不变）</td>
+</tr>
+<tr>
+<td>会员卡权益选品</td>
+<td><code>onSale &amp;&amp; !hidden</code></td>
+<td>不受分组影响，仅需回归验证（选择器若含分组轨，与开单一致）</td>
+</tr>
+<tr>
+<td>库存（挂在价目增改）</td>
+<td>跟价目条目走</td>
+<td>不依赖归属，仅需回归验证库存入口未随表单字段调整而错位</td>
+</tr>
+<tr>
+<td>导入导出 · 商城/联盟</td>
+<td>本次判定<strong>不依赖</strong></td>
+<td>若实际存在按大类的模板/接口，需回补映射（§11）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>9. 上线预案（D7：一次性全量）</h2>
+<h3>9.1 上线前体检（dry-run，必须全绿）</h3>
+<ol>
+<li><strong>归属完整性</strong>：<code>primaryGroupId</code> 非空率 = 100%；<code>primaryGroupId ∈ groupIds</code> 违反数 = 0。</li>
+<li><strong>映射一致性</strong>：条目数、名称、价格、<code>onSale</code>、<code>hidden</code>、排序，迁移前后逐条 diff = 0。</li>
+<li><strong>分组数核对</strong>：新分组数 = 原大类数 + 1（fallback/桶）。</li>
+<li><strong>提成影响报告</strong>（最重要）：对全部方案重放试算，输出
+   - 因优先级链改变而<strong>金额变化</strong>的（规则项, 试算行, 变更前 → 变更后）；
+   - 因分组可空而<strong>从"类规则命中"退化为"默认卡"</strong>的条目清单；
+   - <strong>引用了不存在分组</strong>的规则项（即已静默失效者）。
+   此报告需<strong>逐条人工确认</strong>后放行。</li>
+<li><strong>系统组隔离</strong>：fallback 组与「隐藏」组均不出现在提成「整组」可选目标中。</li>
+</ol>
+<h3>9.2 回滚触发线</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>阈值</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>提成金额与体检报告预测不符的行数</td>
+<td>&gt; 0</td>
+<td>立即回滚</td>
+</tr>
+<tr>
+<td>归属完整性 / 映射一致性任一项不全绿</td>
+<td>&gt; 0</td>
+<td>不切读</td>
+</tr>
+<tr>
+<td>上线后 24h 内「提成金额」客诉</td>
+<td>≥ 1 起</td>
+<td>评估回滚</td>
+</tr>
+</tbody>
+</table>
+<h3>9.3 上线后核对与监控</h3>
+<ul>
+<li>T+0：抽样 20 家门店，逐条核对主分组与提成生效来源。</li>
+<li>T+1 / T+7：全量重放试算，与体检报告比对，偏差 = 0。</li>
+<li>监控：<code>primaryGroupId</code> 空值率、指向不存在分组的规则项数、提成人工修正率（环比突增即为异常信号）。</li>
+<li><code>category</code> 字段保留期内，每日 diff「<code>category</code> 映射结果 vs <code>primaryGroupId</code>」，发现漂移即告警。</li>
+</ul>
+<hr />
+<h2>10. 验收项</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Given</th>
+<th>When</th>
+<th>Then</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1</td>
+<td>迁移完成</td>
+<td>查任一条目</td>
+<td><code>primaryGroupId</code> 非空且 ∈ <code>groupIds</code>；分组成员与主分组一致</td>
+</tr>
+<tr>
+<td>M2</td>
+<td>迁移完成</td>
+<td>对比迁移前后全量价目</td>
+<td>名称/价格/在售/隐藏/排序逐条一致，差异 = 0</td>
+</tr>
+<tr>
+<td>M3</td>
+<td>分组管理页</td>
+<td>查看系统组</td>
+<td>存在 fallback 组（项目「其他」/ 产品「产品」），<strong>不可删除、不可改名</strong>；「隐藏」组行为不变</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>某条目为主分组</td>
+<td>在包含项目/产品页取消勾选它</td>
+<td><code>primaryGroupId</code> <strong>不被取消</strong>；改主分组需走显式入口</td>
+</tr>
+<tr>
+<td>M5</td>
+<td>某分组被 ≥1 条提成规则引用</td>
+<td>删除该分组</td>
+<td>先弹确认并<strong>列出规则名</strong>；删除后相关规则项标红并提示「目标分组已不存在」</td>
+</tr>
+<tr>
+<td>M6</td>
+<td>一条目同属两组，两组各有规则（5% / 20%）</td>
+<td>交换两条规则的添加先后</td>
+<td>计提金额<strong>不随顺序变化</strong>（旧版随顺序翻转，见 §1.2 B）</td>
+</tr>
+<tr>
+<td>M7</td>
+<td>分组规则 40% + 同项目单独规则 5%</td>
+<td>按任意顺序配置</td>
+<td><strong>恒取 5%</strong>（L1 &gt; L2；旧版随顺序在 5%/40% 间翻转）</td>
+</tr>
+<tr>
+<td>M8</td>
+<td>同层两条规则，费率 5% / 20%</td>
+<td>任意顺序</td>
+<td>恒取 20%（同层取高）</td>
+</tr>
+<tr>
+<td>M9</td>
+<td>同层两条规则，金额并列</td>
+<td>任意顺序</td>
+<td>取规则项顺序靠前者（与跨方案层一致）</td>
+</tr>
+<tr>
+<td>M10</td>
+<td>某候选命中但适用范围不符</td>
+<td>计算</td>
+<td>不回落默认卡，结果为 0，规则卡标注「命中但不计提」</td>
+</tr>
+<tr>
+<td>M11</td>
+<td>系统「快捷开单」</td>
+<td>任意配置</td>
+<td>恒为最高优先，不吃「项目」默认卡</td>
+</tr>
+<tr>
+<td>M12</td>
+<td>包含项目/产品页点确定，且<strong>被变更的分组被 ≥1 条提成规则引用</strong></td>
+<td>完成</td>
+<td><strong>无弹窗</strong>；toast <code>分组已更新 · 之后的提成按新分组计算</code>；分组立即生效</td>
+</tr>
+<tr>
+<td>M12b</td>
+<td>同上，但<strong>被变更的分组未被任何规则引用</strong></td>
+<td>完成</td>
+<td><strong>无 toast、无弹窗</strong>，完全静默</td>
+</tr>
+<tr>
+<td>M12c</td>
+<td>分组管理 · 重命名 / 新建分组</td>
+<td>完成</td>
+<td><strong>从不</strong>弹 toast（id 不变 / 新组未被引用）</td>
+</tr>
+<tr>
+<td>M13</td>
+<td>归属变更发生在账期内（分界日 = 今天）</td>
+<td>对比分界<strong>前</strong>与<strong>后</strong>的订单行</td>
+<td>分界前的行按<strong>旧</strong>成员集算，分界后的行按<strong>新</strong>成员集算；两者<strong>并存且都可复现</strong>；再次触发缓存失效（切月份 / 员工变更 / 重进薪资）后<strong>结果不变</strong></td>
+</tr>
+<tr>
+<td>M13b</td>
+<td>分组成员未被改动</td>
+<td>查看该分组</td>
+<td><code>_prevItemIds</code> 与 <code>effectiveAt</code> <strong>均为 <code>null</code></strong>（不写脏分界）</td>
+</tr>
+<tr>
+<td>M14</td>
+<td>迁移当天</td>
+<td>查历史期提成</td>
+<td>与迁移前完全一致（不回算）；且迁移<strong>不弹</strong> toast、不写 <code>effectiveAt</code></td>
+</tr>
+<tr>
+<td>M15</td>
+<td>报表 · 开单选品 · 会员卡权益 · 库存</td>
+<td>迁移后回归</td>
+<td>分组维度改为按主分组；隐藏口径、开单可选范围、权益选品范围均与迁移前一致</td>
+</tr>
+<tr>
+<td>M16</td>
+<td>提成「添加规则项」</td>
+<td>打开目标选择</td>
+<td>fallback 组与「隐藏」组<strong>均不出现</strong>在可选目标中</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>分组归属变更</td>
+<td>打开方案编辑页</td>
+<td><strong>不出现</strong> <code>#comm2RecalcMask</code>（分组链不再复用该弹窗）</td>
+</tr>
+<tr>
+<td>M18</td>
+<td>方案规则改动（<code>defaults</code> / <code>overrides</code> 指纹变化）</td>
+<td>保存</td>
+<td><strong>仍正常弹出</strong> <code>#comm2RecalcMask</code> 两枚按钮（D8：方案链不动）</td>
+</tr>
+<tr>
+<td>M19</td>
+<td>分组已被删、但方案里仍有指向它的规则项</td>
+<td>打开方案编辑页</td>
+<td>该规则项<strong>标红</strong>并提示「目标分组已不存在，该规则不会命中」</td>
+</tr>
+<tr>
+<td>M20</td>
+<td>按 §11.1 对照表检索<strong>价目表归属轴</strong>的「类」</td>
+<td>逐条核对落点</td>
+<td>全部改为「组」：主分组 / 整组 / 项目组 / 产品组 / 分组（含 <code>comm2.js</code> <strong>L1176 注释</strong>、<strong>L1181</strong>、<strong>L2600</strong>）</td>
+</tr>
+<tr>
+<td>M21</td>
+<td>按 §11.2 排除清单检索<strong>其他轴</strong>的「类」</td>
+<td>逐条核对</td>
+<td><strong>全部保持原文</strong>：<code>#comm2CatSheetTitle</code>「分类提成」（L425）、帮助弹窗「大类 / 大类卡」（L471 / L481 / L574）、支出管理「分类管理」—— 一处都不得被误改</td>
+</tr>
+<tr>
+<td>M22</td>
+<td>§11.3 歧义项「该分类下暂无内容」（<code>comm2.js</code> L2605）</td>
+<td>现场确认指向哪条轴后落地</td>
+<td>若属分组轨 → 「该分组下暂无内容」；若属类型 Tab → 不改；<strong>或</strong>统一改中性文案「暂无内容」（两种读法下均正确）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>11. 术语统一：类 → 组（D9）</h2>
+<blockquote>
+<p><strong>适用范围（边界收窄）</strong>：仅限「<strong>通过价目表编辑的项目 / 产品</strong>」及「<strong>价目表功能所产生的分类 / 分组行为</strong>」这一条轴；<strong>不涉及任何其他含义的「类」</strong>。完整边界、判定准则、对照表、排除清单与歧义项见 <strong>§11.0 – §11.4</strong>。</p>
+</blockquote>
+<h3>11.0 适用范围（<strong>边界收窄，先看这条</strong>）</h3>
+<p>本次「类 → 组」的改名<strong>只覆盖一件事</strong>：</p>
+<blockquote>
+<p><strong>通过价目表编辑的项目 / 产品</strong>，以及<strong>价目表功能所产生的「分类 / 分组」行为</strong>。</p>
+</blockquote>
+<p><strong>不涉及任何其他含义的「类」。</strong></p>
+<p><strong>判定准则（一句话自检）</strong>：这个「类」指的<strong>是不是</strong>「价目表里的项目 / 产品归到了哪个组」？</p>
+<ul>
+<li><strong>是</strong> → 改（§11.1）</li>
+<li><strong>否</strong>（是业务类型、人员类别、支出科目、类型 Tab 等任何别的轴）→ <strong>不改</strong>（§11.2）</li>
+</ul>
+<blockquote>
+<p>这条边界按用户澄清落定：改名<strong>不是</strong>全局文本替换。下文每一行落点都按此准则筛过；筛不掉的歧义项单列在 §11.3。</p>
+</blockquote>
+<h3>11.1 改（全部命中"价目表归属"这一条轴）</h3>
+<table>
+<thead>
+<tr>
+<th>现用表述</th>
+<th>改为</th>
+<th>说明 / 精确落点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大类</td>
+<td><strong>主分组</strong></td>
+<td>线上表单选项、报表维度、导入模板列名、文档</td>
+</tr>
+<tr>
+<td>项目分类 / 产品分类</td>
+<td><strong>项目组 / 产品组</strong></td>
+<td>同上；选择器标题亦同</td>
+</tr>
+<tr>
+<td>分类 / 归类（作为<strong>价目表归属</strong>维度时）</td>
+<td><strong>分组 / 归属</strong></td>
+<td>价目表 PRD §1.5 能力映射表的「分类/归类」一行</td>
+</tr>
+<tr>
+<td>「分类写入默认「其他」」</td>
+<td>「<strong>主分组</strong>默认写「其他」」</td>
+<td>价目表 PRD §6.2</td>
+</tr>
+<tr>
+<td>「分类默认「产品」」</td>
+<td>「<strong>主分组</strong>默认「产品」」</td>
+<td>价目表 PRD §6.3</td>
+</tr>
+<tr>
+<td>整类 /「整类·烫染」</td>
+<td><strong>整组</strong> /「整组·烫染」</td>
+<td><code>提成设置/comm2.js</code> <strong>L1181</strong>（覆盖卡标题 <code>'整类·' + name</code>）、<strong>L2600</strong>（选择页列表「整类 · {组名}」）；<strong>L1176</strong>（注释「整类优先」同步改）—— 这两处的「类」指向的正是 <code>{kind:'group'}</code> 的<strong>价目表分组</strong></td>
+</tr>
+<tr>
+<td>按大类的统计维度</td>
+<td>按<strong>主分组</strong>的统计维度</td>
+<td>经营分析 / 报表（§8）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：<code>价目表/</code> 原型的<strong>用户可见文案本已用「组」</strong>（<code>catalog.js</code> / <code>base.css</code> / <code>index.html</code> 全仓无「分类 / 大类」命中），所以 §11.1 的<strong>代码落点全部在 <code>提成设置/</code></strong> —— 因为只有提成模块在描述价目表分组时用了「类」这个词。</p>
+</blockquote>
+<h3>11.2 明确<strong>不改</strong>（属"其他类型的类"，误改即语义错误）</h3>
+<table>
+<thead>
+<tr>
+<th>表述</th>
+<th>位置</th>
+<th>为什么不能改</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>「分类提成」</strong></td>
+<td><code>提成设置/index.html</code> <strong>L425</strong>（<code>#comm2CatSheetTitle</code>）</td>
+<td>指<strong>默认卡的业务类</strong>（项目 / 产品 / 办卡 / 充卡 / 快捷开单，即内部 <code>cat</code>），与价目表归属无关；改成「分组提成」即为<strong>语义错误</strong></td>
+</tr>
+<tr>
+<td><strong>「大类」「大类卡」</strong></td>
+<td><code>提成设置/index.html</code> <strong>L471 / L481 / L574</strong>（两处帮助弹窗白话条目）</td>
+<td>同上，指<strong>5 类默认卡</strong> —— 由同弹窗 <strong>L470「方案里有 5 张卡，每张卡管一类业务」</strong> 与 <strong>L478「先看这单属于哪一类」</strong>（→「项目、产品、办卡、充卡还是快捷开单，找对应的卡」）<strong>自证</strong>。属"业务类型"轴，<strong>不是价目表归属</strong> → <strong>保持原文</strong></td>
+</tr>
+<tr>
+<td>「分类管理」</td>
+<td>支出管理（<code>SortManageActivity</code>）</td>
+<td>支出记账的分类，与本模块无关</td>
+</tr>
+<tr>
+<td>「分组筛选」「分组轨」「包含项目 / 包含产品」</td>
+<td>价目表原型</td>
+<td>本已用「组」，无需改动</td>
+</tr>
+<tr>
+<td><code>category</code>（字段名）</td>
+<td>数据模型</td>
+<td>只读兼容期保留（§4.3）；<strong>字段名是接口契约，不在本次文案统一范围</strong>（§12-2）</td>
+</tr>
+<tr>
+<td><code>primaryGroupId</code> / <code>groupIds</code></td>
+<td>数据模型</td>
+<td>新字段，本就是 group 命名</td>
+</tr>
+</tbody>
+</table>
+<h3>11.3 需现场确认（歧义项，暂不裁定）</h3>
+<table>
+<thead>
+<tr>
+<th>表述</th>
+<th>位置</th>
+<th>两种读法</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「该分类下暂无内容」</td>
+<td><code>提成设置/comm2.js</code> <strong>L2605</strong>（选择页空态）</td>
+<td>① 指<strong>分组轨</strong>（价目表分组，则该改「该分组下暂无内容」）② 指<strong>类型 Tab</strong>（项目 / 产品 / 会员卡，则该不改）</td>
+<td>改用<strong>中性文案</strong>「<strong>暂无内容</strong>」—— 两种读法下都正确，且不引入新的轴歧义。<strong>待确认后落地</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>该串触发条件为 <code>!items.length &amp;&amp; !html</code>，即<strong>当前视图（类型 + 分组筛选）无内容</strong> —— 代码本身无法区分是"这个组是空的"还是"这个类型是空的"，故不做推测性改名。</p>
+</blockquote>
+<h3>11.4 执行方式</h3>
+<ul>
+<li><strong>文案层</strong>（§11.1）：替换即可，无逻辑影响；<code>comm2.js</code> 的三处字符串为<strong>纯展示拼接</strong>，改动不影响取数与比对。</li>
+<li><strong>文档层</strong>：三份 PRD（本文 + <code>PRD-项目创建与管理.md</code> + <code>../提成设置/PRD-提成设置.md</code>）同步；历史修订记录条目<strong>保留原文不改</strong>（作为历史痕迹），仅在最新修订条中声明本次统一。</li>
+<li><strong>接口层</strong>：字段名 / 接口键<strong>本次不动</strong>（用户决策：只改用户可见文案 + 文档口径）。<code>category</code> 的最终下线时机见 §12-2。</li>
+<li><strong>验收</strong>：按 <strong>M20</strong>（改名命中）与 <strong>M21</strong>（排除项未被误改）双向核对。</li>
+</ul>
+<hr />
+<h2>12. 待确认 / 后续</h2>
+<ol>
+<li><strong>新增表单是否加「主分组」必选字段</strong>：原型现状不给用户控件（写死「其他」/「产品」）。D1 要求主分组必选，建议新增表单加<strong>主分组单选</strong>（默认取上次使用，兜底 fallback），并在包含项目/产品页以「主分组」角标区分主分组与自定义分组。<strong>待确认</strong>。</li>
+<li><strong><code>category</code> 字段下线时机</strong>：建议跨一个完整结算周期且 §9.3 核对全绿后；具体时点待排期。<strong>字段名是否随术语统一改名（<code>category</code> → 语义化 group 命名）亦待定</strong> —— 属接口契约变更，不在 §11 的文案范围内（§11.2）。</li>
+<li><strong>分界记录的实现归属</strong>：<code>_prevItemIds</code> / <code>effectiveAt</code> 写在哪一侧 —— 建议<strong>分组对象自身</strong>（§3.1），因为 <code>lineInGroup()</code> 已从 <code>comm2Groups()</code> 取分组对象，写入后<strong>提成侧零改管线</strong>；若价目与提成各自持有一份分组数据（<code>提成设置/seed-data.js</code> 的副本问题，§1.3 R7），须保证<strong>单源</strong>，否则分界会两边不一致。</li>
+<li><strong>导入导出 / 商城·联盟侧</strong>：D6 判定为不依赖，若有遗漏需回补映射。</li>
+<li><strong>原型改码范围</strong>：本文只定方案；<code>价目表/</code>（主分组 + 兜底组 + 删组保护 + 变更 toast）与 <code>提成设置/</code>（优先级链 + 生效来源可见化 + 分界解析 + 术语替换）的具体改动清单，待本方案评审通过后另行出「执行清单」。</li>
+</ol>
+<p class="foot-note">给 AI / 研发请使用同目录 <code>PRD-迁移方案-大类转主分组.md</code>；本页仅作阅读预览。交互以本目录 <code>index.html</code> 为准。</p>
+</article></div>
+
+<script src="assets/vendor/mermaid.min.js"></script>
+<script>
+(function(){
+  if (!window.mermaid) return;
+  mermaid.initialize({
+    startOnLoad: true,
+    securityLevel: 'loose',
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fff5f6',
+      primaryBorderColor: '#F32F41',
+      primaryTextColor: '#1f2329',
+      secondaryColor: '#f2f3f5',
+      tertiaryColor: '#ffffff',
+      lineColor: '#8f959e',
+      fontFamily: 'PingFang SC, Microsoft YaHei, sans-serif'
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

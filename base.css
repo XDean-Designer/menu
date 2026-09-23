@@ -1324,7 +1324,7 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   content: '';
   position: absolute;
   left: 16px;
-  right: 13px;
+  right: 16px;
   top: 0;
   height: 1px;
   background: #EBEBEB;
@@ -1418,7 +1418,7 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 }
 /* 行间划线：Figma Line 66/67，行内左 3→屏左 16，宽 361→右约 13 */
 .table-row::after {
-  content: ''; position: absolute; left: 16px; right: 13px; bottom: 0; height: 1px;
+  content: ''; position: absolute; left: 16px; right: 16px; bottom: 0; height: 1px;
   background: #EBEBEB; transform: scaleY(0.5); transform-origin: center bottom; pointer-events: none;
 }
 #projProjectTable .table-row-swipe .table-row::after { display: block; }

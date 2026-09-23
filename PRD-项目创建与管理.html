@@ -59,7 +59,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.25</td>
+<td>v1.28</td>
 </tr>
 <tr>
 <td>日期</td>
@@ -79,7 +79,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 <tr>
 <td>关联（非必读）</td>
-<td>同目录 <code>PRD-会员卡管理.md</code>（办卡权益选品依赖本文价目数据；会员卡流程以该文档为准）</td>
+<td>同目录 <code>PRD-会员卡管理.md</code>（办卡权益选品依赖本文价目数据；会员卡流程以该文档为准）；<strong><code>PRD-迁移方案-大类转主分组.md</code>（本模块替换线上价目时的数据迁移与提成口径方案，上线前</strong>必读<strong>）</strong></td>
 </tr>
 </tbody>
 </table>
@@ -94,6 +94,21 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.28</td>
+<td>2026-09-23</td>
+<td><strong>对照原型实测校正 7 处 + 发丝线等距修正</strong>（本次不改原型逻辑，仅 ① 一处 CSS 数值修正，其余均为 PRD 与实测对齐）。<strong>① 发丝线左右等距</strong>：<code>.table-row::after</code>（<code>base.css</code> L1421）与 <code>.catalog-hidden-block::before</code>（L1327）原为 <code>left:16px / right:13px</code>，与 §6.1.1「行分隔线<strong>左右各内缩 16</strong>」<strong>不符</strong>；全仓 10 处发丝线中仅此 2 处为 13px，已统一为 <strong><code>right: 16px</code></strong>。<strong>② 展开区高度按实测校正</strong>：「约 308」→ <strong>详情态 312</strong>（§6.1.1 规格表 + 验收 56）；高度预算里「新增 638→312 / 新增产品 563→312」→ <strong>均为 352</strong>（＝312 ＋ v1.20 新增态题头 40；实测 <code>?flow=price-add</code> 与产品 Tab 新增态<strong>结构完全一致</strong>，均为 <code>head 40 + body 240 + foot 72</code>）。<strong>③ 修正 <code>#catalogInlineHead</code> 过时描述</strong>：v1.15 起「不再有」仅对<strong>详情态</strong>成立，<strong>v1.20 起新增态题头回归并复用该 id</strong>（40px）。<strong>④ 删除「时长至少 5 分钟」规则</strong>：<code>openDurPicker</code>（<code>catalog.js</code> L2148）<strong>全仓无任何调用方</strong>，<code>#durPickerMask</code> 为死 UI，该下限只存在于不可达的 <code>confirmDurPicker</code>（L2163）—— 删除 §5.2 校验行与 §9.1 toast 清单该句，§5.1 改述为「<strong>无独立选择器入口</strong>、校验仅未填/为 0」，验收 22 改写为「未填或为 0 → 请填写项目时长」。<strong>⑤ 清理「未上传，不影响保存」残留</strong>：§5.1 封面行与 §9.1 Dialog/Sheet 清单仍写该旧文案，与 §6.1.1「v1.16 起已删」<strong>自相矛盾</strong>（<code>catalog.js</code> 无此串），已删除。<strong>⑥ 补 §7.1 <code>boundTemplateId</code> 字段</strong>：单模板引用 ＝ <code>boundTemplateIds[0]</code>，<code>boundToCard</code> 由其派生（原型已有 <code>boundTemplateIds / Names</code>，缺单数项）。<strong>⑦ 修正 v1.26 / v1.27 修订条笔误</strong>：「验收 M1–M16」→ <strong>M1–M22</strong>（迁移方案已扩至 M22）；「<code>invalidateCommLineCache()</code> 全仓调用 30 余处」→ <strong>17 处</strong>（实测 <code>employee.js</code> 16 / <code>comm2.js</code> 1）；帮助弹窗「L478」→ <strong>L477</strong>。</td>
+</tr>
+<tr>
+<td>v1.27</td>
+<td>2026-09-23</td>
+<td><strong>分组变更对提成的影响：不弹窗、自动生效、仅 toast；并统一「类 → 组」术语</strong>（承接 v1.26 的迁移口径，仍属"替换线上"范畴、原型本期不改码）。<strong>① 生效口径改为 <code>forward</code> 单一结果</strong>：原「复用两枚按钮（本期全部重算 / 从现在起用新方案）」作废 —— 分组归属变更（成员增删 / 删组 / 改主分组）<strong>即时生效、无弹窗、无二选一</strong>，分界时刻<strong>之后</strong>按新分组算、<strong>之前</strong>按旧分组算（<strong>按单据日期，非"按期"</strong>）。<strong>② 必须落「分界记录」</strong>：薪资侧 <code>employee.js</code> 是<strong>重算</strong>（<code>finalizeSeedCommLines()</code> → <code>calcStaffTrial(staffId, trialPayload, state.salaryMonth)</code>）而非读存量，且 <code>invalidateCommLineCache()</code> 在代码里共 <strong>17 处</strong>调用（<code>employee.js</code> 16 / <code>comm2.js</code> 1） —— 只加 toast 不落分界会导致<strong>当期金额被静默重算</strong>、文案失真。实现复用方案侧既有 <code>_prev</code> 模式：分组加 <code>_prevItemIds</code> + <code>effectiveAt</code>，<code>lineInGroup()</code> 按 <code>line.ymd</code>（<strong>已在试算载荷里</strong>）取值，<strong>零新增 UI</strong>。<strong>③ toast 文案定稿</strong>：成员 / 主分组变更 → <code>分组已更新 · 之后的提成按新分组计算</code>；删组 → <code>「X」已删除 · N 条提成规则不再生效</code>；<strong>仅当该分组被 ≥1 条提成规则引用时才弹</strong>，重命名 / 新建 / 未被引用的分组改动<strong>完全静默</strong>。<strong>④ 与方案侧重算弹窗互不干扰</strong>：方案规则（<code>defaults</code> / <code>overrides</code> 等）改动<strong>仍走</strong>既有 <code>#comm2RecalcMask</code> 两枚按钮，本次不动；两条链各按行日期解析后叠加。<strong>⑤ 术语统一（D9，范围已收窄）</strong>：<strong>仅</strong>针对「通过价目表编辑的项目 / 产品」及「价目表功能所产生的分类 / 分组行为」这一条轴，<strong>不涉及其他任何含义的「类」</strong>—— 大类 → <strong>主分组</strong>、项目分类/产品分类 → <strong>项目组/产品组</strong>、整类 → <strong>整组</strong>（<code>提成设置/comm2.js</code> L1176 / L1181 / L2600）；<strong>排除</strong>（属别的轴，一处不得误改）：<code>#comm2CatSheetTitle</code> 的「分类提成」（L425）、帮助弹窗的「大类 / 大类卡」（<code>index.html</code> L471 / L481 / L574 —— 由同弹窗 L470「每张卡管一类业务」与 L477「这单属于哪一类」自证为<strong>业务类型轴</strong>）、支出管理「分类管理」；字段名 / 接口键<strong>本次不动</strong>。完整边界、判定准则、对照表与歧义项见 <strong><code>PRD-迁移方案-大类转主分组.md</code> §11.0–§11.4</strong>（验收项 M20 改名命中 / <strong>M21 排除项未被误改</strong> / M22 歧义项）。</td>
+</tr>
+<tr>
+<td>v1.26</td>
+<td>2026-09-23</td>
+<td><strong>与线上价目替换相关的两项口径变更：①大类升格为「主分组」</strong> —— §7.1/§7.2 的 <code>category</code> 字段（原型现状为写死常量：项目「其他」/ 产品「产品」，表单无控件）在<strong>替换线上</strong>时必须落成真实的 <code>primaryGroupId</code>（非空、1:1、<strong>可改</strong>，∈ <code>groupIds</code>），另设 <code>source:'category'</code> 追溯标记与 <code>systemKind:'fallback'</code> 兜底组（项目「其他」/ 产品「产品」，不可删 / 不可改名）；<strong>照原型直上会让存量分类整体塌缩成「其他」/「产品」</strong>。②<strong>提成重复命中口径修正</strong> —— 原型现状（<code>comm2.js</code> L1620 <code>resolveLineBlock</code> 顺序遍历、第一条命中即 <code>return</code>，用户新增规则项走 <code>push</code> 追加末尾）经实测为<strong>「先写先赢」且随书写顺序翻转</strong>（同项目两条覆盖 5%/20%：539 顺序不同 → 13.4 / 53.6；分组 40% vs 具体项目 5% → 107.2 / 13.4），与本文档及提成帮助弹窗写的「挑钱多的那张算」「单独加的规则项更优先」<strong>均不符</strong>；改为<strong>显式优先级链</strong>：具体项目/产品/卡 &gt; 分组 &gt; 默认卡，同层取高、并列按规则项顺序（跨方案取高不变）。<strong>以上均属"替换线上"的迁移范畴，原型本期不改码</strong>，完整方案（映射表、优先级算法、护栏、上线预案、验收 M1–M22）见 <strong><code>PRD-迁移方案-大类转主分组.md</code></strong>。</td>
+</tr>
 <tr>
 <td>v1.25</td>
 <td>2026-09-23</td>
@@ -776,7 +791,7 @@ flowchart LR
 <li>金额：价格走金额键盘；须为 ≥0 的有效数字；上限 <strong>999,999.99</strong>（整数部分 ≤6 位）；超限 toast「金额不能超过 999,999.99」。  </li>
 <li>文本：项目/产品名 ≤<strong>30</strong>；规格 ≤<strong>20</strong>；分组名 ≤<strong>20</strong>；搜索框软限制 ≤<strong>50</strong>。  </li>
 <li>开单购物车：单品数量在无库存上限时软封顶 <strong>999</strong>（有库存时仍以库存为准）。  </li>
-<li>封面图：高级设置中点选添加演示图，最多 1 张；文案「未上传，不影响保存」；<strong>非正式上传</strong>。</li>
+<li>封面图：高级设置中点选添加演示图，最多 1 张；<strong>非正式上传</strong>（无副标题文案；v1.16 起「未上传，不影响保存」已删除）。</li>
 </ul>
 <h2>5.2 校验失败（保存）</h2>
 <table>
@@ -811,13 +826,9 @@ flowchart LR
 <td>项目时长无效或不足 1 分钟</td>
 <td>请填写项目时长</td>
 </tr>
-<tr>
-<td>时长选择器确认时不足 5 分钟</td>
-<td>时长至少5分钟</td>
-</tr>
 </tbody>
 </table>
-<p>时长以 <strong>行内时长输入</strong>（分/时切换）为主路径；上限按最多 <strong>480 分钟（8 小时）</strong> 约束；选择器步进确认时至少 <strong>5 分钟</strong>。<br />
+<p>时长以 <strong>行内时长输入</strong>（分/时切换）为主路径；上限按最多 <strong>480 分钟（8 小时）</strong> 约束；<strong>无独立时长选择器入口</strong>（<code>#durPickerMask</code> 为死 UI，「不足 5 分钟」校验随 v1.28 一并删除），<strong>校验仅「未填 / 为 0 → 请填写项目时长」</strong>。<br />
 <strong>产品库存</strong>：当前原型价目表单 <strong>无库存字段</strong>，不做上表库存校验（见 8.1）。</p>
 <h2>5.3 分组异常</h2>
 <table>
@@ -1170,7 +1181,7 @@ flowchart LR
 </tr>
 </tbody>
 </table>
-<p><strong>高度预算（v1.15 新增，v1.16 收紧）</strong>：展开区高度<strong>不得超过原全屏表单的 2/3</strong>（实测已压到 <strong>40%～53%</strong>：项目详情 686→<strong>312</strong>、绑卡态 784→<strong>410</strong>、产品详情 559→312、下架态 686→312、新增 638→312、新增产品 563→312；上限 457/523）。压缩手段只有三条，且都不许丢信息：</p>
+<p><strong>高度预算（v1.15 新增，v1.16 收紧）</strong>：展开区高度<strong>不得超过原全屏表单的 2/3</strong>（实测已压到 <strong>40%～53%</strong>：项目详情 686→<strong>312</strong>、绑卡态 784→<strong>410</strong>、产品详情 559→312、下架态 686→312、新增 638→<strong>352</strong>、新增产品 563→<strong>352</strong>；上限 457/523）。压缩手段只有三条，且都不许丢信息：</p>
 <ol>
 <li>删掉题头（46px）与通知条（34px）；</li>
 <li>三个分组小标题「基本信息 / 售卖设置 / 高级设置」<strong>不再渲染</strong>（字段直接铺在灰底上）；</li>
@@ -1191,7 +1202,7 @@ flowchart LR
 <tbody>
 <tr>
 <td>展开区高度</td>
-<td><strong>约 308</strong>＝字段区 240 + 页脚（顶 12 + 保存 48 + 底 12）</td>
+<td><strong>详情态 312</strong> ＝ 字段区 240 + 页脚（顶 12 + 保存 48 + 底 12）；<strong>新增态 352</strong> ＝ 312 + 题头 40</td>
 </tr>
 <tr>
 <td>字段区</td>
@@ -1423,7 +1434,7 @@ flowchart LR
 <p><strong>DOM / 类名钩子</strong>（给前端对齐用；实现风格可换，语义要留）</p>
 <p><code>#catalogInlinePanel</code>（外壳；新增态 <code>aria-label</code> + <code>.catalog-inline-panel__head</code> 可见标题为「添加项目 / 添加产品」；详情态仅 <code>aria-label</code>）· <code>.catalog-inline-panel--joined</code>（详情态，紧接选中行）· <code>.catalog-inline-panel--add</code>（新增态，挂在售末行下）· <code>.catalog-inline-panel__foot</code>（页脚）· <code>#catalogInlineBody</code>（表单容器）· <code>#catalogInlineSave</code>（保存）· <code>.catalog-flip-ghost</code>（新增归位 ghost）· <code>.table-row-swipe.has-inline-panel</code>（承载行）· <code>.table-row-swipe.is-saved-glow</code>（保存高亮）· <code>.table-card.is-add-panel</code>（空态新增）。</p>
 <blockquote>
-<p>v1.15 起<strong>不再有</strong> <code>#catalogInlineHead</code> / <code>#catalogInlineTitle</code> / <code>#catalogInlineNotice</code>（题头与通知条已删）。</p>
+<p>v1.15 起<strong>详情态</strong>不再有题头与通知条；<strong>v1.20 起新增态题头回归，并复用 <code>#catalogInlineHead</code></strong>（40px，<code>catalog.js</code> 新增态渲染处），<code>#catalogInlineTitle</code> / <code>#catalogInlineNotice</code> 仍不渲染。</p>
 </blockquote>
 <h2>6.2 新增 / 编辑 · 项目</h2>
 <p>表单字段按下表分为三段（<strong>基本信息 → 售卖设置 → 高级设置</strong>）——v1.15 起<strong>不再渲染三段小标题</strong>，全部字段并入展开区里的一张白卡；下表的分段只表示字段归属与顺序。</p>
@@ -1666,7 +1677,7 @@ flowchart LR
 <li>按该桶<strong>最终 DOM 顺序</strong>把 <code>sortOrder</code> 写回 <code>0…n-1</code>；</li>
 <li>重绘列表（<code>在售优先 → 桶内 sortOrder → 名称</code>）。</li>
 </ol>
-<p><strong>写回口径</strong>：只覆盖<strong>同桶可见项</strong>的相对次序；跨桶条目与当前筛除在外的条目保持原有相对顺序（列排序激活 / 分组筛选下不写回 —— 这两类情况本就拦截拖拽）。</p>
+<p><strong>写回口径</strong>：只覆盖<strong>同桶可见项</strong>的相对次序；跨桶条目与当前筛除在外的条目保持原有相对顺序（<strong>仅「列排序」激活时拦截拖拽、不写回</strong>；「分组筛选」下<strong>不拦截</strong>，可在自定义分组 Tab 内正常拖拽并写回，见 §6.5）。</p>
 <p><strong>原型范围说明</strong>：独立原型为<strong>内存演示数据</strong>，整页刷新会重置为演示造数（见「先读这几条」第 7 条）。因此验收口径为 <strong>「同会话重绘后顺序保持」</strong>（重绘列表、切 Tab 往返）；<strong>「刷新后顺序保持」由服务端持久化 <code>sortOrder</code> 保证</strong>，属接口约定（模块 7）。</p>
 <h2>6.8 与会员卡 / 开单联结</h2>
 <table>
@@ -1779,6 +1790,11 @@ flowchart LR
 <td>boundTemplateIds / Names</td>
 <td>string[]</td>
 <td>引用模板</td>
+</tr>
+<tr>
+<td>boundTemplateId</td>
+<td>string / null</td>
+<td>单模板引用（＝ <code>boundTemplateIds[0]</code>；无则 null）；<code>boundToCard</code> 由此派生</td>
 </tr>
 <tr>
 <td>sortOrder</td>
@@ -2029,9 +2045,9 @@ flowchart LR
 <h2>9.1 文案清单（须与原型一致）</h2>
 <p><strong>导航/按钮</strong>：价目表、项目、产品、分组管理、包含项目、包含产品、新增项目、新增产品、项目详情、产品详情、保存、删除、新建分组、确定、取消、全选、反选、设置分组、下架、上架、隐藏、取消隐藏、分组、重命名、包含项目、包含产品、去新建分组、+添加、添加项目、添加产品、封面图（可选）、添加图片、在售、已下架、已隐藏、可预约、规格、时长（分钟）、价格（¥）、全部、添加项目、添加产品、知道了。
 <strong>表单标签</strong>（v1.16 改短）：名称、价格、时长、规格、在售、可预约、封面图（可选）。</p>
-<p><strong>Toast</strong>：请输入分组名称、分组名称已存在、名称已存在、已重命名、已新建分组、已删除分组、已更新成员、已更新分组、已隐藏、已取消隐藏、已上架、已下架、保存成功、项目已创建、产品已创建、已删除、请填写项目名称、请填写产品名称、请填写有效价格、请填写项目时长、时长至少5分钟、「隐藏」分组内不支持拖拽排序，请切换到「全部」或其它分组、已隐藏的项目不支持拖拽排序、请先取消列排序后再手动排序、已添加演示图片、已移除图片、仅可上传 1 张封面、项目已隐藏，取消隐藏后需手动开启可预约、项目已下架，请先开启「在售」后再设置可预约、系统分组不可重命名或删除；以及模块 5.5 绑卡/预约/删除拦截句（删除可为「已关联会员卡/优惠券/商城，不可删除」动态拼接）。</p>
+<p><strong>Toast</strong>：请输入分组名称、分组名称已存在、名称已存在、已重命名、已新建分组、已删除分组、已更新成员、已更新分组、已隐藏、已取消隐藏、已上架、已下架、保存成功、项目已创建、产品已创建、已删除、请填写项目名称、请填写产品名称、请填写有效价格、请填写项目时长、「隐藏」分组内不支持拖拽排序，请切换到「全部」或其它分组、已隐藏的项目不支持拖拽排序、请先取消列排序后再手动排序、已添加演示图片、已移除图片、仅可上传 1 张封面、项目已隐藏，取消隐藏后需手动开启可预约、项目已下架，请先开启「在售」后再设置可预约、系统分组不可重命名或删除；以及模块 5.5 绑卡/预约/删除拦截句（删除可为「已关联会员卡/优惠券/商城，不可删除」动态拼接）。</p>
 <p><strong>Dialog（开单支付）</strong>：标题「支付金额已变化」；正文「价目表已更新，当前应付与开单时不一致，请返回核对后再支付。」；按钮「知道了」。</p>
-<p><strong>Dialog/Sheet</strong>：确认删除？、删除后不可恢复，是否继续？、删除分组？、仅删除分组，不会删除项目/产品。、最多 20 字，不可与已有分组重名、可同时加入多个分组、去新建分组、长按项目可拖动排序，左滑快捷操作；分组可左右滑动、未上传，不影响保存。</p>
+<p><strong>Dialog/Sheet</strong>：确认删除？、删除后不可恢复，是否继续？、删除分组？、仅删除分组，不会删除项目/产品。、最多 20 字，不可与已有分组重名、可同时加入多个分组、去新建分组、长按项目可拖动排序，左滑快捷操作；分组可左右滑动。</p>
 <p><strong>Toast（开关与锁定）</strong>：已上架，顾客端可见 / 已下架，顾客端不可见、不可预约 / 已开启，项目会在小程序「预约」中显示 / 已关闭，小程序「预约」中不再显示 / 该项目已绑定会员卡，项目名称不可修改 / 该项目已绑定会员卡，预约设置不可修改 / 项目已下架，请先开启「在售」后再设置可预约 / 项目已隐藏，取消隐藏后需手动开启可预约。</p>
 <p><strong>空态</strong>：暂无项目/产品、暂无隐藏项目/产品、本组暂无项目/产品、暂无分组、创建分组后可快速筛选价目表、暂无可选项目/产品、可将价目表中的条目加入本组、左滑条目可将项目/产品移入隐藏、添加后可在选择项目与办卡中使用、添加后可在开单记账中使用、请在「管理价目表」中将项目/产品加入本组。</p>
 <h2>9.2 权限</h2>
@@ -2104,7 +2120,7 @@ flowchart LR
 19b. <strong>Given</strong> 在售且已隐藏产品，<strong>When</strong> 开单选品，<strong>Then</strong> 「全部」与「隐藏」Tab 均可见且可加购；权益选品仍不可见。  </li>
 <li><strong>Given</strong> 开单已选品并进入支付前，<strong>When</strong> 价目表改价导致应付与快照不一致，<strong>Then</strong> Dialog「支付金额已变化」；点「知道了」关闭支付层并留在开单详情。  </li>
 <li><strong>Given</strong> 开单已选价目产品且支付成功，<strong>When</strong> 支付完成，<strong>Then</strong> <strong>不</strong>因价目表 <code>stock</code> 扣减（库存管理另模块）。  </li>
-<li><strong>Given</strong> 时长选择器确认，<strong>When</strong> 总时长不足 5 分钟，<strong>Then</strong> toast「时长至少5分钟」。  </li>
+<li><strong>Given</strong> 展开区时长字段未填或为 0，<strong>When</strong> 保存，<strong>Then</strong> toast「请填写项目时长」，保存被拦截。  </li>
 <li><strong>Given</strong> 项目详情高级设置，<strong>When</strong> 添加第 2 张封面，<strong>Then</strong> toast「仅可上传 1 张封面」。  </li>
 <li><strong>Given</strong> 「全部」列表有下架与隐藏条目，<strong>When</strong> 浏览，<strong>Then</strong> 无状态列；可见居中「已下架」分隔行（下沿线）与「已隐藏」折叠（无数量）。  </li>
 <li><strong>Given</strong> 当前为项目 Tab 且列表有数据，<strong>When</strong> 点标题栏「+添加」，<strong>Then</strong> <strong>不弹窗</strong>，在列表内容区就地展开「新增项目」（§6.1.1）；标题栏入口为<strong>品牌红图标+文字链</strong>（无红底胶囊按钮壳）。  </li>
@@ -2141,7 +2157,7 @@ flowchart LR
 <li><strong>Given</strong> 展开区（项目 / 产品的详情与新增），<strong>When</strong> 检查字段区视觉，<strong>Then</strong> 名称值 <code>#929292</code> <strong>Medium</strong>、价格值 <code>#FE8D4B</code> <strong>Medium</strong>，两行右端各有 <strong>16×16 铅笔图标</strong>（<code>#C7C7CC</code>、线宽 1.05、与值间距 4px），时长选中态为 <strong><code>#FE8B4B@10%</code> 淡底 + <code>#FF8A4C</code> 字</strong>（未选中字 <code>#929292</code>）；<strong>不得</strong>再出现蓝色选中态。</li>
 <li><strong>Given</strong> 展开区，<strong>When</strong> 展开，<strong>Then</strong> 字段区<strong>与展开区顶沿齐平、同宽贴边</strong>（无白底、无圆角、无左右灰缝），顶沿有一条 <strong>0.5px <code>#EBEBEB</code></strong> 发丝线（左右内缩 16，与行间分隔线同色同内缩）；<strong>不得</strong>再出现白卡或顶部凹陷阴影。</li>
 <li><strong>Given</strong> 展开区，<strong>When</strong> 查看底部「保存」，<strong>Then</strong> 是<strong>通栏实心主按钮</strong>（左右各 16、高 48、圆角 12）、品牌红 <code>#F32F41</code> 底、白字 + 白存盘图标；页脚上方有 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>；<strong>不得</strong>再是透明药丸红字。</li>
-<li><strong>Given</strong> 项目详情展开区，<strong>When</strong> 量高度，<strong>Then</strong> <strong>约 308px</strong>（字段区 240 + 页脚 12+48+12）；产品详情 / 下架态 / 新增形态同量级、绑卡态更高；封面行只有一行「封面图（可选）」，<strong>不得</strong>再有「未上传，不影响保存」。</li>
+<li><strong>Given</strong> 项目详情展开区，<strong>When</strong> 量高度，<strong>Then</strong> <strong>312px</strong>（字段区 240 + 页脚 12+48+12；新增态 <strong>352px</strong> ＝ 312 + 题头 40）；产品详情 / 下架态 / 新增形态同量级、绑卡态更高；封面行只有一行「封面图（可选）」，<strong>不得</strong>再有「未上传，不影响保存」。</li>
 <li><strong>Given</strong> 价目表列表行，<strong>When</strong> 检查垂直对齐，<strong>Then</strong> 名称 / 时长 / 价格在 52px 行高内<strong>垂直居中</strong>（<code>align-items: center</code> + <code>line-height: 19px</code>）；<strong>不得</strong>出现字下留白明显多于字上的视觉偏上。</li>
 <li><strong>Given</strong> 产品 Tab，<strong>When</strong> 查看列表行，<strong>Then</strong> 名称与价格在同一行、垂直居中、与表头对齐；<strong>不得</strong>因空时长格把价格挤到下一行。</li>
 <li><strong>Given</strong> 任意行展开，<strong>When</strong> 查看该行标题，<strong>Then</strong> 只显示拖拽图标 + 名称；时长与价格<strong>隐藏</strong>（已在展开区字段里）。</li>
