@@ -59,11 +59,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.30</td>
+<td>v1.31</td>
 </tr>
 <tr>
 <td>日期</td>
-<td>2026-09-23</td>
+<td>2026-09-24</td>
 </tr>
 <tr>
 <td>交互原型（唯一可视依据）</td>
@@ -94,6 +94,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.31</td>
+<td>2026-09-24</td>
+<td><strong>四处视觉调整：选中态红改橙 + 展开区右侧数值收敛为单档黑 + 保存按钮改浅底（tinted）+ 保存图标换线描「存入托盘」</strong>。<strong>① 选中态改橙（新增色 <code>--brand-orange: #FF7A45</code>）</strong>：主 Tab（项目 / 产品）选中文字与指示条、分组胶囊选中文字，四处声明由 <code>var(--brand)</code>（<code>#F32F41</code>）改 <code>var(--brand-orange)</code>。<strong>严格最小范围</strong> —— 其余红一律不动：标题栏「+添加」文字链、虚线添加行、空态 CTA、分组管理「新建分组」、「已绑卡」行名 <code>#333333</code>、必填星号、排序箭头、<code>switch.on</code>、勾选框、弹窗「确定/删除」、左滑删除底，<strong>均仍为品牌红 <code>#F32F41</code></strong>（实测已断言）。分组胶囊选中仍为<strong>白底</strong>，只换字色。<strong>② 展开区右侧数值改主文字档 <code>#1A1A1A</code>，时长控件除外</strong>：<code>#fProjName</code>（原 <code>#929292</code> 灰）与 <code>#fPrice</code>（原 <code>#FE8D4B</code> 橙）统一为 <code>#1A1A1A</code>，与同区标签 / 时长数字框 / 规格输入框<strong>同档</strong>，同屏只有一档黑；字重仍 Medium(500)、仍右对齐。<strong>这是产品决定，明确偏离 Figma 人工稿 <code>1258:616 / 1258:624</code>（该稿指定「灰字 + 品牌橙」）</strong>，非实现偏差。时长控件（数字框 <code>#1A1A1A</code> / 未选单位 <code>#929292</code> / 选中单位 <code>#FF8A4C</code> / 滑块底 <code>#FE8B4B@10%</code>）<strong>保持原样</strong>。<strong>③ 折叠行</strong>：价格 <code>.price-num</code> 由主红 <code>#F32F41</code> 改 <code>#1A1A1A</code>（红色让位给「选中态」）；名称 <code>.name-text</code> 由「继承初始黑 <code>#000</code>」显式锁到 <code>#1A1A1A</code>，与同行价格同档。<strong>两个语义例外用 <code>:not()</code> 排除、原声明不动</strong>：<code>.is-bound</code> 绑卡名 <code>#333333</code>、<code>.is-off-sale</code> 下架名/价格 <code>#929292</code>。<strong>④ 展开态标题行项目名转灰 <code>#929292</code></strong>：名称已在展开区字段里以可编辑值呈现，标题行降级为「这是哪一行」的定位线索，避免同屏两个等重黑体项目名；仅作用于 <code>.has-inline-panel</code>，折叠行不受影响。<strong>⑤ 保存按钮改 tinted</strong>：底由实心 <code>#F32F41</code> 改 <strong><code>--brand-soft</code> <code>#FFF2F2</code></strong>、字由白改 <strong>品牌红 <code>#F32F41</code></strong>、按下 <code>#FEEAEC</code>；<strong>满宽 / 高 48 / 圆角 12 / 页脚发丝线一概不变</strong>（只降对比度、不减触摸区）。存盘图标由强制 <code>#fff</code> 改 <strong><code>currentColor</code></strong> 随之转红（<strong>图形本身在 ⑥ 换稿</strong>）。<strong>弹窗「确定 / 删除」仍实心品牌红不动</strong>（强打断场景，实心红是合理的）。<strong>⑥ 保存图标换稿：实心软盘 → 线描「存入托盘」（arrow → line）</strong>。<strong>换稿三依据</strong>：① 本模块 <strong>19 个图标里 17 个是线描</strong>（Stratis 族），实心软盘是其中<strong>唯一的普通控件类实心图标</strong>（另一个实心是左滑「删除」上的<strong>锁角标</strong>，徽标类实心合理）；② 原图标 13.5px 框里塞 <strong>3 段子路径</strong>（外框 + 快门 + 标签块），16px 下过密，还要靠 <code>stroke-width="0.2"</code> 反向补线；③ 按钮转 tinted 淡底后，那块实心红方块<strong>成了按钮上最重的东西</strong>，比 16px 的「保存」二字更抢眼。<strong>新图标规格</strong>：3 段线（箭杆 <code>M12 3.4v11.2</code> / 箭头 <code>M6.6 9.6l5.4 5.4 5.4-5.4</code> / 底线 <code>M3.4 21h17.2</code>）、<code>viewBox 0 0 24 24</code>、<code>stroke-width 2.3</code>、<strong>圆头圆角收笔</strong> —— <strong>渲染 16px 时有效线宽 1.53px，与图标族 1.56px 同档</strong>；墨迹 <strong>13.0 × 13.27px</strong>（≈ 原软盘 13.5px，<strong>换图标不改变视觉重量</strong>）；墨迹在 16px 框内水平居中 8.0 / 垂直 8.13（偏差 ≤0.3px），与文字的盒中心 y 偏差 ≤0.6px。<strong>⚠️ 一并删除的 CSS</strong>：<code>base.css</code> 里 <code>.catalog-inline-save__icon path { fill: currentColor; stroke: currentColor }</code> 是<strong>为实心图标写的</strong>，留着会把线描图形<strong>整体填实</strong>，已删除；<code>fill</code> / <code>stroke</code> / <code>stroke-width</code> 一律由 SVG 自带属性给出，与 <code>PROJ_CHEV_ICON</code> / <code>CATALOG_DUR_CLOCK_ICON</code> 等其余线描图标同口径。<strong>按钮尺寸 / tinted 配色 / 与文字 gap 6 一概不变</strong>。<strong>⑦ 验证</strong>：<code>_tmp_verify_v131.mjs</code> <strong>28 PASS / 0 FAIL</strong>（含「未波及项仍为 <code>#F32F41</code>」的反向断言）；换图标项另有专项 <code>_tmp_verify_saveicon.mjs</code> <strong>18 PASS / 0 FAIL</strong>（含「落到 DOM 里仍是线描、<code>fill</code> 为 <code>none</code>、未被填实」的断言）；全量回归 <code>_tmp_verify_catalog.mjs</code> <strong>100 PASS / 0 FAIL</strong>、<code>_tmp_verify_hidden_toggle.mjs</code> parity 六项全 <code>true</code>。改动同步 §6.1（主 Tab 规格 / 分组轨 / 行）/ §6.1.1（字段区视觉规范 / 页脚 / 保存按钮）/ §6.2 / §6.3 / §10.2（验收 47 / 53 / 55 改写，+80～83）。</td>
+</tr>
 <tr>
 <td>v1.30</td>
 <td>2026-09-23</td>
@@ -947,7 +952,35 @@ flowchart LR
 <blockquote>
 <p>读者：前端 ✓ · 后端 了解 · 测试 ✓</p>
 </blockquote>
-<p>下列字段、按钮、跳转均须与原型一致；视觉以原型为准（品牌色 <code>#F32F41</code> 等）。</p>
+<p>下列字段、按钮、跳转均须与原型一致；视觉以原型为准。</p>
+<p><strong>本模块的两色分工（v1.31 起，前端必须分清）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>色</th>
+<th>值</th>
+<th>语义与用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>品牌红</strong> <code>--brand</code></td>
+<td><code>#F32F41</code></td>
+<td><strong>动作 / 强调</strong>：实心主按钮（弹窗「确定 / 删除」）、文字链（「+添加」）、虚线添加行与空态 CTA、「新建分组」、必填星号、左滑「删除」、<code>switch.on</code>、勾选框、排序激活箭头。<strong>展开区「保存」的底色改为浅品牌底、字色仍是本红</strong></td>
+</tr>
+<tr>
+<td><strong>选中橙</strong> <code>--brand-orange</code></td>
+<td><code>#FF7A45</code></td>
+<td><strong>只表示「选中」</strong>：主 Tab（项目 / 产品）选中文字 + 指示条、分组胶囊选中文字。<strong>范围严格限定，不要外溢到动作类元素</strong></td>
+</tr>
+<tr>
+<td>浅品牌底 <code>--brand-soft</code></td>
+<td><code>#FFF2F2</code></td>
+<td>浅底态底 + 各虚线按钮按下态（展开区「保存」底、按下 <code>#FEEAEC</code>）</td>
+</tr>
+</tbody>
+</table>
+<p>文字档：<strong><code>#1A1A1A</code></strong> = 主文字（标签、展开区字段值、折叠行名称与价格、时长数字框）；<strong><code>#333333</code></strong> = <code>--text</code>（「已绑卡」行名、折叠条文字）；<strong><code>#929292</code></strong> = 次级（时长、下架行、展开态标题行名、未选中单位）；<strong><code>#6C7279</code></strong> = 未选中 Tab。</p>
 <h2>6.1 价目表列表</h2>
 <p><strong>结构</strong></p>
 <ul>
@@ -984,11 +1017,11 @@ flowchart LR
 </tr>
 <tr>
 <td>选中</td>
-<td>文字 <strong>品牌红</strong> <code>#F32F41</code>、字重 <strong>600</strong>；<strong>品牌红下划线</strong>（见下）</td>
+<td>文字 <strong>选中橙</strong> <code>#FF7A45</code>、字重 <strong>600</strong>；<strong>选中橙下划线</strong>（见下）</td>
 </tr>
 <tr>
 <td>指示条（下划线）</td>
-<td><strong>单一元素</strong> <code>.price-catalog-tabs__ink</code>，非每项各画一条 —— 切换时在两项间<strong>滑动</strong><br>· 颜色 <code>var(--brand)</code>；高 <strong>3</strong>；圆角 <strong>2</strong>；贴容器下沿 <code>bottom: 0</code>、<code>bottomGap = 0</code><br>· 宽 = <strong>文字宽 + 20</strong>（最短 40）；本项目/产品同为 2 字（实测文字宽 <strong>32.64</strong>）→ 实测 <strong>53</strong><br>· 水平中心 = 所在项中心（两项等宽 → 第 1 项 <strong>25%</strong>、第 2 项 <strong>75%</strong>）；<code>transform: translateX(-50%)</code> 居中<br>· <code>pointer-events: none</code>（不拦截点击）</td>
+<td><strong>单一元素</strong> <code>.price-catalog-tabs__ink</code>，非每项各画一条 —— 切换时在两项间<strong>滑动</strong><br>· 颜色 <code>var(--brand-orange)</code>（<code>#FF7A45</code>，v1.31 起；原 <code>var(--brand)</code>）；高 <strong>3</strong>；圆角 <strong>2</strong>；贴容器下沿 <code>bottom: 0</code>、<code>bottomGap = 0</code><br>· 宽 = <strong>文字宽 + 20</strong>（最短 40）；本项目/产品同为 2 字（实测文字宽 <strong>32.64</strong>）→ 实测 <strong>53</strong><br>· 水平中心 = 所在项中心（两项等宽 → 第 1 项 <strong>25%</strong>、第 2 项 <strong>75%</strong>）；<code>transform: translateX(-50%)</code> 居中<br>· <code>pointer-events: none</code>（不拦截点击）</td>
 </tr>
 <tr>
 <td>位置实现</td>
@@ -1015,7 +1048,7 @@ flowchart LR
 <td></td>
 </tr>
 <tr>
-<td>- 分组轨：灰底 <code>#F2F2F2</code> 圆角轨道；<code>全部</code> + 自定义组 + 系统 <strong>隐藏</strong>（隐藏 Tab 带 hide 图标：<strong>内联 16×16 / stroke 1.5 的眼 + 斜线</strong>，胶囊内 14×14，色随 Tab 文字 —— 未选 <code>#6C7279</code>、选中品牌红）；<strong>未选</strong> 灰字纯文字；<strong>选中</strong> 白胶囊 + <strong>品牌红</strong>字；可左右横滑，右侧渐隐；右侧 <strong>深灰 18px</strong> 齿轮进「分组管理」；<strong>整表无数据时分组轨一并隐藏</strong></td>
+<td>- 分组轨：灰底 <code>#F2F2F2</code> 圆角轨道；<code>全部</code> + 自定义组 + 系统 <strong>隐藏</strong>（隐藏 Tab 带 hide 图标：<strong>内联 16×16 / stroke 1.5 的眼 + 斜线</strong>，胶囊内 14×14，色随 Tab 文字 —— 未选 <code>#6C7279</code>、选中 <strong><code>#FF7A45</code></strong>）；<strong>未选</strong> 灰字纯文字；<strong>选中</strong> 白胶囊 + <strong>选中橙 <code>#FF7A45</code></strong>字（v1.31 起；原品牌红）；可左右横滑，右侧渐隐；右侧 <strong>深灰 18px</strong> 齿轮进「分组管理」；<strong>整表无数据时分组轨一并隐藏</strong></td>
 <td></td>
 </tr>
 <tr>
@@ -1055,11 +1088,51 @@ flowchart LR
 <td></td>
 </tr>
 <tr>
-<td>- 默认排序：在售优先 → 桶内 <code>sortOrder</code> → 名称</td>
+<td>- <strong>行内字色（v1.31 收敛，前端须照此实现）</strong>：</td>
 <td></td>
 </tr>
 </tbody>
 </table>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>常态</th>
+<th>绑卡（语义例外）</th>
+<th>下架（语义例外）</th>
+<th>展开态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名称 <code>.name-text</code></td>
+<td><strong><code>#1A1A1A</code></strong>（显式声明；v1.31 前未声明 color、实际继承初始黑 <code>#000</code>）</td>
+<td><code>#333333</code>（<code>var(--text)</code>）</td>
+<td><code>#929292</code>（<code>var(--text-sec)</code>）</td>
+<td><strong><code>#929292</code></strong>（标题行转灰，见 §6.1.1）</td>
+</tr>
+<tr>
+<td>时长 <code>.dur-text</code></td>
+<td><code>#929292</code></td>
+<td><code>#929292</code></td>
+<td><code>#929292</code></td>
+<td>隐藏</td>
+</tr>
+<tr>
+<td>价格 <code>.price-num</code></td>
+<td><strong><code>#1A1A1A</code></strong>（v1.31 起；<strong>原主红 <code>#F32F41</code></strong>）</td>
+<td><code>#1A1A1A</code></td>
+<td><code>#929292</code></td>
+<td>隐藏</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>① <strong>红色不再承担「价格」语义</strong>，交给「选中态」独占（<code>--brand-orange</code> <code>#FF7A45</code>，见主 Tab 规格）。
+② 绑卡 / 下架是<strong>语义例外</strong>，实现上用 <code>:not(.is-bound)</code> / <code>:not(.is-off-sale)</code> 把它们<strong>排除在统一规则之外</strong>，各自的原声明一字不改 —— 不要用「统一规则 + <code>!important</code> 覆盖」的写法。
+③ 同一行内<strong>不得出现两档黑</strong>（v1.31 前名称 <code>#000</code> 与价格 <code>#F32F41</code>、名称 <code>#000</code> 与值 <code>#1A1A1A</code> 并存属历史遗留）。
+- 默认排序：在售优先 → 桶内 <code>sortOrder</code> → 名称  </p>
+</blockquote>
 <p><strong>空态</strong></p>
 <table>
 <thead>
@@ -1183,7 +1256,7 @@ flowchart LR
 </tr>
 <tr>
 <td>页脚</td>
-<td><code>padding: 12 16</code>，上方 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>（左右内缩 16）；<strong>通栏实心「保存」主按钮</strong>（高 48、圆角 12、品牌红 <code>#F32F41</code> 底、白字 16/500 + 白存盘图标）。<strong>详情态无「删除」</strong>（删除走左滑 → 行操作 → 删除）</td>
+<td><code>padding: 12 16</code>，上方 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>（左右内缩 16）；<strong>通栏「保存」主按钮</strong>（高 48、圆角 12、<strong>底 <code>#FFF2F2</code> <code>--brand-soft</code> + 品牌红 <code>#F32F41</code> 字 16/500 + 品牌红线描「存入托盘」图标</strong>、按下 <code>#FEEAEC</code>；v1.31 起由实心红底白字改浅底，满宽 / 高 / 圆角一律不变）。<strong>详情态无「删除」</strong>（删除走左滑 → 行操作 → 删除）</td>
 </tr>
 <tr>
 <td>空态新增</td>
@@ -1228,11 +1301,15 @@ flowchart LR
 </tr>
 <tr>
 <td>名称值</td>
-<td><code>#929292</code>、<strong>Medium(500)</strong>、右对齐</td>
+<td><code>#1A1A1A</code>、<strong>Medium(500)</strong>、右对齐（v1.31 起；原 <code>#929292</code> 灰 —— 与同区标签 / 时长数字框 / 规格输入框<strong>同档</strong>）</td>
 </tr>
 <tr>
 <td>价格值</td>
-<td><code>#FE8D4B</code>、<strong>Medium(500)</strong>、右对齐</td>
+<td><code>#1A1A1A</code>、<strong>Medium(500)</strong>、右对齐（v1.31 起；原 <code>#FE8D4B</code> 橙）。<strong>两处均为产品决定，明确偏离 Figma 人工稿 <code>1258:616 / 1258:624</code></strong></td>
+</tr>
+<tr>
+<td>展开态标题行名称</td>
+<td><strong><code>#929292</code></strong>（仅 <code>.has-inline-panel</code> 时生效）：名称已在字段区以可编辑值（<code>#1A1A1A</code>）呈现，标题行降级为「这是哪一行」的定位线索，避免同屏两个等重黑体项目名；折叠行不受影响</td>
 </tr>
 <tr>
 <td>行右铅笔图标</td>
@@ -1240,7 +1317,7 @@ flowchart LR
 </tr>
 <tr>
 <td>时长分段</td>
-<td>数字框 68×32 + 分/时 90×32（白底、<code>#EDEDED</code> 1px、圆角 8）；<strong>选中底色 <code>#FE8B4B@10%</code></strong>（原蓝 <code>#4A7BF4@10%</code>）、<strong>选中字 <code>#FF8A4C</code></strong>、未选中字 <code>#929292</code></td>
+<td>数字框 68×32 + 分/时 90×32（白底、<code>#EDEDED</code> 1px、圆角 8）；<strong>选中底色 <code>#FE8B4B@10%</code></strong>（原蓝 <code>#4A7BF4@10%</code>）、<strong>选中字 <code>#FF8A4C</code></strong>、未选中字 <code>#929292</code>。<strong>v1.31 明确：时长控件不受「右侧数值改单档黑」影响，配色保持本行原样</strong></td>
 </tr>
 <tr>
 <td>开关</td>
@@ -1252,7 +1329,7 @@ flowchart LR
 </tr>
 <tr>
 <td>保存按钮</td>
-<td><strong>通栏实心主按钮</strong>：宽 = 展开区 − 左右 16、高 <strong>48</strong>、圆角 12；品牌红 <code>#F32F41</code> 底、白字 16 Medium + 白存盘图标；页脚上方 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>（左右内缩 16）</td>
+<td><strong>通栏主按钮（浅底 tinted，v1.31）</strong>：宽 = 展开区 − 左右 16、高 <strong>48</strong>、圆角 <strong>12</strong>；<strong>底 <code>--brand-soft</code> <code>#FFF2F2</code>、字品牌红 <code>#F32F41</code> 16 Medium、图标随字色（<code>currentColor</code>）</strong>、按下 <code>#FEEAEC</code>、无边框无阴影；页脚上方 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>（左右内缩 16）。<strong>只降对比度，不减触摸区</strong>（高仍 48 ≥ 44）。<br>· <strong>图标为「存入托盘」线描稿</strong>（<code>viewBox 24</code> / <code>stroke-width 2.3</code> / 圆头圆角 / 3 段线）：渲染 16px 时<strong>有效线宽 1.53px</strong>（与模块图标族 1.56px 同档）、<strong>墨迹 13.0 × 13.27px</strong>（≈ 原实心软盘 13.5px，换图标不改视觉重量）。<strong><code>fill</code> 必须为 <code>none</code></strong> —— 线描图形一旦被 <code>fill: currentColor</code> 命中就会整体填实。<br>· <strong>弹窗「确定 / 删除」不适用本条</strong> —— 仍为实心品牌红 <code>#F32F41</code> + 白字（强打断场景，实心红合理）</td>
 </tr>
 </tbody>
 </table>
@@ -1468,14 +1545,14 @@ flowchart LR
 <td>名称</td>
 <td style="text-align: center;">✓</td>
 <td>空</td>
-<td>最多 30 字；<strong>同桶唯一</strong>（trim 后）；绑卡后锁定；placeholder「请输入」；值灰字 <code>#929292</code> Medium、行右带铅笔图标（v1.16 标签由「项目名称」改「名称」）</td>
+<td>最多 30 字；<strong>同桶唯一</strong>（trim 后）；绑卡后锁定；placeholder「请输入」；值 <code>#1A1A1A</code> Medium、行右带铅笔图标（v1.16 标签由「项目名称」改「名称」；<strong>值色 v1.31 由 <code>#929292</code> 灰改单档黑</strong>）</td>
 </tr>
 <tr>
 <td>基本信息</td>
 <td>价格</td>
 <td style="text-align: center;">✓</td>
 <td>空</td>
-<td>元；金额键盘；≥0；上限 <strong>999,999.99</strong>；键盘「确定」后<strong>回填表单价格值</strong>（保存校验以此为准，禁止只写入输入框而不回填）；值 <code>#FE8D4B</code> Medium、行右带铅笔图标（v1.16 标签由「项目价格」改「价格」）；<strong>点价格不得收起展开区</strong>（键盘打开期间外部收起手势暂停；输入缓冲去掉展示前缀 <code>¥</code>）</td>
+<td>元；金额键盘；≥0；上限 <strong>999,999.99</strong>；键盘「确定」后<strong>回填表单价格值</strong>（保存校验以此为准，禁止只写入输入框而不回填）；值 <code>#1A1A1A</code> Medium、行右带铅笔图标（v1.16 标签由「项目价格」改「价格」；<strong>值色 v1.31 由 <code>#FE8D4B</code> 橙改单档黑</strong>）；<strong>点价格不得收起展开区</strong>（键盘打开期间外部收起手势暂停；输入缓冲去掉展示前缀 <code>¥</code>）</td>
 </tr>
 <tr>
 <td>基本信息</td>
@@ -1549,7 +1626,7 @@ flowchart LR
 <li>绑卡项<strong>仍可改</strong>：价格、服务时长、封面图、在售/下架；<strong>不可改</strong>：名称、预约设置、删除。</li>
 <li>锁定原因通过 <code>data-lock-toast</code> 属性承载，点击被锁元素时由统一处理器弹 toast —— 新增状态时只需加一条文案，不要各写一套 <code>disabled</code> 判断。</li>
 </ul>
-<p>展开区页脚：<strong>仅「保存」</strong>（通栏实心主按钮，品牌红底白字）。删除不在展开区内 —— 走行左滑 → 行操作 Sheet → 删除，确认文案「确认删除？」「删除后不可恢复，是否继续？」。</p>
+<p>展开区页脚：<strong>仅「保存」</strong>（通栏主按钮，<strong>浅品牌底 <code>#FFF2F2</code> + 品牌红字</strong>，v1.31 起；原实心红底白字）。删除不在展开区内 —— 走行左滑 → 行操作 Sheet → 删除，确认文案「确认删除？」「删除后不可恢复，是否继续？」。</p>
 <h2>6.3 新增 / 编辑 · 产品</h2>
 <p>与项目共用表单骨架（字段归属同三段，同样<strong>不渲染小标题</strong>）。展开区 <code>aria-label</code> 为「新增产品 / 产品详情」。</p>
 <table>
@@ -1582,7 +1659,7 @@ flowchart LR
 <td>价格</td>
 <td style="text-align: center;">✓</td>
 <td>空</td>
-<td>同价格规则（≥0；上限 999,999.99）；键盘「确定」后<strong>回填表单价格值</strong>，保存校验以此为准；值 <code>#FE8D4B</code> Medium、行右带铅笔图标</td>
+<td>同价格规则（≥0；上限 999,999.99）；键盘「确定」后<strong>回填表单价格值</strong>，保存校验以此为准；值 <code>#1A1A1A</code> Medium、行右带铅笔图标（<strong>值色 v1.31 由 <code>#FE8D4B</code> 橙改单档黑</strong>）</td>
 </tr>
 <tr>
 <td>售卖设置</td>
@@ -2149,7 +2226,7 @@ flowchart LR
 <li><strong>Given</strong> 列表有数据，<strong>When</strong> 滚到底部，<strong>Then</strong> 底部虚线添加行为 1px 虚线品牌红、圆角 12、高 44、左侧 <code>+</code> 18px（<strong>不是</strong>浏览器默认按钮外观）。  </li>
 <li><strong>Given</strong> 处于「行操作 Sheet」等自带浮层的节点，<strong>When</strong> 切换导航 / 深链到另一节点，<strong>Then</strong> 上一节点的 Sheet / Dialog <strong>不残留</strong>；目标节点自身该开的浮层照常打开。  </li>
 <li><strong>Given</strong> 任意 Tab 有数据，<strong>When</strong> 长按行主体并垂直拖动，<strong>Then</strong> 该行跟手抬起、原位留等高占位块，松手后落到占位块位置（<strong>不得</strong>出现拖拽无响应或未捕获异常）。  </li>
-<li><strong>Given</strong> 价目表列表，<strong>When</strong> 看「项目 / 产品」Tab，<strong>Then</strong> 选中项<strong>同时</strong>有三重差异：文字<strong>品牌红</strong> <code>#F32F41</code>、字重 <strong>600</strong>、下方<strong>品牌红下划线</strong>（高 3 / 圆角 2 / 贴 Tab 条下沿 / 宽 = 文字宽 + 20）；未选项为 <code>#6C7279</code> 400 且<strong>无</strong>下划线。仅靠文字变化区分视为<strong>不通过</strong>。  </li>
+<li><strong>Given</strong> 价目表列表，<strong>When</strong> 看「项目 / 产品」Tab，<strong>Then</strong> 选中项<strong>同时</strong>有三重差异：文字<strong>选中橙</strong> <code>#FF7A45</code>（v1.31 起；原品牌红 <code>#F32F41</code>）、字重 <strong>600</strong>、下方<strong>橙下划线</strong>（高 3 / 圆角 2 / 贴 Tab 条下沿 / 宽 = 文字宽 + 20，色同为 <code>#FF7A45</code>）；未选项为 <code>#6C7279</code> 400 且<strong>无</strong>下划线。仅靠文字变化区分视为<strong>不通过</strong>。  </li>
 <li><strong>Given</strong> 项目 Tab 选中，<strong>When</strong> 点「产品」，<strong>Then</strong> 下划线<strong>滑动</strong>（有中间帧）到第 2 项中心并在 <strong>160ms</strong> 内到位，落点误差 &lt;1px；<strong>不出现</strong>瞬移，也<strong>不出现</strong>两条下划线同时存在。  </li>
 <li><strong>Given</strong> 产品 Tab 选中，<strong>When</strong> 刷新页面 / 从导航重新进入列表，<strong>Then</strong> Tab 条高度仍为 <strong>45</strong>、两项仍各 <strong>194</strong> 等宽（下划线绝对定位，不参与流、不撑开布局）。  </li>
 <li><strong>Given</strong> 系统设定「减少动态效果」，<strong>When</strong> 切换 Tab，<strong>Then</strong> 下划线<strong>直接</strong>切换位置（无过渡），选中态仍然可辨。  </li>
@@ -2161,20 +2238,20 @@ flowchart LR
 45b. <strong>Given</strong> 详情或新增展开区已打开，<strong>When</strong> 点价格字段，<strong>Then</strong> 打开金额键盘且<strong>展开区保持打开</strong>；输入并「确定」后价格回填；<strong>不得</strong>因点价格而退出编辑。<br />
 45c. <strong>Given</strong> 某行已展开，<strong>When</strong> 看该行标题区，<strong>Then</strong> <strong>不显示</strong>时长与价格（只留把手+名称）；「已隐藏」折叠块底色为 <code>#EEEEEE</code>，与展开区 <code>#F7F7F7</code> <strong>可区分</strong>。  </li>
 <li><strong>Given</strong> 空态点 CTA 打开新增展开区（<strong>表头与分组轨收起</strong>、列表外壳保留、底部虚线添加行隐藏），<strong>When</strong> 填名称 + 金额键盘「确定」+ 保存，<strong>Then</strong> 展开区收起（120ms）→ 新行入列 → 归位动效（ghost 高变矮 + 宽变宽 + 淡出，<strong>260ms</strong>）→ 新行高亮闪一次（320ms）→ toast「项目已创建」（产品「产品已创建」）；底部虚线添加行出现。  </li>
-<li><strong>Given</strong> 展开区（新增或详情），<strong>When</strong> 检查内部版式，<strong>Then</strong> 表单标签为<strong>固定 68px 列宽</strong>、所有控件左沿落在<strong>同一条竖线</strong>上、行分隔线左右各内缩 16；<strong>不得</strong>出现控件左沿参差（如 4 字标签与 2 字标签各行其是）；<strong>不再有</strong>三段分组小标题。v1.16 起标签文案为 <strong>名称 / 价格 / 时长 / 封面图（可选）</strong>；v1.18 起页脚「保存」为<strong>通栏实心主按钮</strong>（高 48、品牌红底白字）。  </li>
+<li><strong>Given</strong> 展开区（新增或详情），<strong>When</strong> 检查内部版式，<strong>Then</strong> 表单标签为<strong>固定 68px 列宽</strong>、所有控件左沿落在<strong>同一条竖线</strong>上、行分隔线左右各内缩 16；<strong>不得</strong>出现控件左沿参差（如 4 字标签与 2 字标签各行其是）；<strong>不再有</strong>三段分组小标题。v1.16 起标签文案为 <strong>名称 / 价格 / 时长 / 封面图（可选）</strong>；v1.18 起页脚「保存」为<strong>通栏主按钮</strong>（高 48，v1.31 起为浅品牌底 <code>#FFF2F2</code> + 品牌红字）。  </li>
 <li><strong>Given</strong> 展开区，<strong>When</strong> 检查触控热区与高度，<strong>Then</strong> 每个表单行高 ≥ <strong>48</strong>、「保存」按钮 ≥ <strong>44</strong>、展开区<strong>无横向溢出</strong>；整体高度 ≤ 原全屏表单的 <strong>2/3</strong>；<strong>不再有</strong>题头、提示条与「可预约」副标题。<br />
 48b. <strong>Given</strong> 展开区的「在售 / 可预约」开关，<strong>When</strong> 点击，<strong>Then</strong> 弹出<strong>短 toast</strong> 说明后果（<code>已上架，顾客端可见</code> / <code>已下架，顾客端不可见、不可预约</code> / <code>已开启，项目会在小程序「预约」中显示</code> / <code>已关闭，小程序「预约」中不再显示</code>），且状态真的翻转；<strong>Given</strong> 关掉「在售」，<strong>Then</strong> 「可预约」被<strong>连带置为关并锁定</strong>；<strong>Given</strong> 锁定态（绑卡/下架/隐藏）点开关，<strong>Then</strong> 弹的是<strong>锁定原因</strong>而不是开关文案。  </li>
 <li><strong>Given</strong> 展开区已展开，<strong>When</strong> 长按承载行或按住其拖拽把手上下拖动，<strong>Then</strong> 拖拽排序照常可用（§6.7 规则不变）。  </li>
 <li><strong>Given</strong> 深链 <code>price-edit-normal</code> / <code>price-edit-product</code> 等 7 个新增/详情类节点，<strong>When</strong> 进入，<strong>Then</strong> 落在<strong>列表页</strong>并<strong>自动展开</strong>对应位置（新增在内容区、详情在目标行下方）且位于最佳操作位；<strong>不得</strong>出现独立全屏页，也不得残留上一轮的展开区。  </li>
 <li><strong>Given</strong> 价目表列表（有数据），<strong>When</strong> 上下滚动内容区，<strong>Then</strong> <strong>Tab 条、分组轨、表头一律不动</strong>（位移 Δ = 0），只有列表行在动；表头下沿即列表可视区顶边，行<strong>不得</strong>钻到表头底下。  </li>
 <li><strong>Given</strong> 绑卡项目（原型深链 <code>price-edit-bound</code> 演示项），<strong>When</strong> 查看展开区，<strong>Then</strong> 名称输入框不可编辑、可预约开关压暗且不可开；<strong>点它们</strong>分别弹 toast「该项目已绑定会员卡，项目名称不可修改」/「该项目已绑定会员卡，预约设置不可修改」；点「在售」<strong>不</strong>弹锁定 toast（锁定只挂在该格上）。</li>
-<li><strong>Given</strong> 展开区（项目 / 产品的详情与新增），<strong>When</strong> 检查字段区视觉，<strong>Then</strong> 名称值 <code>#929292</code> <strong>Medium</strong>、价格值 <code>#FE8D4B</code> <strong>Medium</strong>，两行右端各有 <strong>16×16 铅笔图标</strong>（<code>#C7C7CC</code>、线宽 1.05、与值间距 4px），时长选中态为 <strong><code>#FE8B4B@10%</code> 淡底 + <code>#FF8A4C</code> 字</strong>（未选中字 <code>#929292</code>）；<strong>不得</strong>再出现蓝色选中态。</li>
+<li><strong>Given</strong> 展开区（项目 / 产品的详情与新增），<strong>When</strong> 检查字段区视觉，<strong>Then</strong> 名称值 <strong><code>#1A1A1A</code></strong> <strong>Medium</strong>、价格值 <strong><code>#1A1A1A</code></strong> <strong>Medium</strong>（v1.31 起统一为单档黑；原为 <code>#929292</code> 灰 / <code>#FE8D4B</code> 橙），两行右端各有 <strong>16×16 铅笔图标</strong>（<code>#C7C7CC</code>、线宽 1.05、与值间距 4px），时长选中态为 <strong><code>#FE8B4B@10%</code> 淡底 + <code>#FF8A4C</code> 字</strong>（未选中字 <code>#929292</code>、<strong>时长控件是唯一不受本条约束的例外</strong>）；<strong>不得</strong>再出现蓝色选中态。  </li>
 <li><strong>Given</strong> 展开区，<strong>When</strong> 展开，<strong>Then</strong> 字段区<strong>与展开区顶沿齐平、同宽贴边</strong>（无白底、无圆角、无左右灰缝），顶沿有一条 <strong>0.5px <code>#EBEBEB</code></strong> 发丝线（左右内缩 16，与行间分隔线同色同内缩）；<strong>不得</strong>再出现白卡或顶部凹陷阴影。</li>
-<li><strong>Given</strong> 展开区，<strong>When</strong> 查看底部「保存」，<strong>Then</strong> 是<strong>通栏实心主按钮</strong>（左右各 16、高 48、圆角 12）、品牌红 <code>#F32F41</code> 底、白字 + 白存盘图标；页脚上方有 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>；<strong>不得</strong>再是透明药丸红字。</li>
+<li><strong>Given</strong> 展开区，<strong>When</strong> 查看底部「保存」，<strong>Then</strong> 是<strong>通栏主按钮</strong>（左右各 16、高 <strong>48</strong>、圆角 12）、<strong>底 <code>#FFF2F2</code>、字品牌红 <code>#F32F41</code>、图标同色（<code>currentColor</code>）</strong>（v1.31 起为浅底 tinted；原为实心 <code>#F32F41</code> 底 + 白字 + 白图标）；页脚上方有 <strong>0.5px <code>#EBEBEB</code> 分隔线</strong>；<strong>不得</strong>再是透明药丸红字，也<strong>不得</strong>是实心红底。<strong>Given</strong> 打开任一弹窗，<strong>Then</strong> 其「确定 / 删除」<strong>仍为实心品牌红</strong>——本条的浅底只适用于展开区保存按钮。  </li>
 <li><strong>Given</strong> 项目详情展开区，<strong>When</strong> 量高度，<strong>Then</strong> <strong>312px</strong>（字段区 240 + 页脚 12+48+12；新增态 <strong>352px</strong> ＝ 312 + 题头 40）；产品详情 / 下架态 / 新增形态同量级、绑卡态更高；封面行只有一行「封面图（可选）」，<strong>不得</strong>再有「未上传，不影响保存」。</li>
 <li><strong>Given</strong> 价目表列表行，<strong>When</strong> 检查垂直对齐，<strong>Then</strong> 名称 / 时长 / 价格在 52px 行高内<strong>垂直居中</strong>（<code>align-items: center</code> + <code>line-height: 19px</code>）；<strong>不得</strong>出现字下留白明显多于字上的视觉偏上。</li>
 <li><strong>Given</strong> 产品 Tab，<strong>When</strong> 查看列表行，<strong>Then</strong> 名称与价格在同一行、垂直居中、与表头对齐；<strong>不得</strong>因空时长格把价格挤到下一行。</li>
-<li><strong>Given</strong> 任意行展开，<strong>When</strong> 查看该行标题，<strong>Then</strong> 只显示拖拽图标 + 名称；时长与价格<strong>隐藏</strong>（已在展开区字段里）。</li>
+<li><strong>Given</strong> 任意行展开，<strong>When</strong> 查看该行标题，<strong>Then</strong> 只显示拖拽图标 + 名称；时长与价格<strong>隐藏</strong>（已在展开区字段里）；且该名称转灰 <strong><code>#929292</code></strong>（v1.31；折叠行仍为 <code>#1A1A1A</code>）—— 避免与展开区字段里的项目名形成同屏两个等重黑体。  </li>
 <li><strong>Given</strong> 分组管理某行已展开，<strong>When</strong> 量测展开条，<strong>Then</strong> 整块底色为 <strong><code>#E7E7E7</code></strong>、行下沿有 <strong>0.5px <code>rgba(0,0,0,.08)</code></strong> 发丝线（左右内缩 16）、操作条高 <strong>82</strong>；「包含项目·包含产品 + 重命名」<strong>整组水平居中、间距 16</strong>（单格 68.33 × 66）；<strong>删除</strong>为 <strong>32×32、圆角 8、<code>#BEBEBE</code> 灰底 + 白垃圾桶、无文案</strong>，距卡片右沿 <strong>16</strong>；<strong>不得</strong>再是「左缩进 44 对齐组名」或红色纯图标。</li>
 <li><strong>Given</strong> 分组管理页，<strong>When</strong> 点展开条「包含项目 / 包含产品」，<strong>Then</strong> 对应页<strong>自右侧滑入</strong>覆盖分组管理（300ms），底层分组管理<strong>左移 22%</strong> 并叠 <strong><code>rgba(0,0,0,.1)</code></strong> 蒙层；<strong>不得</strong>是瞬时硬切。</li>
 <li><strong>Given</strong> 包含项目 / 包含产品页，<strong>When</strong> 点返回或「确定」，<strong>Then</strong> 该页<strong>自右侧滑出</strong>、蒙层淡出、回到分组管理且展开态已收起；系统「减少动态效果」或 Figma 抓取模式下动效降级为即时切换（功能不变）。</li>
@@ -2195,6 +2272,10 @@ flowchart LR
 <li><strong>Given</strong> 分组管理某行已展开，<strong>When</strong> 量测三枚操作图标（22×22 渲染）的描边与墨迹，<strong>Then</strong> 描边<strong>三者一致为 1.56px</strong>（包含项目 viewBox 24 / stroke 1.7：1.7 × 22/24 ≈ 1.56）；墨迹分别 <strong>19.16 × 16.12</strong>（包含项目）/ <strong>18.06 × 17.25</strong>（重命名）/ <strong>18.06 × 17.14</strong>（删除）；<strong>不得</strong>照搬 Stratis 原始 <code>stroke: 2</code>（渲染 1.83px，比同族<strong>重 17%</strong>）。</li>
 <li><strong>Given</strong> 包含项目 / 包含产品页（<strong>桌面 / 手机 / 产品 Tab</strong> 三种情形），<strong>When</strong> 从画布顶逐 3px 采样整页底色，<strong>Then</strong> <strong>页面灰 <code>#F7F7F7</code> 采样点为 0</strong> —— 整页只剩白 <code>#FFFFFF</code> 与品牌红 <code>#F32F41</code>（勾选框 / 底栏保存主按钮）；<code>#screen-p-group-members</code> 及其 <code>.page-body</code> 底色为 <code>var(--card)</code>。</li>
 <li><strong>Given</strong> 包含项目 / 包含产品页，<strong>When</strong> 量测列表，<strong>Then</strong> 列表壳<strong>通栏</strong>（相对正文内容区左右偏移 <strong>0</strong>、宽 = 内容宽；桌面经典滚动条吃掉 15px 属正常，真机为覆盖式滚动条）、<strong>无圆角（<code>border-radius: 0</code>）、无外边距（<code>margin: 0</code>）</strong>；行左右内边距 <strong>16</strong>、行高 <strong>52</strong>、<code>padding: 14px 0</code>、行分隔线 <strong>1px <code>#EBEBEB</code></strong>（左右内缩 16）、<strong>末行无分隔线</strong>；首行顶边<strong>紧贴选择条下沿</strong>。</li>
+<li><strong>Given</strong> 价目表列表，<strong>When</strong> 检查「选中态」用色，<strong>Then</strong> <strong>只有两处</strong>用<strong>选中橙 <code>#FF7A45</code></strong> —— ① 主 Tab（项目 / 产品）的选中文字与指示条；② 分组胶囊的选中文字（<strong>胶囊底仍为白 <code>#FFFFFF</code></strong>，未选字 <code>#6C7279</code>）；<strong>Given</strong>「设置分组」Sheet 里的分组列表，<strong>Then</strong> 同一 <code>.catalog-group-tab</code> 组件、<strong>同样为 <code>#FF7A45</code></strong>（两处复用，改一处两处同步）。</li>
+<li><strong>Given</strong> 价目表列表的<strong>折叠行</strong>，<strong>When</strong> 采样名称 / 时长 / 价格字色，<strong>Then</strong> 常态行：名称 <strong><code>#1A1A1A</code></strong>、价格 <strong><code>#1A1A1A</code></strong>、时长 <code>#929292</code>（<strong>同一行内不得出现两档黑</strong>）；<strong>Given</strong> 该行已绑卡，<strong>Then</strong> 名称仍为 <strong><code>#333333</code></strong>（语义例外）；<strong>Given</strong> 该行已下架，<strong>Then</strong> 名称与价格均为 <strong><code>#929292</code></strong>（语义例外）。<strong>Given</strong> 该行已展开，<strong>Then</strong> 标题行名称转 <strong><code>#929292</code></strong>、时长与价格隐藏。</li>
+<li><strong>Given</strong> 本次（v1.31）只改「选中态 + 展开区数值 + 保存按钮 + 保存图标」四处，<strong>When</strong> 反向断言<strong>未波及项</strong>，<strong>Then</strong> 下列元素<strong>仍为品牌红 <code>#F32F41</code></strong>、<strong>不得</strong>被改成橙色：标题栏「+添加」文字链与加号图标、底部虚线「添加项目 / 添加产品」行、空态虚线 CTA、分组管理「新建分组」、必填星号 <code>::after</code>、列排序激活箭头、<code>switch.on</code> 轨道、勾选框选中底、<strong>弹窗「确定 / 删除」实心底</strong>、左滑「删除」底。<strong>Given</strong> 展开区「保存」，<strong>Then</strong> 其字色<strong>仍是品牌红 <code>#F32F41</code></strong>（底为浅底 <code>#FFF2F2</code>）—— 与上列同色，只有底不同。</li>
+<li><strong>Given</strong> 展开区页脚的「保存」按钮，<strong>When</strong> 检查其图标，<strong>Then</strong> 是<strong>线描「存入托盘」</strong>（<code>arrow → line</code>）：<strong>3 段路径</strong>、<code>viewBox="0 0 24 24"</code>、<code>stroke-width="2.3"</code>、<code>stroke-linecap/linejoin="round"</code>；<strong>Given</strong> 渲染尺寸，<strong>Then</strong> 图标框 <strong>16×16</strong>，<strong>有效线宽 ≈ 1.53px</strong>（与模块图标族 1.56px 同档）、<strong>墨迹 ≈ 13.0 × 13.27px</strong>（≈ 原实心软盘 13.5px，<strong>换稿不得改变视觉重量</strong>）。<strong>Given</strong> 取 <code>getComputedStyle</code>，<strong>Then</strong> <strong>每条 <code>path</code> 的 <code>fill</code> 必须为 <code>none</code></strong> —— 线描图形若被 <code>fill: currentColor</code> 命中会<strong>整体填实</strong>，故 <code>base.css</code> 里<strong>不得</strong>存在 <code>.catalog-inline-save__icon path { fill: … }</code> 这类规则；<code>stroke</code> 为 <strong><code>#F32F41</code></strong>（随字色）。<strong>Given</strong> 图标与文字同处 flex 行，<strong>Then</strong> 两者盒中心 <strong>y 偏差 ≤0.6px</strong>；按钮<strong>满宽 356 / 高 48 / 圆角 12 / gap 6 / 无边框无阴影</strong>均不得因换图标而变。</li>
 </ol>
 <hr />
 <h1>模块 11　非功能（极简）</h1>

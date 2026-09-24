@@ -25,6 +25,9 @@
 /* demo L32-52 */
 :root {
   --brand: #F32F41; --brand-soft: #FFF2F2; --brand-border: #FFD5D9;
+  /* 选中态橙：只服务「选中」这一种语义 —— 主 Tab（项目/产品）与分组胶囊的选中态。
+     与品牌红并存、互不替代：实心红按钮 / 文字链 / 虚线添加行 / 必填星号 / 勾选框一律仍用 --brand。 */
+  --brand-orange: #FF7A45;
   --switch-include-on: #34C759;
   --switch-qty-on: #FF7043;
   --success: #2BA471; --success-soft: #E8F8F2;
@@ -778,7 +781,7 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 }
 .catalog-group-tab__indicator { display: none !important; }
 .catalog-group-tab.on {
-  color: var(--brand);
+  color: var(--brand-orange);
   background: transparent;
   box-shadow: none;
 }
@@ -786,7 +789,7 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   background: #fff;
   border: none;
   font-weight: 500;
-  color: var(--brand);
+  color: var(--brand-orange);
   box-shadow: none;
 }
 .catalog-group-tab:active:not(.on) { opacity: .85; }
@@ -1083,9 +1086,9 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   font-size: 16px; color: #6C7279; font-weight: 400; letter-spacing: 0.32px;
 }
 #screen-p-list .price-catalog-tabs .page-tabs__item.on {
-  color: var(--brand); font-weight: 600;
+  color: var(--brand-orange); font-weight: 600;
 }
-/* 选中指示条：品牌红，宽 = 文字宽 + 20（JS 量得写 --pct-ink-w；量不到时兜底 52px）。
+/* 选中指示条：选中橙（`--brand-orange`，v1.31 起；原品牌红），宽 = 文字宽 + 20（JS 量得写 --pct-ink-w；量不到时兜底 52px）。
    两项 flex:1 等宽 → 第 1 项中心在 25%、第 2 项中心在 75%；切换时 left 过渡 160ms 缓入缓出。
    （原 ::after 版只写了尺寸、漏了 content/position/background，伪元素从未生成） */
 #screen-p-list .price-catalog-tabs__ink {
@@ -1095,7 +1098,7 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   width: var(--pct-ink-w, 52px);
   height: 3px;
   border-radius: 2px;
-  background: var(--brand);
+  background: var(--brand-orange);
   transform: translateX(-50%);
   pointer-events: none;
   transition: left 160ms cubic-bezier(.22,.82,.24,1), width 160ms cubic-bezier(.22,.82,.24,1);
@@ -1440,6 +1443,19 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 .table-row-swipe.is-off-sale .price { color: var(--text-sec); }
 .table-row .name-text.is-bound { color: var(--text); }
 .table-row-swipe.is-off-sale .name-text.is-bound { color: var(--text-sec); opacity: 1; }
+/* 折叠行名称显式锁到 `#1A1A1A`（v1.31）。此前未声明 color，实际是继承初始黑 `#000`，
+   与同行的价格（`#1A1A1A`）构成两档黑；这里显式对齐。
+   两个语义例外用 :not() 排除、不动其原有声明：`.is-bound` 绑卡 `#333333`、`.is-off-sale` 下架 `#929292`。
+   展开态也排除 —— 标题行另有转灰规则，见下条。 */
+#screen-p-list .table-row-swipe:not(.is-off-sale):not(.has-inline-panel) .table-row .name-text:not(.is-bound) {
+  color: #1A1A1A;
+}
+/* 展开态标题行的项目名转灰 `--text-sec`（v1.31）：名称已在展开区字段里以可编辑值（`#1A1A1A`）呈现，
+   标题行降级为「这是哪一行」的定位线索，避免同屏两个等重黑体项目名。
+   本规则对下架行同样落 `#929292`，与 .is-off-sale 原值一致，不产生视觉变化。 */
+#screen-p-list .table-row-swipe.has-inline-panel > .table-row .name-text {
+  color: #929292;
+}
 .table-row-swipe.is-off-sale .bound-tag { color: var(--text-sec); }
 .table-row-swipe.is-dragging {
   position: absolute; z-index: 10000; margin: 0; cursor: grabbing;
@@ -1553,9 +1569,10 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 }
 .table-row .price { text-align: center; font-variant-numeric: tabular-nums; }
 #screen-p-list .table-row .price-num {
-  /* Figma 305:155 TCloudNumber Regular 14 / 主红 #F32F41 */
+  /* TCloudNumber Regular 14；v1.31 起色由「主红 #F32F41」改为主文字档 `#1A1A1A`
+     （红色让位给「选中态」，见 --brand-orange）；下架行仍由 .is-off-sale 覆盖为弱化灰。 */
   font-family: var(--font-data); font-weight: 400; font-size: 14px; line-height: 19px;
-  color: #F32F41; letter-spacing: 0;
+  color: #1A1A1A; letter-spacing: 0;
   display: block; width: 100%; text-align: center;
 }
 #screen-p-list .table-row .price-num .yen {
@@ -1871,9 +1888,11 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
 #screen-p-list .catalog-inline-panel .proj-form-row .input-amount:not(:placeholder-shown) {
   font-family: var(--font-data); font-variant-numeric: tabular-nums;
 }
-/* 名称值灰字 Medium、价格值品牌橙 Medium（设计稿 1258:616 / 1258:624） */
-#screen-p-list .catalog-inline-panel #fProjName { color: #929292; font-weight: 500; }
-#screen-p-list .catalog-inline-panel #fPrice { color: #FE8D4B; font-weight: 500; }
+/* 值色：名称与价格统一为 --text-strong 档 `#1A1A1A`（与标签、时长数字框、规格输入框同档）。
+   原为「名称灰 #929292 + 价格橙 #FE8D4B」（Figma 1258:616 / 1258:624），v1.31 起由产品决定收敛为单档黑：
+   数值不再靠颜色区分字段，橙色让位给「选中态」（见 --brand-orange）。时长控件不在此列、保持自身配色。 */
+#screen-p-list .catalog-inline-panel #fProjName { color: #1A1A1A; font-weight: 500; }
+#screen-p-list .catalog-inline-panel #fPrice { color: #1A1A1A; font-weight: 500; }
 /* 「值 + 铅笔」的间距由 8px 收到 4px（设计稿 1258:615/623 itemSpacing=4） */
 #screen-p-list .catalog-inline-panel .proj-form-row .field { gap: 4px; }
 /* 铅笔图标只作「可点编辑」的视觉线索，点击仍落在整行/输入框上 */
@@ -2134,15 +2153,19 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   padding: 0 16px; box-sizing: border-box;
   /* 与全站 .btn-main 同高 48，保持主按钮手感一致 */
   height: 48px; min-height: 48px; border-radius: 12px; gap: 6px;
-  background: #F32F41; color: #fff; border: none; box-shadow: none;
+  /* v1.31：由「通栏实心品牌红」改「浅品牌底 + 品牌红字」（tinted）。
+     满宽 / 高 48 / 圆角 12 一概不变 —— 只降对比度，不减触摸区。 */
+  background: var(--brand-soft); color: var(--brand); border: none; box-shadow: none;
   font-size: 16px; font-weight: 500;
 }
-#screen-p-list .catalog-inline-panel__foot .btn-main:active { background: #E02A3A; }
+#screen-p-list .catalog-inline-panel__foot .btn-main:active { background: #FEEAEC; }
 #screen-p-list .catalog-inline-panel__foot .catalog-inline-save__icon {
   flex: 0 0 16px; display: block;
-}
-#screen-p-list .catalog-inline-panel__foot .catalog-inline-save__icon path {
-  fill: #fff; stroke: #fff;
+  /* 图标颜色随按钮字色（浅底态 = 品牌红）。fill / stroke / stroke-width 一律由 SVG 自带属性给出 ——
+     与 PROJ_CHEV_ICON / CATALOG_DUR_CLOCK_ICON 等其余线描图标同口径，CSS 不再插手。
+     ⚠️ v1.31 起本图标是**线描**：原先这里那条 `path { fill: currentColor; stroke: currentColor }`
+     是为实心软盘写的，留着会把线描图形整体**填实**，故已删除；重新引入前务必确认图标是实心还是线描。 */
+  color: inherit;
 }
 
 /* 保存成功：该行高亮闪一次（收起后播；绿色减淡，避免抢戏） */
