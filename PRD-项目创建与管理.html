@@ -59,7 +59,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.31</td>
+<td>v1.32</td>
 </tr>
 <tr>
 <td>日期</td>
@@ -94,6 +94,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.32</td>
+<td>2026-09-24</td>
+<td><strong>修掉分组操作「写副本」缺陷（同一根因 4 处）：删除 / 新建 / 拖拽排序对分组数据的写入全部落空，且 toast 谎报成功</strong>。<strong>① 根因</strong>：<code>getActiveCatalogGroups()</code> 每次调用都<strong>新建一个数组</strong>（<code>groups.filter(g =&gt; !g.system)</code> 之后再包一层 <code>[...custom, sys]</code>），它只是<strong>渲染用的只读视图</strong>；而四处<strong>结构写操作</strong>误把它当成数据本体 —— <code>confirmCatalogGroupDelete</code> 的 <code>splice</code>、<code>commitCatalogGroupName</code> 新建分支的 <code>push</code>、<code>commitCatalogGroupOrderFromDom</code> 的顺序回写 <code>splice</code>、<code>moveCatalogGroup</code> 的槽位交换，全部作用在副本上，<code>state.catalogGroups[bucket]</code> <strong>从未被改动</strong>；副本一被丢弃改动即消失，于是表现为「弹窗关掉了、toast 报了成功，界面却什么都没变」。<strong>② 三个用户可见症状</strong>：<strong>删组</strong>（本次上报）—— 确认后被删组<strong>仍留在分组管理列表与分组轨上</strong>（实测删除前 9 组 → 删除后仍 9 组，「洗吹」未消失）；<strong>新建</strong> —— toast「已新建分组」但列表 / 分组轨 / 「设置分组」Sheet 里<strong>都不出现新组</strong>；<strong>拖拽排序</strong> —— 松手后顺序<strong>回弹</strong>（顺序只是 DOM 呈现，重渲染即按 state 恢复）。<strong><code>moveCatalogGroup</code> 当前无调用方（死代码），同根因一并修正</strong>。<strong>③ 修法（只改写入端，视图语义与展示顺序不变）</strong>：四处结构写操作一律改落到 <strong><code>getCatalogGroupsForBucket()</code></strong> 返回的<strong>活数组</strong>（即 <code>state.catalogGroups[bucket]</code> 本身）；删除时若 <code>state.catalogGroupExpandedId</code> 指向被删组则一并清空（避免留悬空展开态）。<code>getActiveCatalogGroups()</code> <strong>继续只作只读</strong> —— 供渲染、重名校验，以及「上 / 下移」按<strong>视觉邻居</strong>定位真实槽位（<code>indexOf</code>）之用；<code>moveCatalogGroup</code> 因「视觉顺序 = 自定义组… + 系统组」而改用 <code>indexOf</code> 映射，不再假设两者下标相同。<strong>④ 行为定稿</strong>：删除确认后该组<strong>立即</strong>从分组管理列表与分组轨消失，<strong>组内条目本身不受影响</strong>（实测成员 <code>p1,p3,p19</code> 均仍在价目表）；若删的正是当前筛选组，<strong>筛选回落「全部」</strong>；系统「隐藏」组<strong>仍不可删、不可改名、仍固定末尾</strong>；新建后<strong>立即</strong>出现在列表 / 分组轨 / Sheet（在空态 Sheet 走「去新建分组」时回填并<strong>默认勾选</strong>新组，仍须 Sheet「确定」才写入成员）；拖拽顺序<strong>落库并跨重渲染保持</strong>。<strong>⑤ 验证</strong>：<code>_tmp_verify_groupcrud.mjs</code> <strong>29 PASS / 0 FAIL</strong>（全程真实点击 / 真实指针拖拽驱动，并对 <code>window.state</code> 做独立断言；覆盖项目 / 产品两个 Tab 的删组、系统组拦截、删除后重渲染持久、新建后回填勾选、拖拽持久等）。改动同步 §6.4 / §6.6 / §7.3 / §10.2（+84～86）。</td>
+</tr>
 <tr>
 <td>v1.31</td>
 <td>2026-09-24</td>
@@ -1686,11 +1691,12 @@ flowchart LR
 <li><strong>进入分组管理时一律收起</strong>（齿轮 / 返回 / 深链均同）；不默认展开任何行  </li>
 <li><strong>不再使用</strong>分组底部菜单 Sheet  </li>
 <li>空态：暂无分组 / 创建分组后可快速筛选价目表  </li>
-<li>底栏：<strong>已取消</strong>；<strong>加号 SVG +「新建」</strong>改到标题栏右侧文字链 → Dialog（最多 20 字，不可与已有分组重名）  </li>
+<li>底栏：<strong>已取消</strong>；<strong>加号 SVG +「新建」</strong>改到标题栏右侧文字链 → Dialog（最多 20 字，不可与已有分组重名）；<strong>确定后新组立即出现在分组管理列表与分组轨上</strong>（并成为当前筛选组）</li>
 <li>标题栏右侧入口：<strong>加号与文字同为 14px 盒</strong>（加号 14 单位 / stroke 1.5、<code>gap 4</code>、右内边距 12），flex 居中即同轴；列表页「+添加」同规格（v1.22）</li>
 <li>操作落地：包含项目 / 包含产品 → 对应页（<strong>自右侧滑入覆盖分组管理</strong>，300ms <code>cubic-bezier(.32,.72,0,1)</code>；底层分组管理左移 22% + <code>rgba(0,0,0,.1)</code> 蒙层）；重命名 / 删除 → 现有 Dialog（<strong>系统「隐藏」组无展开条</strong>，点主行进包含项目 / 包含产品）  </li>
-<li>删除确认：仅删除分组，不会删除项目/产品  </li>
-<li>组顺序：自定义组在分组管理页拖拽排序；系统「隐藏」组 <strong>固定末尾</strong>  </li>
+<li>删除确认：仅删除分组，不会删除项目/产品；<strong>确认后该组立即从分组管理列表与分组轨消失</strong>（组内条目本身不受影响，仅不再属于该组）；删的若是当前筛选组，筛选<strong>回落「全部」</strong>  </li>
+<li>组顺序：自定义组在分组管理页拖拽排序，<strong>松手即写入分组数据、重渲染后保持</strong>；系统「隐藏」组 <strong>固定末尾</strong> 且<strong>不可拖拽</strong>  </li>
+<li><strong>实现口径（v1.32）</strong>：分组数据的<strong>唯一真源</strong>是 <code>state.catalogGroups[bucket]</code> 数组（<code>getCatalogGroupsForBucket()</code> 返回的即该数组本身）；<strong>新增 / 删除 / 排序一律写这个数组</strong>。<code>getActiveCatalogGroups()</code> 只作<strong>只读视图</strong>（顺序 = 自定义组… + 系统「隐藏」），供渲染与重名校验使用 —— <strong>不得</strong>在其返回值上做 <code>push</code> / <code>splice</code> / 槽位交换（v1.32 修的正是这四处误用）  </li>
 <li>「隐藏」分组 Tab 展示隐藏图标（<strong>内联 16×16 / stroke 1.5 的眼 + 斜线</strong>，Tab 内 14×14）；列表底部「已隐藏」折叠 <strong>不带</strong> 数量角标；分组轨样式同列表（灰轨白胶囊）  </li>
 </ul>
 <h2>6.5 包含项目 / 包含产品</h2>
@@ -1711,7 +1717,8 @@ flowchart LR
 <li>多选 <strong>全部</strong> 分组（含系统「隐藏」）；确定 →「已更新分组」并同步 <code>hidden</code>  </li>
 <li>无自定义组：「去新建分组」（左侧加号图标）  </li>
 <li>点「去新建分组」→ <strong>不离开本 Sheet</strong>，叠开「新建分组」Dialog  </li>
-<li>确定新建 → toast「已新建分组」→ 回到本 Sheet 勾选列表（含新组与「隐藏」；新组默认勾选，须点 Sheet「确定」才写入）  </li>
+<li>确定新建 → toast「已新建分组」→ 回到本 Sheet 勾选列表（含新组与「隐藏」；新组默认勾选，须点 Sheet「确定」才写入）</li>
+<li><strong>新组此时已真实写入分组数据</strong>（v1.32 修复前该写入会落空：toast 报成功但列表里查无此组）  </li>
 <li>取消 Dialog → 仍停在空态 Sheet  </li>
 <li>演示深链：<code>price-item-group-empty</code>（轨上仅「全部 / 隐藏」）  </li>
 </ul>
@@ -1994,6 +2001,7 @@ flowchart LR
 </tbody>
 </table>
 <p>桶：<code>project</code> | <code>product</code> 两套分组互不影响。</p>
+<p><strong>写入口径（v1.32）</strong>：桶数组（<code>state.catalogGroups[bucket]</code>）是分组的<strong>唯一真源</strong> —— 新增 / 删除 / 排序<strong>一律写该数组</strong>；<code>getActiveCatalogGroups()</code> 返回的只是<strong>只读视图</strong>（自定义组… + 系统「隐藏」），<strong>不得</strong>在其返回值上做结构变更（<code>push</code> / <code>splice</code> / 交换），否则改动会落空而 UI 貌似成功。系统「隐藏」组在桶内<strong>固定末尾</strong>，不可删除、不可重命名。</p>
 <h2>7.4 能力清单（路径【待联调确认】；正式文档暂无交付时间）</h2>
 <table>
 <thead>
@@ -2276,6 +2284,9 @@ flowchart LR
 <li><strong>Given</strong> 价目表列表的<strong>折叠行</strong>，<strong>When</strong> 采样名称 / 时长 / 价格字色，<strong>Then</strong> 常态行：名称 <strong><code>#1A1A1A</code></strong>、价格 <strong><code>#1A1A1A</code></strong>、时长 <code>#929292</code>（<strong>同一行内不得出现两档黑</strong>）；<strong>Given</strong> 该行已绑卡，<strong>Then</strong> 名称仍为 <strong><code>#333333</code></strong>（语义例外）；<strong>Given</strong> 该行已下架，<strong>Then</strong> 名称与价格均为 <strong><code>#929292</code></strong>（语义例外）。<strong>Given</strong> 该行已展开，<strong>Then</strong> 标题行名称转 <strong><code>#929292</code></strong>、时长与价格隐藏。</li>
 <li><strong>Given</strong> 本次（v1.31）只改「选中态 + 展开区数值 + 保存按钮 + 保存图标」四处，<strong>When</strong> 反向断言<strong>未波及项</strong>，<strong>Then</strong> 下列元素<strong>仍为品牌红 <code>#F32F41</code></strong>、<strong>不得</strong>被改成橙色：标题栏「+添加」文字链与加号图标、底部虚线「添加项目 / 添加产品」行、空态虚线 CTA、分组管理「新建分组」、必填星号 <code>::after</code>、列排序激活箭头、<code>switch.on</code> 轨道、勾选框选中底、<strong>弹窗「确定 / 删除」实心底</strong>、左滑「删除」底。<strong>Given</strong> 展开区「保存」，<strong>Then</strong> 其字色<strong>仍是品牌红 <code>#F32F41</code></strong>（底为浅底 <code>#FFF2F2</code>）—— 与上列同色，只有底不同。</li>
 <li><strong>Given</strong> 展开区页脚的「保存」按钮，<strong>When</strong> 检查其图标，<strong>Then</strong> 是<strong>线描「存入托盘」</strong>（<code>arrow → line</code>）：<strong>3 段路径</strong>、<code>viewBox="0 0 24 24"</code>、<code>stroke-width="2.3"</code>、<code>stroke-linecap/linejoin="round"</code>；<strong>Given</strong> 渲染尺寸，<strong>Then</strong> 图标框 <strong>16×16</strong>，<strong>有效线宽 ≈ 1.53px</strong>（与模块图标族 1.56px 同档）、<strong>墨迹 ≈ 13.0 × 13.27px</strong>（≈ 原实心软盘 13.5px，<strong>换稿不得改变视觉重量</strong>）。<strong>Given</strong> 取 <code>getComputedStyle</code>，<strong>Then</strong> <strong>每条 <code>path</code> 的 <code>fill</code> 必须为 <code>none</code></strong> —— 线描图形若被 <code>fill: currentColor</code> 命中会<strong>整体填实</strong>，故 <code>base.css</code> 里<strong>不得</strong>存在 <code>.catalog-inline-save__icon path { fill: … }</code> 这类规则；<code>stroke</code> 为 <strong><code>#F32F41</code></strong>（随字色）。<strong>Given</strong> 图标与文字同处 flex 行，<strong>Then</strong> 两者盒中心 <strong>y 偏差 ≤0.6px</strong>；按钮<strong>满宽 356 / 高 48 / 圆角 12 / gap 6 / 无边框无阴影</strong>均不得因换图标而变。</li>
+<li><strong>Given</strong> 分组管理页，<strong>When</strong> 点某<strong>自定义组</strong>行内展开的「删除」并在确认弹窗点「确定」，<strong>Then</strong> 该组<strong>立即从分组管理列表与分组轨上消失</strong>（<code>state.catalogGroups[bucket]</code> 中已移除），且 toast「已删除分组」<strong>与事实一致</strong>；<strong>Given</strong> 被删组内有成员条目，<strong>Then</strong> 这些<strong>条目本身不得被删除</strong>（仍在价目表中，只是不再属于该组）；<strong>Given</strong> 删的正是当前筛选组，<strong>Then</strong> 筛选<strong>回落「全部」</strong>；<strong>Given</strong> 系统「隐藏」组，<strong>Then</strong> 删除被拦截（toast「系统分组不可删除」）、该组<strong>仍在</strong>且<strong>仍固定末尾</strong>。项目 Tab 与产品 Tab <strong>均须如此</strong>。</li>
+<li><strong>Given</strong> 分组管理页标题栏「新建」，<strong>When</strong> 输入名称并确定，<strong>Then</strong> 新组<strong>立即出现在列表与分组轨上</strong>、并成为当前筛选组；<strong>Given</strong> 在「设置分组」Sheet 空态点「去新建分组」新建，<strong>Then</strong> 回到 Sheet 后新组<strong>出现在勾选列表且默认勾选</strong>（仍须点 Sheet「确定」才写入成员）；<strong>Given</strong> 重命名某组，<strong>Then</strong> 组名<strong>就地更新</strong>、分组轨同步。三者<strong>均不得</strong>只出 toast 而数据未落。</li>
+<li><strong>Given</strong> 分组管理页（项目或产品 Tab），<strong>When</strong> 拖拽某自定义组到新位置后松手，<strong>Then</strong> 顺序<strong>写入分组数据并跨重渲染保持</strong>（列表 DOM 顺序与 <code>state.catalogGroups[bucket]</code> 顺序<strong>一致</strong>）；系统「隐藏」组<strong>仍固定末尾</strong>且<strong>不可拖拽</strong>。<strong>Given</strong> 上述删除 / 新建 / 拖拽三处实现，<strong>When</strong> 检查代码，<strong>Then</strong> <strong>不得</strong>在 <code>getActiveCatalogGroups()</code> 的返回值上做结构写操作（该函数返回<strong>只读视图</strong>，每次调用都是新数组；写入一律落 <code>state.catalogGroups[bucket]</code>）—— 这正是 v1.32 修的缺陷模式。</li>
 </ol>
 <hr />
 <h1>模块 11　非功能（极简）</h1>

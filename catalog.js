@@ -1248,7 +1248,9 @@ function commitCatalogGroupOrderFromDom() {
   const ordered = ids.map(id => groups.find(g => g.id === id && !g.system)).filter(Boolean);
   const sys = groups.find(g => g.system);
   if (ordered.length + (sys ? 1 : 0) !== groups.length) return;
-  groups.splice(0, groups.length, ...(sys ? [...ordered, sys] : ordered));
+  /* 回写同样必须落到活数组；在 getActiveCatalogGroups() 副本上 splice 等于没写 */
+  const live = getCatalogGroupsForBucket();
+  live.splice(0, live.length, ...(sys ? [...ordered, sys] : ordered));
   renderCatalogGroupTabs();
 }
 
@@ -1367,7 +1369,9 @@ function confirmCatalogGroupNameDialog() {
     showToast('已重命名');
   } else {
     const g = { id: catalogGroupUid(), name, itemIds: [] };
-    groups.push(g);
+    /* 同删除：新建也必须 push 进活数组 —— groups 是 getActiveCatalogGroups() 的副本，
+       在副本上 push 不会进 state，会导致「toast 报已新建分组、列表却不出现」。 */
+    getCatalogGroupsForBucket().push(g);
     createdId = g.id;
     if (!resumeAssign) setActiveCatalogGroupId(g.id);
     showToast('已新建分组');
@@ -1405,10 +1409,14 @@ function confirmCatalogGroupDelete() {
     closeCatalogGroupDeleteConfirm();
     return;
   }
-  const groups = getActiveCatalogGroups();
+  /* ⚠️ 必须操作 getCatalogGroupsForBucket() 返回的**活数组**（即 state.catalogGroups[bucket] 本身）。
+     getActiveCatalogGroups() 每次返回的是新副本（[...custom, sys]），在副本上 splice 不影响 state，
+     会让删除静默失效 —— 弹窗关掉、toast 报「已删除分组」，但列表里分组还在。 */
+  const groups = getCatalogGroupsForBucket();
   const idx = groups.findIndex(g => g.id === id);
   if (idx >= 0) groups.splice(idx, 1);
   if (getActiveCatalogGroupId() === id) setActiveCatalogGroupId('all');
+  if (state.catalogGroupExpandedId === id) state.catalogGroupExpandedId = null;
   closeCatalogGroupDeleteConfirm();
   renderCatalogGroupManage();
   renderCatalogGroupTabs();
@@ -1416,14 +1424,20 @@ function confirmCatalogGroupDelete() {
 }
 
 function moveCatalogGroup(groupId, dir) {
-  const groups = getActiveCatalogGroups();
-  const idx = groups.findIndex(g => g.id === groupId);
+  /* 展示顺序 = 自定义组… + 系统组（见 getActiveCatalogGroups）。
+     但写操作必须落到活数组，故用 visual 定位「视觉邻居」、再用 indexOf 找回活数组里的真实槽位。 */
+  const visual = getActiveCatalogGroups();
+  const idx = visual.findIndex(g => g.id === groupId);
   if (idx < 0) return;
   const next = dir === 'up' ? idx - 1 : idx + 1;
-  if (next < 0 || next >= groups.length) return;
-  const tmp = groups[idx];
-  groups[idx] = groups[next];
-  groups[next] = tmp;
+  if (next < 0 || next >= visual.length) return;
+  const live = getCatalogGroupsForBucket();
+  const a = live.indexOf(visual[idx]);
+  const b = live.indexOf(visual[next]);
+  if (a < 0 || b < 0) return;
+  const tmp = live[a];
+  live[a] = live[b];
+  live[b] = tmp;
   renderCatalogGroupManage();
   renderCatalogGroupTabs();
 }
