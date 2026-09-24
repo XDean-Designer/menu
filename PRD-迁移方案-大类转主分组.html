@@ -59,11 +59,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.1</td>
+<td>v1.2</td>
 </tr>
 <tr>
 <td>日期</td>
-<td>2026-09-23</td>
+<td>2026-09-24</td>
 </tr>
 <tr>
 <td>状态</td>
@@ -71,15 +71,15 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 <tr>
 <td>涉及模块</td>
-<td>价目表（项目创建与管理）· 提成设置 · 开单选品 · 会员卡权益选品 · 库存 · 经营分析</td>
+<td>价目表（项目创建与管理）· 提成设置 · 开单选品 · 会员卡权益选品 · <strong>线上会员卡「计次卡」（两线并行）</strong> · 库存 · 经营分析</td>
 </tr>
 <tr>
 <td>关联文档</td>
-<td><code>PRD-项目创建与管理.md</code>（v1.27）· <code>../提成设置/PRD-提成设置.md</code></td>
+<td><code>PRD-项目创建与管理.md</code>（v1.30）· <code>../提成设置/PRD-提成设置.md</code> · <code>../card/PRD-会员卡管理.md</code></td>
 </tr>
 <tr>
 <td>结论</td>
-<td>线上「大类」升级为<strong>「主分组」</strong>（必选、1:1、<strong>可改</strong>）+ 新增<strong>可多归属的自定义分组</strong>；提成解析由实测的<strong>「先写先赢」</strong>改为<strong>显式优先级链</strong>；分组变更<strong>不弹窗、自动 <code>forward</code>、仅一条 toast</strong>；<strong>一次性全量替换</strong>，靠上线前体检 + 回滚包兜底。</td>
+<td>线上「大类」升级为<strong>「主分组」</strong>（必选、1:1、<strong>可改</strong>）+ 新增<strong>可多归属的自定义分组</strong>；提成解析由实测的<strong>「先写先赢」</strong>改为<strong>显式优先级链</strong>；分组变更<strong>不弹窗、自动 <code>forward</code>、仅一条 toast</strong>；<strong>线上会员卡「计次卡」的适用范围由「1 个大类」改挂「1 个主分组」（模板层实时跟随、实例层快照）</strong>（§12）；<strong>一次性全量替换</strong>，靠上线前体检 + 回滚包兜底。</td>
 </tr>
 </tbody>
 </table>
@@ -94,6 +94,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.2</td>
+<td>2026-09-24</td>
+<td><strong>新增 §12「会员卡 · 计次卡（大类 → 分组）」：线上会员卡「计次卡」的适用范围改挂主分组</strong>（承接用户澄清：该计次卡属<strong>线上会员卡系统</strong>，模板可选 <strong>1 种大类</strong>作适用范围，<strong>不是</strong>本仓库新原型的「独立计次 / 关联计次」；且与本次价目表上线为<strong>两线并行</strong> —— 线上会员卡<strong>不在本次同期下线</strong>，故需<strong>改造取值</strong>而非仅做数据映射）。<strong>① 决策 D10：适用范围引用「主分组」而不是「自定义分组」</strong> —— 主分组与大类同为 <strong>1:1</strong>，判定即 <code>scope = { p \| p.primaryGroupId === scopeGroupId }</code>，<strong>唯一命中、无 N:N 歧义</strong>，语义零漂移；若改引用自定义分组，会出现「一个项目被两张计次卡同时覆盖」并需新定义并集 / 交集 / 优先级，<strong>明确不做</strong>（§12.3）。<strong>② 生效口径</strong>：<strong>模板层实时跟随</strong>（分组当前成员 = 适用范围）、<strong>办卡实例层快照冻结</strong>（之后改分组不影响已办卡与退卡估值）—— 与 D4 同向：只改"未来"，不动历史（§12.2 D10-b）。<strong>③ 绑卡派生必须扩为「模板 ∪ 持卡实例」并集</strong> —— <code>价目表/catalog.js</code> 的 <code>collectTemplateProjectRefs()</code> 现<strong>只扫模板</strong>；在「模板 live + 实例快照」组合下，把项目移出分组会让模板侧不再引用它、<code>boundToCard</code> 退回 <code>false</code>、<strong>项目变成可删</strong>，而历史持卡实例仍快照着它 → <strong>退卡估值出现孤儿引用</strong>。这是本方案<strong>唯一的真坑</strong>，不修则历史不可复现（§12.5 A）。<strong>④ 连带影响（须告知商户）</strong>：整组项目一次性全部变「已绑卡」（不可删、名称 / 可预约锁定；价格 / 时长 / 在售 / 下架仍可改，沿用价目表 PRD §4.3）；往分组加项目 → 自动进范围并自动被锁；范围为空需拦截；分组被删时 <code>scopeGroupId</code> 不得悬空（§12.5）。<strong>⑤ 迁移</strong>：<code>categoryId → scopeGroupId = 'g_'+categoryId</code>（1:1）；历史持卡实例按办卡时点的大类成员集回填快照；dry-run 校验每个 <code>scopeGroupId</code> 命中分组且非空（§12.6）。<strong>⑥ 章节重排</strong>：原 §12「待确认 / 后续」顺延为 <strong>§13</strong>，§11.2 / §11.4 的交叉引用同步更新；并修正 §4.3 与 §8 原先把"待确认"误标为 <strong>§11</strong> 的两处旧笔误。<strong>⑦ 验收</strong>：新增 <strong>M23–M28</strong>；§11.1 改名对照表补「计次卡适用范围」一行。</td>
+</tr>
 <tr>
 <td>v1.1</td>
 <td>2026-09-23</td>
@@ -306,11 +311,17 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <td>术语口径</td>
 <td>替换上线后，其他地方关于项目/产品「<strong>类</strong>」的描述统一改为「<strong>组</strong>」（§11）</td>
 </tr>
+<tr>
+<td>D10</td>
+<td>线上会员卡「计次卡」的适用范围</td>
+<td>由线上「1 个<strong>大类</strong>」改挂 <strong>1 个主分组</strong>（<code>primaryGroupId</code> 轴，<strong>不引用自定义分组</strong>）；<strong>模板层实时跟随、办卡实例层快照冻结</strong>；绑卡派生取 <strong>模板 ∪ 持卡实例</strong> 并集（§12）</td>
+</tr>
 </tbody>
 </table>
 <blockquote>
 <p><strong>D3 + D7 的代价</strong>：没有灰度观察期、又没有阻断，因此<strong>上线前体检（§9.1）+ 回滚包（§9.2）+ 上线后核对（§9.3）是硬性补偿项</strong>，不可省略。</p>
 <p><strong>D4 的代价</strong>：分组变更<strong>没有"重算历史"的退路</strong>，且用户<strong>无法在不生效的前提下试改</strong>。因此「分界记录」是<strong>必需项而非可选项</strong>（§7.1 给出理由与实现）。</p>
+<p><strong>D10 的代价</strong>：适用范围从"写死在模板上的 1 个大类"变成"跟随分组成员"，于是<strong>分组一动，绑卡面就跟着动</strong> —— 整组项目会被一次性锁成不可删。这是 D10 为换取「语义零漂移」必然付出的代价（只有 1:1 的主分组才能让判定无歧义），但<strong>必须配套 §12.5 的商户告知与并集绑卡</strong>，否则历史卡会出现孤儿引用。</p>
 </blockquote>
 <hr />
 <h2>3. 目标数据模型</h2>
@@ -480,7 +491,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <h3>4.3 <code>category</code> 字段兼容期</h3>
 <ul>
 <li>迁移后 <code>category</code> <strong>只读保留</strong>，不参与任何计算与展示（除 §9.3 核对）。</li>
-<li>下线时机：<strong>至少跨过一个完整结算周期</strong>，且在 §9.3 抽样核对全绿之后（见 §11 待确认）。</li>
+<li>下线时机：<strong>至少跨过一个完整结算周期</strong>，且在 §9.3 抽样核对全绿之后（见 §13 待确认）。</li>
 </ul>
 <hr />
 <h2>5. P1 提成优先级链（替换「先写先赢」）</h2>
@@ -754,6 +765,11 @@ return winner.ov
 <td>不受分组影响，仅需回归验证（选择器若含分组轨，与开单一致）</td>
 </tr>
 <tr>
+<td><strong>会员卡「计次卡」适用范围（线上 · 两线并行）</strong></td>
+<td>模板选 <strong>1 个「大类」</strong> 作适用范围（该大类下的项目均可被这张卡扣次）</td>
+<td><strong>改挂 1 个主分组</strong>：模板层<strong>实时跟随</strong>、实例层<strong>快照</strong>；绑卡派生扩为「模板 ∪ 实例」并集 —— <strong>详见 §12</strong></td>
+</tr>
+<tr>
 <td>库存（挂在价目增改）</td>
 <td>跟价目条目走</td>
 <td>不依赖归属，仅需回归验证库存入口未随表单字段调整而错位</td>
@@ -761,7 +777,7 @@ return winner.ov
 <tr>
 <td>导入导出 · 商城/联盟</td>
 <td>本次判定<strong>不依赖</strong></td>
-<td>若实际存在按大类的模板/接口，需回补映射（§11）</td>
+<td>若实际存在按大类的模板/接口，需回补映射（§13）</td>
 </tr>
 </tbody>
 </table>
@@ -975,6 +991,42 @@ return winner.ov
 <td>现场确认指向哪条轴后落地</td>
 <td>若属分组轨 → 「该分组下暂无内容」；若属类型 Tab → 不改；<strong>或</strong>统一改中性文案「暂无内容」（两种读法下均正确）</td>
 </tr>
+<tr>
+<td>M23</td>
+<td>线上计次卡模板迁移完成</td>
+<td>查看适用范围</td>
+<td>由「大类」变为<strong>主分组</strong>（<code>categoryId → 'g_'+categoryId</code>，1:1）；<strong>不存在</strong>"可同时选 2 个及以上分组"的入口</td>
+</tr>
+<tr>
+<td>M24</td>
+<td>计次卡模板绑定主分组 G</td>
+<td>向 G <strong>新增</strong>项目</td>
+<td>新项目<strong>立即</strong>进入该卡扣次范围；价目表对应行变「已绑卡」，删除被拦（toast <code>该项目已绑定会员卡，不可删除</code>）</td>
+</tr>
+<tr>
+<td>M25</td>
+<td>计次卡模板绑定 G，且已有人办过卡</td>
+<td>把项目 A <strong>移出</strong> G</td>
+<td>A 退出<strong>模板</strong>范围；但<strong>已办卡实例仍可扣 A</strong>；A 的 <code>boundToCard</code> <strong>仍为 true</strong>（模板 ∪ 实例<strong>并集</strong>）、仍不可删 —— <strong>不得</strong>产生孤儿引用（§12.5 A）</td>
+</tr>
+<tr>
+<td>M26</td>
+<td>计次卡模板绑定 G，已办一张卡</td>
+<td>改 G 成员后对比</td>
+<td><strong>已办卡</strong>的扣次范围与退卡估值<strong>完全不变</strong>（实例快照）；<strong>之后新办</strong>的卡按 G 的<strong>新</strong>成员集</td>
+</tr>
+<tr>
+<td>M27</td>
+<td>绑定 G 的计次卡</td>
+<td>把 G 清空</td>
+<td>保存被拦或明确提示「适用范围为空」；已办卡不受影响、仍按快照扣次</td>
+</tr>
+<tr>
+<td>M28</td>
+<td>分组被删除 / 主分组被改指</td>
+<td>完成</td>
+<td>计次卡 <code>scopeGroupId</code> <strong>不悬空</strong>：改指则跟随；删除前必须列出受影响的计次卡并指定迁入分组（对齐 §3.3 不变量 5）</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -1041,10 +1093,15 @@ return winner.ov
 <td>按<strong>主分组</strong>的统计维度</td>
 <td>经营分析 / 报表（§8）</td>
 </tr>
+<tr>
+<td>计次卡的「适用范围 ＝ 1 个大类」</td>
+<td>「适用范围 ＝ <strong>1 个主分组</strong>」</td>
+<td><strong>线上会员卡系统</strong>（不在本仓库）；模板 / 列表 / 详情 / 扣次券文案同步 —— 见 §12</td>
+</tr>
 </tbody>
 </table>
 <blockquote>
-<p>注：<code>价目表/</code> 原型的<strong>用户可见文案本已用「组」</strong>（<code>catalog.js</code> / <code>base.css</code> / <code>index.html</code> 全仓无「分类 / 大类」命中），所以 §11.1 的<strong>代码落点全部在 <code>提成设置/</code></strong> —— 因为只有提成模块在描述价目表分组时用了「类」这个词。</p>
+<p>注：<code>价目表/</code> 原型的<strong>用户可见文案本已用「组」</strong>（<code>catalog.js</code> / <code>base.css</code> / <code>index.html</code> 全仓无「分类 / 大类」命中），所以 §11.1 在<strong>本仓库内</strong>的代码落点全部在 <code>提成设置/</code> —— 因为只有提成模块在描述价目表分组时用了「类」这个词。<strong>本仓库之外还有一处</strong>：<strong>线上会员卡系统的「计次卡」适用范围</strong>（改动口径见 §12，其代码不在本仓库）。</p>
 </blockquote>
 <h3>11.2 明确<strong>不改</strong>（属"其他类型的类"，误改即语义错误）</h3>
 <table>
@@ -1079,7 +1136,7 @@ return winner.ov
 <tr>
 <td><code>category</code>（字段名）</td>
 <td>数据模型</td>
-<td>只读兼容期保留（§4.3）；<strong>字段名是接口契约，不在本次文案统一范围</strong>（§12-2）</td>
+<td>只读兼容期保留（§4.3）；<strong>字段名是接口契约，不在本次文案统一范围</strong>（§13-2）</td>
 </tr>
 <tr>
 <td><code>primaryGroupId</code> / <code>groupIds</code></td>
@@ -1114,17 +1171,196 @@ return winner.ov
 <ul>
 <li><strong>文案层</strong>（§11.1）：替换即可，无逻辑影响；<code>comm2.js</code> 的三处字符串为<strong>纯展示拼接</strong>，改动不影响取数与比对。</li>
 <li><strong>文档层</strong>：三份 PRD（本文 + <code>PRD-项目创建与管理.md</code> + <code>../提成设置/PRD-提成设置.md</code>）同步；历史修订记录条目<strong>保留原文不改</strong>（作为历史痕迹），仅在最新修订条中声明本次统一。</li>
-<li><strong>接口层</strong>：字段名 / 接口键<strong>本次不动</strong>（用户决策：只改用户可见文案 + 文档口径）。<code>category</code> 的最终下线时机见 §12-2。</li>
+<li><strong>接口层</strong>：字段名 / 接口键<strong>本次不动</strong>（用户决策：只改用户可见文案 + 文档口径）。<code>category</code> 的最终下线时机见 §13-2。</li>
 <li><strong>验收</strong>：按 <strong>M20</strong>（改名命中）与 <strong>M21</strong>（排除项未被误改）双向核对。</li>
 </ul>
 <hr />
-<h2>12. 待确认 / 后续</h2>
+<h2>12. 会员卡 · 计次卡（大类 → 分组）</h2>
+<blockquote>
+<p><strong>为什么单独开章</strong>：这条链路<strong>不在</strong> §8「下游回归」的射程内 —— 它不是只读选品，而是<strong>存了一份归属引用</strong>。用户澄清：线上会员卡系统里有一种 <strong>「计次卡」</strong>，每个卡模板可选 <strong>1 种「大类」</strong>作为<strong>适用范围</strong>（该大类下的项目都可用这张卡扣次）；它<strong>不是</strong>本仓库新原型的「独立计次 / 关联计次」（那两者用的分别是<strong>卡名</strong>与<strong>显式项目清单</strong>）。因线上会员卡<strong>不在本次同期下线</strong>（两线并行），这份引用必须随价目表迁移<strong>同步改造</strong>，否则价目一完成切换，计次卡的适用范围就指向了不存在的枚举。</p>
+</blockquote>
+<h3>12.1 现状与牵动点</h3>
+<table>
+<thead>
+<tr>
+<th>侧</th>
+<th>计次卡的「适用范围」怎么存</th>
+<th>本次牵动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>线上会员卡（现网）</strong></td>
+<td>模板存 <strong>1 个「大类」</strong>（枚举值）</td>
+<td>「大类」在价目侧被升级为「主分组」（D1）→ <strong>引用轴必须换</strong></td>
+</tr>
+<tr>
+<td>本仓库新原型</td>
+<td>「独立计次」适用范围 = <strong>卡名</strong>（只读，写入 <code>simpleTimesProjectName</code>）；「关联计次」= <strong>显式项目清单</strong>（§6.3.2 / §6.4）</td>
+<td><strong>本次不动</strong>（§1.5 已把线上次卡映射到「项目」权益；本条只覆盖线上线）</td>
+</tr>
+<tr>
+<td>价目表（迁移后）</td>
+<td>分组表 <code>catalogGroups.{project,product}</code>；条目有 <code>primaryGroupId</code>（1:1）+ <code>groupIds</code>（N:N）</td>
+<td>提供新的引用轴</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关键前提</strong>：线上「大类」是 <strong>1:1</strong>（一个项目属于且仅属于一个大类），而新模型里<strong>只有「主分组」保持这一性质</strong> —— 自定义分组是 <strong>N:N</strong>。</p>
+<h3>12.2 决策</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>议题</th>
+<th>决策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D10-a</td>
+<td>引用哪条轴</td>
+<td><strong>只引用「主分组」</strong>（<code>primaryGroupId</code> 轴）；<strong>不允许</strong>引用自定义分组</td>
+</tr>
+<tr>
+<td>D10-b</td>
+<td>单选 / 多选</td>
+<td><strong>单选 1 个</strong>（与线上「1 个大类」严格 1:1）</td>
+</tr>
+<tr>
+<td>D10-c</td>
+<td>生效口径</td>
+<td><strong>模板层实时跟随</strong>（live）；<strong>办卡实例层快照冻结</strong></td>
+</tr>
+<tr>
+<td>D10-d</td>
+<td>绑卡派生</td>
+<td>必须取 <strong>模板（<code>scopeGroupId</code> → 组成员）∪ 持卡实例快照</strong> 的<strong>并集</strong></td>
+</tr>
+<tr>
+<td>D10-e</td>
+<td>绑卡后果</td>
+<td>沿用价目表 PRD §4.3：<strong>不可删除</strong> + 名称 / 可预约锁定；价格 / 时长 / 在售 / 下架<strong>仍可改</strong></td>
+</tr>
+<tr>
+<td>D10-f</td>
+<td>术语</td>
+<td>计次卡模板 / 列表 / 详情 / 扣次券文案的「大类」→「<strong>分组</strong>」（§11.1）</td>
+</tr>
+</tbody>
+</table>
+<h3>12.3 为什么不引用自定义分组（语义零漂移的关键）</h3>
+<p>引用主分组时，适用范围是<strong>唯一命中</strong>的集合运算，不需要任何新解析规则：</p>
+<pre><code class="language-text">scope(card) = { p ∈ 项目桶 | p.primaryGroupId === card.scopeGroupId }
+</code></pre>
+<p>因为不变式 §3.3-1 规定 <code>primaryGroupId</code> <strong>恒非空</strong>、<strong>恒唯一</strong>，所以：</p>
+<ul>
+<li>一个项目<strong>不可能</strong>被两张计次卡同时覆盖 → <strong>不存在</strong>线上从未有过的「N:N 重复命中」；</li>
+<li>自定义分组怎么交叉（一个项目进 5 个组）都<strong>不影响</strong>计次卡 → 与线上语义<strong>零漂移</strong>。</li>
+</ul>
+<p>反之，若引用自定义分组，就必须回答「项目同属两组时算谁的范围」（并集？交集？优先级？），等于把 §1.2 的「重复命中」问题复制到计次卡上 —— <strong>明确不做</strong>。</p>
+<h3>12.4 数据模型（增量）</h3>
+<p><strong>会员卡模板</strong>（线上计次卡）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scopeGroupId</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>计次卡适用范围的主分组 id（<code>g_&lt;categoryId&gt;</code>）；<strong>建议命名</strong>，最终以联调契约为准。非空 = 圈定范围；<code>null</code> 仅作历史兜底</td>
+</tr>
+<tr>
+<td><code>categoryId</code>（旧）</td>
+<td><code>string</code></td>
+<td>迁移期<strong>只读保留</strong>（同 §4.3 的 <code>category</code> 兼容期），新写入不再依赖</td>
+</tr>
+</tbody>
+</table>
+<p><strong>持卡实例</strong>（办卡时快照）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scopeItemIds</code></td>
+<td><code>string[]</code></td>
+<td>办卡那一刻 <code>scope(card)</code> 的成员快照；<strong>此后不再随分组变化</strong>，用于扣次校验与退卡估值</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>「快照在实例、不在模板」是 D10-c 的直接结果</strong>，两者不可互换：模板也快照 → 「新增项目自动纳入范围」失效；实例也 live → 历史退卡金额会随分组变动漂移。</p>
+</blockquote>
+<h3>12.5 实时跟随的连带影响（必须一并处理，且必须告知商户）</h3>
+<p><strong>A. 绑卡派生必须取并集 —— 本方案唯一的真坑</strong></p>
+<p><code>价目表/catalog.js</code> 现有的绑卡派生<strong>只扫模板</strong>：</p>
+<pre><code class="language-text">collectTemplateProjectRefs(templates)   // 只遍历 state.templates 的 projectItems / memberPrices
+→ p.boundToCard = ids.length &gt; 0
+</code></pre>
+<p>在「模板 live + 实例快照」组合下会出现这个顺序漏洞：</p>
+<ol>
+<li>项目 A 属分组 G，计次卡 K 引用 G → A 是范围成员 → <code>boundToCard = true</code>（不可删）✅</li>
+<li>把 A <strong>移出</strong> G（改主分组）→ 模板侧 K 不再覆盖 A → 若<strong>只扫模板</strong>，A 的 <code>boundToCard</code> 变 <code>false</code></li>
+<li>但<strong>已办卡实例的 <code>scopeItemIds</code> 仍含 A</strong> → 退卡估值仍要读 A</li>
+<li>→ <strong>A 变成可删</strong> → 历史卡估值出现<strong>孤儿引用</strong>（金额不可复现）</li>
+</ol>
+<p><strong>修正</strong>：</p>
+<pre><code class="language-text">refs = 模板（projectItems ∪ memberPrices ∪ scopeGroupId → 当前组成员）
+     ∪ 持卡实例（scopeItemIds）
+</code></pre>
+<p>即 <code>boundToCard</code> 表达的是「<strong>当前有任何引用</strong>」，而不是「只被模板引用」。</p>
+<p><strong>B. 绑卡面会随分组变宽（预期行为，但需要解释）</strong></p>
+<p>整组项目<strong>一次性</strong>全部变「已绑卡」→ 不可删除、名称 / 可预约锁定。商户想删组内某个项目时会撞 toast <code>该项目已绑定会员卡，不可删除</code>，因此<strong>分组管理页需要前置说明</strong>：</p>
+<blockquote>
+<p>「本组被 N 张计次卡作为适用范围，组内项目将不可删除」</p>
+</blockquote>
+<p><strong>C. 加 / 移项目即时改范围</strong></p>
+<ul>
+<li><strong>加入</strong> G → 立即进范围 + 立即被锁（不可删）；<strong>移出</strong> G → 退出<strong>模板</strong>范围，但<strong>实例并集仍在</strong>（见 A）。</li>
+<li>两步都<strong>不应弹窗</strong>（与 D3 一致、与 §6.2 的静默口径一致），可在分组管理页标注「N 张计次卡受影响」。</li>
+</ul>
+<p><strong>D. 范围为空必须拦截</strong></p>
+<p>G 被清空（成员为 0）→ 计次卡没有任何可扣项目。保存时<strong>必须拦截</strong>或明确提示「适用范围为空，请先向该分组加入项目」；<strong>不得</strong>静默存下空范围。</p>
+<p><strong>E. 只列项目桶的分组</strong></p>
+<p>计次卡扣的是<strong>项目</strong>，适用范围选择器只列 <code>catalogGroups.project</code>；产品桶分组不得出现在该选择器里（同 §6.5 产品权益页的桶隔离原则）。</p>
+<p><strong>F. 分组被删 / 主分组被改指时不得悬空</strong></p>
+<p>价目侧已有护栏（§3.3 不变量 5：删组前必须先指定迁入分组）。此处需<strong>额外</strong>要求：删除 / 改指前必须<strong>列出受影响的计次卡</strong>，避免「分组没了、卡的适用范围指向空气」。</p>
+<h3>12.6 迁移步骤（在 §4.1 之后追加，同样幂等、可回滚）</h3>
+<ol>
+<li>价目分组表建好后（<code>source:'category'</code> 组已就位），把每个线上计次卡模板的 <code>categoryId</code> 写成 <code>scopeGroupId = 'g_' + categoryId</code>（<strong>1:1</strong>）。</li>
+<li><strong>历史持卡实例</strong>：按<strong>办卡时点</strong>该大类的成员集回填 <code>scopeItemIds</code>（快照）—— <strong>不可</strong>用「当前成员」回填，否则历史退卡估值会被改写。</li>
+<li><code>categoryId</code> 保留只读（同 §4.3），并按 §9.3 每日 diff <code>categoryId</code> vs <code>scopeGroupId</code>。</li>
+<li><strong>dry-run 校验</strong>（并入 §9.1 体检）：
+   - 每个 <code>scopeGroupId</code> <strong>命中</strong>分组表且<strong>非空</strong>；
+   - <code>categoryId</code> 找不到对应分组的 → 落入 fallback 组并进<strong>人工清单</strong>；
+   - 绑卡并集算出的引用数 = 迁移前「因计次卡而绑卡」的项目数（逐条 diff = 0）。</li>
+<li><strong>校验通过后才切读</strong>。</li>
+</ol>
+<h3>12.7 不在本次范围</h3>
+<ul>
+<li>本仓库新原型（<code>card/demo.html</code>）的「独立计次 / 关联计次」<strong>不改</strong> —— 它为新会员卡自有模型，与线上计次卡是两条线。</li>
+<li>新会员卡的计次卡<strong>是否</strong>也需要 <code>scopeGroupId</code> 字段，取决于「新会员卡替换线上会员卡」的排期 —— 见 <strong>§13-6</strong>。</li>
+</ul>
+<hr />
+<h2>13. 待确认 / 后续</h2>
 <ol>
 <li><strong>新增表单是否加「主分组」必选字段</strong>：原型现状不给用户控件（写死「其他」/「产品」）。D1 要求主分组必选，建议新增表单加<strong>主分组单选</strong>（默认取上次使用，兜底 fallback），并在包含项目/产品页以「主分组」角标区分主分组与自定义分组。<strong>待确认</strong>。</li>
 <li><strong><code>category</code> 字段下线时机</strong>：建议跨一个完整结算周期且 §9.3 核对全绿后；具体时点待排期。<strong>字段名是否随术语统一改名（<code>category</code> → 语义化 group 命名）亦待定</strong> —— 属接口契约变更，不在 §11 的文案范围内（§11.2）。</li>
 <li><strong>分界记录的实现归属</strong>：<code>_prevItemIds</code> / <code>effectiveAt</code> 写在哪一侧 —— 建议<strong>分组对象自身</strong>（§3.1），因为 <code>lineInGroup()</code> 已从 <code>comm2Groups()</code> 取分组对象，写入后<strong>提成侧零改管线</strong>；若价目与提成各自持有一份分组数据（<code>提成设置/seed-data.js</code> 的副本问题，§1.3 R7），须保证<strong>单源</strong>，否则分界会两边不一致。</li>
 <li><strong>导入导出 / 商城·联盟侧</strong>：D6 判定为不依赖，若有遗漏需回补映射。</li>
 <li><strong>原型改码范围</strong>：本文只定方案；<code>价目表/</code>（主分组 + 兜底组 + 删组保护 + 变更 toast）与 <code>提成设置/</code>（优先级链 + 生效来源可见化 + 分界解析 + 术语替换）的具体改动清单，待本方案评审通过后另行出「执行清单」。</li>
+<li><strong>线上计次卡改造的承接方与排期（§12）</strong>：两线并行下，本改造（<code>scopeGroupId</code> + 实例快照 + 并集绑卡）由<strong>线上会员卡线</strong>承接；若该线后续被新会员卡整体替换，则须把 <code>scopeGroupId</code> 与新会员卡的适用范围字段<strong>统一为同一份契约</strong>，届时 §12 的验收项 <strong>M23–M28</strong> 应整体转入新会员卡的验收清单。<strong>待确认</strong>。</li>
 </ol>
 <p class="foot-note">给 AI / 研发请使用同目录 <code>PRD-迁移方案-大类转主分组.md</code>；本页仅作阅读预览。交互以本目录 <code>index.html</code> 为准。</p>
 </article></div>
