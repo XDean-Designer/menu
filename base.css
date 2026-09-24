@@ -700,6 +700,7 @@ html.prd-capture #catalogGroupTabs .catalog-group-scroll__capture-track {
   background: linear-gradient(-90deg, #F2F2F2 0%, #F2F2F2 35%, rgba(242, 242, 242, 0) 100%);
   border-radius: 0 16px 16px 0;
 }
+
 .catalog-group-tab {
   position: relative;
   flex: 0 0 auto;

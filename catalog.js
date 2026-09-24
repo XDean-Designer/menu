@@ -4396,6 +4396,32 @@ var PRICE_FLOW = {
       || getCatalogProjects()[0];
     if (first) openCatalogDeleteConfirm(first.id);
   },
+  /* ------------------------------------------------------------------------
+     run-to-figma 专用：导航未接入、但从界面可达的两个浮层。
+     仅供 `?capture=<id>` 深链截图用，不出现在左侧演示导航里。
+     展开区有 320ms 入场动画（CIN_OPEN_MS），故延后 600ms 再触发二级浮层。
+     ------------------------------------------------------------------------ */
+  'price-amount-keypad': function () {
+    /* 金额键盘由「点价格输入框」触发（见 wireProjAmountInputs 里的 click 处理器） */
+    PRICE_FLOW['price-edit-normal']();
+    setTimeout(function () {
+      document.getElementById('fPrice')?.click();
+    }, 600);
+  },
+  'price-inline-discard': function () {
+    /* 「放弃修改？」确认：制造脏值后再请求收起（requestCatalogInlineClose 的脏值守卫）。
+       脏值走真实路径 —— 改 #fPrice 并派发 input，冒泡到展开区的 onMutate → markCatalogInlineDirty()，
+       因此截图里「保存」按钮会带 is-dirty 态，与真机一致。 */
+    PRICE_FLOW['price-edit-normal']();
+    setTimeout(function () {
+      const priceEl = document.getElementById('fPrice');
+      if (priceEl) {
+        priceEl.value = String(priceEl.value || '0') + '9';
+        priceEl.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      openCatalogInlineDiscardDialog('scrim');
+    }, 600);
+  },
 };
 
 function runPriceFlow(id) {

@@ -279,6 +279,44 @@ html.figma-capture .phone-inner.phone {
   border: none !important;
   border-radius: 0 !important;
 }
+
+/* ---------------------------------------------------------------------------
+   全高截图：**页面态**按内容增高（v1.31 起）
+   ---------------------------------------------------------------------------
+   ?capture=<flowId> 时 app.js 给 <html> 加 prd-capture + figma-capture；
+   浮层态（Sheet / Dialog）再额外加 capture-overlay 以**保持上面那条 390×844 锁定**。
+
+   为什么页面要增高：实测 23 个 flow 里 17 个的内容超出 844 —— 最深
+   price-edit-bound 多出 1323px。不增高就会被裁掉，看不到完整内容区。
+
+   为什么浮层不能增高：蒙层是 `inset: 0` 相对画布定位的。画布一旦撑到 2000+px，
+   蒙层就被拉成整条长黑带、弹窗飘到内容之外，失去「浮层覆盖当前视口」的语义。
+   所以增高**只对页面态生效**（`:not(.capture-overlay)`）。
+
+   ⚠️ 只解除**页面级**滚动容器。下面两个**故意不在列**（它们活在 Sheet 里，随浮层锁 844）：
+        .catalog-group-sheet-list / .picker-mask--bottom .picker-list
+   ⚠️ #catalogGroupTabs 也**不在列** —— 它另有 prd-capture 规则（overflow:hidden +
+      transform 烘焙横滑位移，见 base.css），改成 visible 会破坏那个烘焙。
+   --------------------------------------------------------------------------- */
+html.figma-capture:not(.capture-overlay) #frame,
+html.figma-capture:not(.capture-overlay) #frame.phone-shell,
+html.figma-capture:not(.capture-overlay) .phone-inner.phone,
+html.figma-capture:not(.capture-overlay) #frame .screen,
+html.figma-capture:not(.capture-overlay) #frame .page-body,
+html.figma-capture:not(.capture-overlay) #frame .table-card,
+html.figma-capture:not(.capture-overlay) #frame #projProjectTable,
+html.figma-capture:not(.capture-overlay) #frame .proj-list-empty {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+/* 展开区本身是绝对定位的浮层内块，高度锁死会在增高后留一片空白 */
+html.figma-capture:not(.capture-overlay) #frame .catalog-inline-panel {
+  height: auto !important;
+  max-height: none !important;
+}
+
 html.figma-capture .status-bar { display: flex !important; }
 html.figma-capture .page-title-bar {
   height: 44px !important;
