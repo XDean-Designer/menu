@@ -19,6 +19,7 @@
      页面态则交给 base.css 的 `html.figma-capture:not(.capture-overlay)` 按内容增高。 */
   var CAPTURE_OVERLAY_FLOWS = {
     'price-list-action': 1,        // 行操作 Sheet
+    'price-list-action-locked': 1, // 行操作 Sheet · 绑卡不可删除（capture 专用）
     'price-item-group': 1,         // 设置分组 Sheet
     'price-item-group-empty': 1,   // 设置分组 · 无组
     'price-group-create': 1,       // 新建分组 Dialog

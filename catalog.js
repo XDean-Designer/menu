@@ -4191,6 +4191,19 @@ var PRICE_FLOW = {
     projShowScreen('screen-p-list');
     setFlowNavHighlight('price-list-empty');
   },
+  'price-list-empty-product': function () {
+    /* 产品维度空态：applyDemoListState('empty') 会同时清空 project / product 两套目录，
+       再切到「产品」Tab —— 空态标题与副标题由 projRenderList 自动落成
+       「暂无产品 / 添加后可在开单记账中使用」。 */
+    applyDemoListState('empty');
+    state.priceCatalogTab = 'product';
+    state.catalogColSort = { key: null, dir: null };
+    state.catalogHiddenExpanded = false;
+    syncPriceCatalogTabs();
+    projRenderList();
+    projShowScreen('screen-p-list');
+    setFlowNavHighlight('price-list-empty-product');
+  },
   'price-list-filled': function () {
     ensureDemoFilled();
     state.priceCatalogTab = 'project';
@@ -4221,6 +4234,20 @@ var PRICE_FLOW = {
     projShowScreen('screen-p-list');
     const first = getCatalogProjects().find(p => p.onSale && !p.hidden) || getCatalogProjects()[0];
     if (first) openCatalogRowActions(first.id);
+  },
+  'price-list-action-locked': function () {
+    /* 行操作 Sheet · 绑卡不可删除：挑一个「已绑卡且在售」的项目（PROJ_DEMO_IDS.bound = p4）。
+       这类条目 isCatalogDeleteLocked 为真，openCatalogRowActions 会自动点亮
+       #catalogActDeleteLock 的锁图标，呈现「删除被禁用」的态。 */
+    ensureDemoFilled();
+    state.priceCatalogTab = 'project';
+    syncPriceCatalogTabs();
+    projRenderList();
+    projShowScreen('screen-p-list');
+    const target = resolveProjDemoTarget('bound')
+      || getCatalogProjects().find(p => p.onSale && !p.hidden && isCatalogDeleteLocked(p))
+      || getCatalogProjects().find(isCatalogDeleteLocked);
+    if (target) openCatalogRowActions(target.id);
   },
   'price-list-swipe': function () {
     ensureDemoFilled();
@@ -4261,6 +4288,14 @@ var PRICE_FLOW = {
   'price-groups': function () {
     ensureDemoFilled();
     state.priceCatalogTab = 'project';
+    syncPriceCatalogTabs();
+    openCatalogGroupManage();
+  },
+  'price-groups-product': function () {
+    /* 产品维度的分组管理：先切「产品」Tab，renderCatalogGroupManage 里的
+       「包含产品 / 个产品」文案与分组数据（seedCatalogGroups().product）随之切换 */
+    ensureDemoFilled();
+    state.priceCatalogTab = 'product';
     syncPriceCatalogTabs();
     openCatalogGroupManage();
   },
