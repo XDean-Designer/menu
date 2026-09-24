@@ -48,6 +48,7 @@ python -m http.server 8770
 | `?flow=price-list-filled` | 价目表 · 项目（有数据）· **即首页** |
 | `?flow=price-list-product` | 价目表 · 产品 |
 | `?flow=price-groups` | 分组管理 |
+| `?flow=price-group-menu-product` | 分组管理 · 行展开（产品） |
 | `?flow=price-add` | 新增项目 |
 | `?flow=price-edit-normal` | 项目详情 · 普通 |
 | `?flow=price-list-action` | 行操作 Sheet |

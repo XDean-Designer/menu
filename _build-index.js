@@ -61,6 +61,7 @@ const navSheets = [
   { id: 'price-item-group', label: '设置分组 Sheet' },
   { id: 'price-item-group-empty', label: '设置分组 · 无组' },
   { id: 'price-group-menu', label: '分组行展开' },
+  { id: 'price-group-menu-product', label: '分组行展开 · 产品' },
   { id: 'price-group-create', label: '新建分组 Dialog' },
   { id: 'price-group-rename', label: '重命名 Dialog' },
   { id: 'price-group-delete', label: '删除分组 Dialog' },

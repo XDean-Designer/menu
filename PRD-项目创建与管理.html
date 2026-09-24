@@ -59,7 +59,7 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 <tbody>
 <tr>
 <td>文档版本</td>
-<td>v1.32</td>
+<td>v1.33</td>
 </tr>
 <tr>
 <td>日期</td>
@@ -94,6 +94,11 @@ table img{max-width:min(260px,100%);width:auto;height:auto;border-radius:10px;bo
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>v1.33</td>
+<td>2026-09-24</td>
+<td><strong>补产品维度的「分组管理·行展开」演示节点与 Figma 帧（原型仅新增一条深链，无功能与视觉变更）</strong>。<strong>① 背景</strong>：既有演示节点 <code>price-group-menu</code>（行展开态）<strong>只在项目维度</strong>，产品维度缺失 —— 左侧导航「分组行展开」、Figma 第 18 帧均只有项目版。<strong>② 新增节点 <code>price-group-menu-product</code></strong>：与 <code>price-group-menu</code> <strong>完全对称</strong>，仅把桶从 <code>project</code> 换成 <code>product</code> —— 先 <code>state.priceCatalogTab = 'product'</code> + <code>syncPriceCatalogTabs()</code>（入口文案与计数随之变 <strong>「包含产品 / 个产品」</strong>、分组数据取 <code>seedCatalogGroups().product</code>），再 <code>openCatalogGroupManage()</code>，最后显式展开<strong>首个自定义产品组「洗护」</strong>（<code>state.catalogGroupExpandedId = g.id</code>）。<strong>进页默认仍收起</strong>，仅该深链显式展开 —— 与 v1.20「进页一律收起」不冲突。<strong>③ 左侧导航新增「分组行展开 · 产品」</strong>（<code>_build-index.js</code> 的 <code>navSheets</code> → 重新生成 <code>index.html</code>）。<strong>④ Figma「价目表-开发🔥」补第 19 帧</strong> <code>价目表-19 分组管理·行展开（产品）</code>：原 <code>价目表-18 分组管理·行展开</code> 补 <strong>「（项目）」</strong>后缀、与 <code>05 分组管理（项目）</code> / <code>06 分组管理（产品）</code> 的命名口径对齐；新帧<strong>紧接 18 之后</strong>插入，其后 10 帧（原 19–28）<strong>顺移为 20–29</strong> 并整体重排 x。<strong>⑤ 验证</strong>：<code>_tmp_verify_groupmenu_prod.mjs</code> <strong>14 PASS / 0 FAIL</strong>（含「产品维度落「包含产品」且不含「包含项目」」「有且仅有一行展开（手风琴）」「系统『隐藏』组不可拖拽」「项目版 18 未受影响」等；均为实测断言）。改动同步 §4（深链清单）/ §6.4（深链补充说明）。</td>
+</tr>
 <tr>
 <td>v1.32</td>
 <td>2026-09-24</td>
@@ -636,7 +641,7 @@ flowchart LR
 </tr>
 </tbody>
 </table>
-<p>功能链路演示节点（FLOW_MAP「项目创建与管理」）：<code>price-list-empty</code> / <code>price-list-filled</code> / <code>price-list-product</code> / <code>price-list-action</code> / <code>price-list-swipe</code> / <code>price-list-swipe-locked</code> / <code>price-list-hidden-open</code> / <code>price-groups</code> / <code>price-group-members</code> / <code>price-group-menu</code> / <code>price-group-create</code> / <code>price-group-rename</code> / <code>price-group-delete</code> / <code>price-item-group</code> / <code>price-item-group-empty</code> / <code>price-item-delete</code> / <code>price-add</code> / <code>price-add-product</code> / <code>price-edit-normal</code> / <code>price-edit-bound</code> / <code>price-edit-off-sale</code> / <code>price-edit-product</code> / <code>price-edit-product-off-sale</code>。</p>
+<p>功能链路演示节点（FLOW_MAP「项目创建与管理」）：<code>price-list-empty</code> / <code>price-list-filled</code> / <code>price-list-product</code> / <code>price-list-action</code> / <code>price-list-swipe</code> / <code>price-list-swipe-locked</code> / <code>price-list-hidden-open</code> / <code>price-groups</code> / <code>price-group-members</code> / <code>price-group-menu</code> / <code>price-group-menu-product</code> / <code>price-group-create</code> / <code>price-group-rename</code> / <code>price-group-delete</code> / <code>price-item-group</code> / <code>price-item-group-empty</code> / <code>price-item-delete</code> / <code>price-add</code> / <code>price-add-product</code> / <code>price-edit-normal</code> / <code>price-edit-bound</code> / <code>price-edit-off-sale</code> / <code>price-edit-product</code> / <code>price-edit-product-off-sale</code>。</p>
 <p>深链：<code>index.html?flow=&lt;节点 id&gt;</code>（可选 <code>&amp;capture=1</code>）。开单改价拦截节点 <code>bill-pay-price-changed</code> 归属「开单记账」分组，规格见 §6.8。</p>
 <p><strong>新增 / 详情类节点的落地口径（7 个节点）</strong>：<code>price-add</code> / <code>price-add-product</code> / <code>price-edit-normal</code> / <code>price-edit-bound</code> / <code>price-edit-off-sale</code> / <code>price-edit-product</code> / <code>price-edit-product-off-sale</code> —— 一律<strong>先落到列表页，再自动展开</strong>对应位置（新增 → 内容区末尾 / 空态位置；详情 → 该条目的行正下方），<strong>不再有独立全屏页</strong>。深链切换时会先收掉上一轮遗留的展开区，避免两条动画打架。</p>
 <p>实现路由建议（名称可调整）：<code>price-list</code>（含 <code>?panel=add|edit&amp;id=&lt;条目 id&gt;</code> 表达行内展开区）/ <code>price-groups</code> / <code>price-group-members</code> + sheets。<strong>不再需要</strong> <code>price-add</code> / <code>price-edit</code> 独立路由。</p>
@@ -1689,6 +1694,7 @@ flowchart LR
 <li><strong>点整行或「⋯」</strong> → 该行<strong>向下展开</strong>操作条（手风琴，同时只开一行）：<strong>包含项目 / 包含产品</strong>（<strong>按当前 Tab</strong> 取名，文件夹内条目图标）/ <strong>重命名</strong>（铅笔）/ <strong>删除</strong>（32×32 圆角 8、<code>#BEBEBE</code> 灰底 + <strong>白</strong>垃圾桶、<strong>无文案</strong>）；前两项上图标下文案，图标 22×22、线与文案色 <code>#7D7D7D</code></li>
 <li><strong>展开条版式（v1.21，Figma <code>1397:632</code>）</strong>：整块同底 <strong><code>#E7E7E7</code></strong>；行下沿一条 <strong>0.5px <code>rgba(0,0,0,.08)</code></strong> 发丝线（左右内缩 16）；操作条高 <strong>82</strong>（上 4 / 下 12）、行高 <strong>69</strong>；「包含项目·包含产品 + 重命名」<strong>整组水平居中、间距 16</strong>（单格 68.33 × 66），<strong>删除钮钉右内边距 16</strong>（32×32、垂直居中于操作带）</li>
 <li><strong>进入分组管理时一律收起</strong>（齿轮 / 返回 / 深链均同）；不默认展开任何行  </li>
+<li>深链：<code>price-groups</code>（项目维度，收起）/ <code>price-groups-product</code>（产品维度，收起）/ <code>price-group-menu</code>（项目维度 + 展开首组「洗吹」，演示节点）/ <code>price-group-menu-product</code>（产品维度 + 展开首组「洗护」，演示节点）—— <strong>仅演示深链显式展开一行</strong>，正常进页仍收起  </li>
 <li><strong>不再使用</strong>分组底部菜单 Sheet  </li>
 <li>空态：暂无分组 / 创建分组后可快速筛选价目表  </li>
 <li>底栏：<strong>已取消</strong>；<strong>加号 SVG +「新建」</strong>改到标题栏右侧文字链 → Dialog（最多 20 字，不可与已有分组重名）；<strong>确定后新组立即出现在分组管理列表与分组轨上</strong>（并成为当前筛选组）</li>

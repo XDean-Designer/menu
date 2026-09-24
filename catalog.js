@@ -4411,6 +4411,20 @@ var PRICE_FLOW = {
       renderCatalogGroupManage();
     }
   },
+  'price-group-menu-product': function () {
+    /* 与 price-group-menu 对称的产品维度版：先切「产品」Tab（入口文案与计数随之变
+       「包含产品 / 个产品」，分组数据取 seedCatalogGroups().product），再展开首个自定义产品组。
+       进页默认仍是收起，本深链显式展开。 */
+    ensureDemoFilled();
+    state.priceCatalogTab = 'product';
+    syncPriceCatalogTabs();
+    openCatalogGroupManage();
+    const g = (state.catalogGroups?.product || []).find(x => !x.system);
+    if (g) {
+      state.catalogGroupExpandedId = g.id;
+      renderCatalogGroupManage();
+    }
+  },
   'price-group-create': function () {
     ensureDemoFilled();
     state.priceCatalogTab = 'project';
